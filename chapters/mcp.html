@@ -939,6 +939,7 @@
 <nav class="sticky-nav">
   <div class="nav-inner">
     <a href="../index.html" class="nav-link nav-home">&#x1F3E0; <span class="lang-ko">홈</span><span class="lang-en">Home</span></a>
+    <a href="#everyday" class="nav-link"><span class="lang-ko">쉬운 이해</span><span class="lang-en">Easy Intro</span></a>
     <a href="#what" class="nav-link"><span class="lang-ko">MCP란?</span><span class="lang-en">What is MCP?</span></a>
     <a href="#architecture" class="nav-link"><span class="lang-ko">작동 원리</span><span class="lang-en">How It Works</span></a>
     <a href="#catalog" class="nav-link"><span class="lang-ko">인기 서버</span><span class="lang-en">Popular Servers</span></a>
@@ -947,8 +948,96 @@
     <a href="#scenarios" class="nav-link"><span class="lang-ko">실전 시나리오</span><span class="lang-en">Scenarios</span></a>
     <a href="#caution" class="nav-link"><span class="lang-ko">주의사항</span><span class="lang-en">Caution</span></a>
     <a href="#faq" class="nav-link">FAQ</a>
+    <a href="#quickstart" class="nav-link"><span class="lang-ko">실습</span><span class="lang-en">Try It</span></a>
   </div>
 </nav>
+
+<!-- =================== SECTION 0: EVERYDAY ANALOGY =================== -->
+<section id="everyday">
+  <div class="container">
+    <div class="section-number">00</div>
+    <div class="lang-ko"><h2 class="section-title">MCP, 일상에서 이해하기</h2></div>
+    <div class="lang-en"><h2 class="section-title">MCP in Everyday Terms</h2></div>
+    <div class="lang-ko"><p class="section-desc">
+      기술 용어 없이, 일상 비유로 MCP를 이해해봅시다.
+    </p></div>
+    <div class="lang-en"><p class="section-desc">
+      Let's understand MCP through everyday analogies, no jargon needed.
+    </p></div>
+
+    <div class="analogy-box">
+      <div class="lang-ko">
+      <h4>&#x1F4F1; 스마트폰 앱 비유</h4>
+      <p>
+        여러분의 스마트폰을 생각해보세요.<br><br>
+        <strong style="color:var(--text)">스마트폰 자체</strong>는 똑똑하지만, 앱을 설치하기 전에는 할 수 있는 게 한정되어 있습니다.
+        카카오톡을 설치하면 메시지를 보낼 수 있고, 카메라 앱이 있으면 사진을 찍을 수 있고, 은행 앱이 있으면 계좌를 확인할 수 있죠.<br><br>
+        <strong style="color:var(--accent)">MCP 서버 = Claude에게 설치하는 앱</strong>입니다.<br><br>
+        &nbsp;&nbsp;&#x1F4F1; <strong>스마트폰</strong> = Claude (기본적으로 똑똑함)<br>
+        &nbsp;&nbsp;&#x1F4E6; <strong>카카오톡 앱</strong> = Slack MCP (메시지 보내기)<br>
+        &nbsp;&nbsp;&#x1F4E6; <strong>깃허브 앱</strong> = GitHub MCP (코드 관리)<br>
+        &nbsp;&nbsp;&#x1F4E6; <strong>엑셀 앱</strong> = PostgreSQL MCP (데이터 조회)<br>
+        &nbsp;&nbsp;&#x1F4E6; <strong>파일 탐색기</strong> = Filesystem MCP (파일 접근)<br><br>
+        앱을 설치하듯이 MCP 서버를 추가하면, Claude가 <strong style="color:var(--green)">할 수 있는 일이 확 늘어납니다</strong>.
+      </p>
+      </div>
+      <div class="lang-en">
+      <h4>&#x1F4F1; Smartphone App Analogy</h4>
+      <p>
+        Think of your smartphone.<br><br>
+        <strong style="color:var(--text)">The phone itself</strong> is smart, but before installing apps, what it can do is limited.
+        Install KakaoTalk to send messages, a camera app to take photos, a banking app to check accounts.<br><br>
+        <strong style="color:var(--accent)">MCP servers = apps you install for Claude</strong>.<br><br>
+        &nbsp;&nbsp;&#x1F4F1; <strong>Phone</strong> = Claude (smart by default)<br>
+        &nbsp;&nbsp;&#x1F4E6; <strong>Messaging app</strong> = Slack MCP (send messages)<br>
+        &nbsp;&nbsp;&#x1F4E6; <strong>GitHub app</strong> = GitHub MCP (manage code)<br>
+        &nbsp;&nbsp;&#x1F4E6; <strong>Spreadsheet app</strong> = PostgreSQL MCP (query data)<br>
+        &nbsp;&nbsp;&#x1F4E6; <strong>File manager</strong> = Filesystem MCP (access files)<br><br>
+        Just like installing apps, adding MCP servers <strong style="color:var(--green)">dramatically expands what Claude can do</strong>.
+      </p>
+      </div>
+    </div>
+
+    <!-- Before / After -->
+    <div class="lang-ko"><h3 style="margin: 32px 0 12px; font-weight: 700;">MCP 연결 전 vs 후</h3></div>
+    <div class="lang-en"><h3 style="margin: 32px 0 12px; font-weight: 700;">Before vs After MCP</h3></div>
+
+    <div class="comparison">
+      <div class="comp-good" style="background: var(--red-dim, rgba(220,38,38,.08)); border-color: var(--red-border, rgba(220,38,38,.18));">
+        <div class="comp-label" style="color: var(--red);">&#x274C; <span class="lang-ko">MCP 없이</span><span class="lang-en">Without MCP</span></div>
+        <div class="comp-code lang-ko">&middot; "DB에서 매출 확인해줘" &rarr; "저는 DB에 접근할 수 없습니다"
+&middot; "Slack에 결과 보내줘" &rarr; "저는 Slack에 메시지를 보낼 수 없습니다"
+&middot; "GitHub 이슈 확인해줘" &rarr; "저는 GitHub API에 접근할 수 없습니다"
+&middot; 매번 수동으로 복사-붙여넣기 해야 함</div>
+        <div class="comp-code lang-en">&middot; "Check sales in DB" &rarr; "I can't access the database"
+&middot; "Send results to Slack" &rarr; "I can't send Slack messages"
+&middot; "Check GitHub issue" &rarr; "I can't access the GitHub API"
+&middot; Manual copy-paste every time</div>
+      </div>
+      <div class="comp-good">
+        <div class="comp-label">&#x2705; <span class="lang-ko">MCP 연결 후</span><span class="lang-en">With MCP</span></div>
+        <div class="comp-code lang-ko">&middot; "DB에서 이번 달 매출 확인해줘" &rarr; 즉시 쿼리 실행 &amp; 결과 분석
+&middot; "결과를 #sales 채널에 보내줘" &rarr; 자동으로 Slack 전송
+&middot; "이슈 #42 수정하고 PR 올려줘" &rarr; 이슈 확인→코드 수정→PR 생성
+&middot; 모든 것이 하나의 대화에서 연결됨</div>
+        <div class="comp-code lang-en">&middot; "Check this month's sales in DB" &rarr; Instant query &amp; analysis
+&middot; "Send results to #sales channel" &rarr; Auto Slack delivery
+&middot; "Fix issue #42 and create PR" &rarr; Read issue→Fix code→Create PR
+&middot; Everything connected in one conversation</div>
+      </div>
+    </div>
+
+    <div class="tip">
+      <span class="tip-icon">&#x1F3AF;</span>
+      <div>
+        <div class="lang-ko"><strong>핵심:</strong> MCP는 어려운 기술이 아닙니다. "Claude에게 새 능력을 추가하는 것"이 전부입니다. 터미널에서 명령어 한 줄이면 됩니다.</div>
+        <div class="lang-en"><strong>Key point:</strong> MCP isn't complex technology. It's simply "adding new abilities to Claude." One terminal command is all it takes.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
 
 <!-- =================== SECTION 1: WHAT =================== -->
 <section id="what">
@@ -965,27 +1054,29 @@
 
     <div class="analogy-box">
       <div class="lang-ko">
-      <h4>Claude에게 손발 달아주기</h4>
+      <h4>USB 포트 비유 — 왜 "표준"이 중요한가</h4>
       <p>
-        기본 Claude는 <strong style="color:var(--text)">머리만 있는 상태</strong>입니다. 아무리 똑똑해도 혼자서는 GitHub에 PR을 올리거나, DB를 조회하거나, Slack에 메시지를 보낼 수 없죠.<br><br>
-        MCP를 연결하면 Claude에게 <strong style="color:var(--accent)">손발과 눈</strong>이 생깁니다:<br><br>
-        &nbsp;&nbsp;&#x1F9E0; <strong style="color:var(--text)">머리</strong> = Claude (추론, 판단, 계획)<br>
-        &nbsp;&nbsp;&#x270B; <strong style="color:var(--text)">손</strong> = GitHub MCP (코드 관리, PR 생성)<br>
-        &nbsp;&nbsp;&#x1F9B6; <strong style="color:var(--text)">발</strong> = Filesystem MCP (파일 탐색, 읽기/쓰기)<br>
-        &nbsp;&nbsp;&#x1F441; <strong style="color:var(--text)">눈</strong> = PostgreSQL MCP (데이터 조회, 스키마 파악)<br><br>
-        이제 Claude는 "이 이슈 확인하고, 코드 고치고, PR 올려줘"를 <strong style="color:var(--green)">한 번에</strong> 처리할 수 있습니다.
+        옛날에는 핸드폰마다 충전 단자가 달랐습니다. 삼성 따로, LG 따로, 애플 따로...<br>
+        그런데 USB-C가 나오면서? <strong style="color:var(--accent)">하나의 규격으로 모든 기기를 연결</strong>할 수 있게 됐죠.<br><br>
+        MCP도 마찬가지입니다. 예전에는 Claude가 GitHub을 쓰려면 GitHub용 코드를, Slack을 쓰려면 Slack용 코드를 따로 만들어야 했습니다.<br><br>
+        MCP라는 <strong style="color:var(--accent)">"USB-C 같은 표준"</strong>이 생기면서:<br>
+        &nbsp;&nbsp;&#x2705; GitHub MCP 서버 꽂으면 &rarr; GitHub 사용 가능<br>
+        &nbsp;&nbsp;&#x2705; Slack MCP 서버 꽂으면 &rarr; Slack 사용 가능<br>
+        &nbsp;&nbsp;&#x2705; DB MCP 서버 꽂으면 &rarr; DB 조회 가능<br><br>
+        <strong style="color:var(--green)">규격이 통일</strong>되어 있으니, 누구든 MCP 서버를 만들면 Claude에 바로 연결됩니다.
       </p>
       </div>
       <div class="lang-en">
-      <h4>Giving Claude hands and feet</h4>
+      <h4>USB Port Analogy — Why "Standard" Matters</h4>
       <p>
-        Basic Claude is like <strong style="color:var(--text)">a brain without a body</strong>. No matter how smart it is, it can't create a GitHub PR, query a DB, or send a Slack message on its own.<br><br>
-        With MCP connected, Claude gains <strong style="color:var(--accent)">hands, feet, and eyes</strong>:<br><br>
-        &nbsp;&nbsp;&#x1F9E0; <strong style="color:var(--text)">Brain</strong> = Claude (reasoning, judgment, planning)<br>
-        &nbsp;&nbsp;&#x270B; <strong style="color:var(--text)">Hands</strong> = GitHub MCP (code management, PR creation)<br>
-        &nbsp;&nbsp;&#x1F9B6; <strong style="color:var(--text)">Feet</strong> = Filesystem MCP (file browsing, read/write)<br>
-        &nbsp;&nbsp;&#x1F441; <strong style="color:var(--text)">Eyes</strong> = PostgreSQL MCP (data queries, schema exploration)<br><br>
-        Now Claude can handle "check this issue, fix the code, and open a PR" <strong style="color:var(--green)">all in one go</strong>.
+        Remember when every phone had a different charger? Samsung, LG, Apple — all different...<br>
+        Then USB-C came along and <strong style="color:var(--accent)">one standard connects all devices</strong>.<br><br>
+        MCP is the same idea. Before, connecting Claude to GitHub needed GitHub-specific code, Slack needed Slack-specific code, etc.<br><br>
+        Now with MCP as a <strong style="color:var(--accent)">"USB-C-like standard"</strong>:<br>
+        &nbsp;&nbsp;&#x2705; Plug in GitHub MCP server &rarr; GitHub ready<br>
+        &nbsp;&nbsp;&#x2705; Plug in Slack MCP server &rarr; Slack ready<br>
+        &nbsp;&nbsp;&#x2705; Plug in DB MCP server &rarr; DB queries ready<br><br>
+        Since the <strong style="color:var(--green)">standard is unified</strong>, anyone can build an MCP server and it connects to Claude instantly.
       </p>
       </div>
     </div>
@@ -1052,6 +1143,14 @@
     |  <span class="string">결과를 자연어로</span>    |                     |                    |
     | &larr;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; |                     |                    |
     |                     |                     |                    |
+      </div>
+    </div>
+
+    <div class="tip" style="margin-top: 32px;">
+      <span class="tip-icon">&#x1F4AC;</span>
+      <div>
+        <div class="lang-ko"><strong>쉽게 말하면:</strong> 여러분이 Claude에게 말하면 &rarr; Claude가 MCP 서버에 "대신 해줘" 하고 &rarr; MCP 서버가 실제 서비스(GitHub, DB 등)에서 결과를 가져와서 &rarr; Claude가 여러분에게 알려줍니다. <strong>여러분은 자연어로 말하기만 하면 됩니다.</strong></div>
+        <div class="lang-en"><strong>In simple terms:</strong> You tell Claude &rarr; Claude asks the MCP server "handle this for me" &rarr; MCP server fetches results from the actual service (GitHub, DB, etc.) &rarr; Claude tells you the result. <strong>You just speak in natural language.</strong></div>
       </div>
     </div>
 
@@ -1720,6 +1819,55 @@
         </div>
       </div>
     </div>
+    <!-- Scenario 4: Non-developer friendly -->
+    <div class="card" style="margin-top: 32px;">
+      <h3 style="display: flex; align-items: center; gap: 10px; margin-bottom: 16px;">
+        <span style="font-size: 28px;">&#x1F4CB;</span>
+        <span class="lang-ko">시나리오 4: Notion + GitHub 조합 &mdash; 기획자도 개발 현황 파악</span>
+        <span class="lang-en">Scenario 4: Notion + GitHub Combo &mdash; Even PMs Can Track Dev Progress</span>
+      </h3>
+      <div class="lang-ko"><p style="color: var(--text-dim); margin-bottom: 24px;">
+        여러 MCP 서버를 동시에 연결하면, 서로 다른 서비스의 정보를 한 번에 조합할 수 있습니다.
+        기획자가 "이번 스프린트 진행 상황 정리해줘"라고 하면 끝!
+      </p></div>
+      <div class="lang-en"><p style="color: var(--text-dim); margin-bottom: 24px;">
+        Connect multiple MCP servers simultaneously to combine information across services.
+        A PM just says "summarize this sprint's progress" and it's done!
+      </p></div>
+
+      <div class="code-block" style="margin-top: 8px;">
+        <div class="code-header">
+          <div class="code-dots"><span></span><span></span><span></span></div>
+          <span class="lang-ko">Claude Code 대화 (GitHub + Notion MCP 연결)</span>
+          <span class="lang-en">Claude Code Chat (GitHub + Notion MCP connected)</span>
+        </div>
+        <div class="code-body">
+<span class="keyword">You:</span> 이번 스프린트 진행 상황을 Notion 페이지로 정리해줘
+
+<span class="string">Claude:</span> GitHub MCP로 이번 스프린트의 PR과 이슈를 분석하고,
+Notion MCP로 정리 페이지를 만들겠습니다.
+
+<span class="comment">// Claude가 자동으로 수행하는 작업:</span>
+<span class="desc">1. GitHub MCP &rarr; 최근 2주간의 PR 18건, 이슈 12건 조회</span>
+<span class="desc">2. PR 상태 분류: 머지 완료 14건, 리뷰 중 3건, 충돌 1건</span>
+<span class="desc">3. Notion MCP &rarr; "Sprint #7 Progress" 페이지 생성</span>
+<span class="desc">4. 표, 진행률 차트, 담당자별 현황을 Notion에 자동 작성</span>
+
+<span class="string">Claude:</span> Notion에 스프린트 현황 페이지를 만들었습니다.
+  &middot; 전체 진행률: 78% (14/18 PR 머지 완료)
+  &middot; 블로커: PR #234 충돌 &mdash; @김개발님 확인 필요
+  &middot; Notion 링크: Sprint #7 Progress 페이지
+        </div>
+      </div>
+
+      <div class="tip" style="margin-top: 16px;">
+        <span class="tip-icon">&#x1F4A1;</span>
+        <div>
+          <div class="lang-ko"><strong>포인트:</strong> 이렇게 여러 MCP를 조합하면 <strong>서비스 간의 다리</strong> 역할을 Claude가 해줍니다. 개발자가 아니어도 개발 현황을 쉽게 파악하고 공유할 수 있어요.</div>
+          <div class="lang-en"><strong>Key point:</strong> Combining multiple MCPs lets Claude act as a <strong>bridge between services</strong>. Even non-developers can easily understand and share development status.</div>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -1885,6 +2033,121 @@
     </div>
   </div>
 </section>
+
+<!-- =================== SECTION 9: QUICK START =================== -->
+<section id="quickstart">
+  <div class="container">
+    <div class="section-number">09</div>
+    <div class="lang-ko"><h2 class="section-title">5분 만에 첫 MCP 연결하기</h2></div>
+    <div class="lang-en"><h2 class="section-title">Your First MCP in 5 Minutes</h2></div>
+    <div class="lang-ko"><p class="section-desc">
+      백문이 불여일견! 지금 바로 따라해보세요. 가장 간단한 Filesystem MCP부터 시작합니다.
+    </p></div>
+    <div class="lang-en"><p class="section-desc">
+      Seeing is believing! Follow along right now. We'll start with the simplest one: Filesystem MCP.
+    </p></div>
+
+    <div class="tip" style="margin-bottom: 32px;">
+      <span class="tip-icon">&#x2705;</span>
+      <div>
+        <div class="lang-ko"><strong>사전 준비:</strong> Claude Code가 설치되어 있고, Node.js(npx)가 동작하면 됩니다. 별도의 API 키가 필요 없는 MCP라서 초보자가 시작하기 좋습니다.</div>
+        <div class="lang-en"><strong>Prerequisites:</strong> You just need Claude Code installed and Node.js (npx) working. This MCP doesn't require any API keys, making it perfect for beginners.</div>
+      </div>
+    </div>
+
+    <!-- Step 1 -->
+    <div class="card" style="margin-bottom: 24px;">
+      <h3 style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+        <span style="display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:var(--accent);color:var(--bg);font-weight:800;font-size:16px;">1</span>
+        <span class="lang-ko">MCP 서버 추가하기</span>
+        <span class="lang-en">Add the MCP Server</span>
+      </h3>
+      <div class="lang-ko"><p style="color:var(--text-dim);margin-bottom:16px;">터미널을 열고 아래 명령어를 입력하세요. <code style="color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:13px;">/path/to/allowed/dir</code> 부분을 실제 폴더 경로로 바꿔주세요.</p></div>
+      <div class="lang-en"><p style="color:var(--text-dim);margin-bottom:16px;">Open your terminal and type the command below. Replace <code style="color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:13px;">/path/to/allowed/dir</code> with your actual folder path.</p></div>
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-dots"><span></span><span></span><span></span></div>
+          <span>Terminal</span>
+        </div>
+        <div class="code-body">
+<span class="comment"># Filesystem MCP 서버 추가 (예: Documents 폴더)</span>
+<span class="keyword">claude</span> mcp add filesystem -- npx -y <span class="string">@modelcontextprotocol/server-filesystem</span> ~/Documents
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="card" style="margin-bottom: 24px;">
+      <h3 style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+        <span style="display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:var(--accent);color:var(--bg);font-weight:800;font-size:16px;">2</span>
+        <span class="lang-ko">연결 확인하기</span>
+        <span class="lang-en">Verify Connection</span>
+      </h3>
+      <div class="lang-ko"><p style="color:var(--text-dim);margin-bottom:16px;">서버가 잘 추가됐는지 확인합니다.</p></div>
+      <div class="lang-en"><p style="color:var(--text-dim);margin-bottom:16px;">Check that the server was added successfully.</p></div>
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-dots"><span></span><span></span><span></span></div>
+          <span>Terminal</span>
+        </div>
+        <div class="code-body">
+<span class="keyword">claude</span> mcp list
+
+<span class="comment"># 출력 예시:</span>
+<span class="desc">  - filesystem: connected</span>
+<span class="desc">    Tools: read_file, write_file, list_directory, ...</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="card" style="margin-bottom: 24px;">
+      <h3 style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+        <span style="display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:var(--accent);color:var(--bg);font-weight:800;font-size:16px;">3</span>
+        <span class="lang-ko">실제로 사용해보기</span>
+        <span class="lang-en">Try It Out</span>
+      </h3>
+      <div class="lang-ko"><p style="color:var(--text-dim);margin-bottom:16px;">Claude Code를 실행하고 자연어로 요청해보세요!</p></div>
+      <div class="lang-en"><p style="color:var(--text-dim);margin-bottom:16px;">Launch Claude Code and make requests in natural language!</p></div>
+      <div class="code-block">
+        <div class="code-header">
+          <div class="code-dots"><span></span><span></span><span></span></div>
+          <span class="lang-ko">Claude Code 대화</span><span class="lang-en">Claude Code Chat</span>
+        </div>
+        <div class="code-body">
+<span class="keyword">You:</span> Documents 폴더에 있는 파일들 중에서 가장 최근에 수정된 파일 5개 알려줘
+
+<span class="string">Claude:</span> Filesystem MCP를 통해 Documents 폴더를 조회했습니다.
+
+<span class="desc">  최근 수정된 파일 Top 5:</span>
+<span class="desc">  1. report-2024Q1.xlsx (2분 전)</span>
+<span class="desc">  2. meeting-notes.md (1시간 전)</span>
+<span class="desc">  3. budget-plan.csv (3시간 전)</span>
+<span class="desc">  4. project-timeline.pdf (어제)</span>
+<span class="desc">  5. team-roster.json (2일 전)</span>
+
+<span class="keyword">You:</span> meeting-notes.md 내용 요약해줘
+
+<span class="string">Claude:</span> 파일을 읽어서 요약합니다...
+<span class="desc">  &#x1F4DD; 3월 14일 팀 미팅 노트</span>
+<span class="desc">  - 주요 안건: Q2 로드맵 확정</span>
+<span class="desc">  - 결정사항: 모바일 앱 우선 개발</span>
+<span class="desc">  - 다음 단계: 김개발님이 3/18까지 기술 검토서 작성</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tip">
+      <span class="tip-icon">&#x1F680;</span>
+      <div>
+        <div class="lang-ko"><strong>다음 단계:</strong> Filesystem MCP가 잘 동작하면, GitHub MCP나 Slack MCP도 도전해보세요! 위의 <a href="#setup" style="color:var(--accent)">설정 방법</a> 섹션에서 자세한 안내를 확인할 수 있습니다.</div>
+        <div class="lang-en"><strong>Next step:</strong> Once Filesystem MCP works, try GitHub MCP or Slack MCP! Check the <a href="#setup" style="color:var(--accent)">Setup</a> section above for detailed instructions.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
 
 <!-- =================== SUMMARY =================== -->
 <section style="padding: 80px 0;">
