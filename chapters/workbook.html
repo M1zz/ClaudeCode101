@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<script>(function(){var t=localStorage.getItem('cc101-chapter-theme')||'light';document.documentElement.setAttribute('data-theme',t)})();</script>
+<script>(function(){var l=localStorage.getItem('cc101-lang')||'ko';document.documentElement.setAttribute('lang',l)})();</script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>바이브 코딩 워크북 — 업무 자동화 실습 / Vibe Coding Workbook</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/pretendard/1.3.9/variable/pretendardvariable.min.css" rel="stylesheet">
+<link rel="stylesheet" href="../theme.css">
+<style id="chapter-accent">
+:root {
+  --accent: #c05a2a;
+  --accent-dim: #a04a1e;
+  --accent-glow: rgba(192,90,42, 0.10);
+  --accent-glow-strong: rgba(192,90,42, 0.16);
+  --accent-border: rgba(192,90,42, 0.20);
+}
+[data-theme="dark"] {
+  --accent: #e8944e;
+  --accent-dim: #c87838;
+  --accent-glow: rgba(232,148,78, 0.15);
+  --accent-glow-strong: rgba(232,148,78, 0.25);
+  --accent-border: rgba(232,148,78, 0.20);
+}
+</style>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap');
+:root { --radius: 12px; --radius-sm: 8px; --radius-lg: 20px; }
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+body { font-family:'Pretendard Variable',-apple-system,BlinkMacSystemFont,sans-serif; background:var(--bg); color:var(--text); line-height:1.7; overflow-x:hidden; }
+
+.back-link { display:inline-flex; align-items:center; gap:6px; padding:14px 24px; font-size:14px; font-weight:500; color:var(--text-dim); text-decoration:none; transition:color .2s; }
+.back-link:hover { color:var(--accent); }
+
+/* HERO */
+.hero { position:relative; min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:60px 24px; overflow:hidden; }
+.hero::before { content:''; position:absolute; top:-200px; left:50%; transform:translateX(-50%); width:800px; height:800px; background:radial-gradient(circle, var(--accent-glow-strong) 0%, transparent 65%); pointer-events:none; animation:pulse 6s ease-in-out infinite; }
+@keyframes pulse { 0%,100%{opacity:.6;transform:translateX(-50%) scale(1)} 50%{opacity:1;transform:translateX(-50%) scale(1.08)} }
+.hero-badge { display:inline-flex; align-items:center; gap:8px; padding:8px 18px; border-radius:100px; border:1px solid var(--border-bright); background:var(--surface); font-size:13px; color:var(--accent); letter-spacing:.04em; margin-bottom:32px; position:relative; z-index:1; animation:fadeDown .8s ease; }
+.hero-badge .dot { width:6px; height:6px; background:var(--accent); border-radius:50%; }
+@keyframes fadeDown { from{opacity:0;transform:translateY(-12px)} to{opacity:1;transform:translateY(0)} }
+.hero h1 { font-size:clamp(2rem,5vw,3.2rem); font-weight:800; text-align:center; line-height:1.25; margin-bottom:16px; position:relative; z-index:1; }
+.hero h1 .highlight { color:var(--accent); }
+.hero-sub { font-size:clamp(15px,2vw,18px); color:var(--text-dim); text-align:center; max-width:540px; position:relative; z-index:1; margin-bottom:32px; }
+.hero-cta { display:flex; gap:12px; position:relative; z-index:1; flex-wrap:wrap; justify-content:center; }
+.btn { padding:12px 28px; border-radius:100px; font-size:14px; font-weight:600; text-decoration:none; transition:all .25s; border:none; cursor:pointer; display:inline-flex; align-items:center; gap:8px; }
+.btn-primary { background:var(--accent); color:#fff; }
+.btn-primary:hover { filter:brightness(1.1); transform:translateY(-1px); }
+.btn-outline { background:transparent; border:1.5px solid var(--border-bright); color:var(--text-dim); }
+.btn-outline:hover { border-color:var(--accent); color:var(--accent); }
+.scroll-hint { position:absolute; bottom:32px; animation:bobUp 2s ease-in-out infinite; z-index:1; }
+@keyframes bobUp { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+
+/* NAV */
+.sticky-nav { position:sticky; top:0; z-index:90; background:var(--nav-bg); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); border-bottom:1px solid var(--border); display:flex; gap:0; overflow-x:auto; padding:0 16px; }
+.nav-link { padding:14px 16px; font-size:13px; font-weight:500; color:var(--text-muted); text-decoration:none; white-space:nowrap; border-bottom:2px solid transparent; transition:all .2s; }
+.nav-link:hover { color:var(--text); }
+.nav-link.active { color:var(--accent); border-bottom-color:var(--accent); }
+.nav-home { font-weight:700; margin-right:8px; }
+
+/* SECTIONS */
+.container { max-width:800px; margin:0 auto; padding:0 24px; }
+section { padding:80px 0; }
+section:nth-child(odd) { background:var(--bg); }
+section:nth-child(even) { background:var(--surface-raised); }
+[data-theme="dark"] section:nth-child(odd) { background:var(--bg); }
+[data-theme="dark"] section:nth-child(even) { background:var(--surface); }
+.section-number { font-family:'JetBrains Mono',monospace; font-size:13px; font-weight:600; color:var(--accent); letter-spacing:2px; margin-bottom:8px; }
+.section-title { font-size:clamp(1.5rem,3vw,2rem); font-weight:800; line-height:1.3; margin-bottom:8px; }
+.section-desc { font-size:15px; color:var(--text-dim); margin-bottom:32px; max-width:600px; }
+.divider { height:1px; background:var(--border); }
+h3.sub-title { font-size:1.1rem; font-weight:700; margin:28px 0 12px; color:var(--text); }
+
+/* CARDS */
+.card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:20px; margin-bottom:12px; transition:border-color .2s; }
+.card:hover { border-color:var(--accent-border); }
+.card-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:16px; }
+@media(max-width:640px) { .card-grid { grid-template-columns:1fr; } }
+
+/* COMPARE */
+.compare-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:16px 0; }
+@media(max-width:640px) { .compare-grid { grid-template-columns:1fr; } }
+.compare-bad { background:var(--red-dim); border:1px solid var(--red-border); border-radius:var(--radius); padding:16px; }
+.compare-good { background:var(--green-dim); border:1px solid var(--green-border); border-radius:var(--radius); padding:16px; }
+.compare-bad h4 { color:var(--red); font-size:.85rem; margin-bottom:6px; }
+.compare-good h4 { color:var(--green); font-size:.85rem; margin-bottom:6px; }
+.compare-bad p, .compare-good p { font-size:.85rem; color:var(--text-dim); line-height:1.7; }
+
+/* CHECKLIST */
+.checklist { display:flex; flex-direction:column; border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; margin:12px 0; }
+.check-item { display:flex; align-items:center; gap:12px; padding:10px 16px; border-bottom:1px solid var(--border); cursor:pointer; user-select:none; transition:background .15s; font-size:.88rem; }
+.check-item:last-child { border-bottom:none; }
+.check-item:hover { background:var(--surface-hover); }
+.check-box { width:22px; height:22px; min-width:22px; border:2px solid var(--border-bright); border-radius:6px; display:flex; align-items:center; justify-content:center; transition:all .2s; font-size:.68rem; color:transparent; }
+.check-item.checked .check-box { background:var(--accent); border-color:var(--accent); color:#fff; }
+.check-item.checked .check-label { color:var(--text-muted); text-decoration:line-through; }
+
+/* TIP */
+.tip { display:flex; gap:12px; padding:16px; border-radius:var(--radius); background:var(--accent-glow); border:1px solid var(--accent-border); margin:16px 0; }
+.tip-icon { font-size:1.1rem; flex-shrink:0; margin-top:2px; }
+.tip p { font-size:.85rem; color:var(--text-dim); line-height:1.7; }
+.tip strong { color:var(--text); }
+
+/* FORM */
+.form-grid { display:grid; gap:12px; margin:12px 0; }
+.form-grid.cols-2 { grid-template-columns:1fr 1fr; }
+@media(max-width:640px) { .form-grid.cols-2 { grid-template-columns:1fr; } }
+.field { display:flex; flex-direction:column; gap:4px; }
+.field label { font-size:.72rem; font-weight:600; color:var(--text-muted); text-transform:uppercase; letter-spacing:.5px; }
+.field input, .field textarea, .field select { width:100%; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-sm); padding:10px 12px; font-family:inherit; font-size:.88rem; color:var(--text); outline:none; transition:border-color .2s; }
+.field input:focus, .field textarea:focus { border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-glow); }
+.field textarea { min-height:72px; resize:vertical; line-height:1.7; }
+.field .hint { font-size:.7rem; color:var(--text-muted); font-style:italic; }
+
+/* TABLE */
+.data-table { width:100%; border-collapse:separate; border-spacing:0; border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; margin:12px 0; font-size:.86rem; }
+.data-table th { background:var(--surface-raised); color:var(--text-dim); font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.5px; padding:8px 12px; text-align:left; border-bottom:1px solid var(--border); }
+[data-theme="dark"] .data-table th { background:var(--surface); }
+.data-table td { padding:6px 12px; border-bottom:1px solid var(--border); vertical-align:top; }
+.data-table tr:last-child td { border-bottom:none; }
+.data-table td input, .data-table td select { width:100%; border:none; border-bottom:1px dashed var(--border-bright); background:transparent; font-family:inherit; font-size:.86rem; color:var(--text); padding:4px 0; outline:none; transition:border-color .2s; }
+.data-table td input:focus { border-bottom-color:var(--accent); }
+.data-table .row-num { color:var(--text-muted); font-weight:600; text-align:center; width:40px; }
+.data-table .example-row td { background:var(--accent-glow); color:var(--text-muted); font-style:italic; font-size:.8rem; }
+
+/* PROMPT BLOCK */
+.prompt-block { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; margin:16px 0; }
+.prompt-bar { display:flex; align-items:center; gap:6px; padding:8px 14px; background:var(--surface-raised); border-bottom:1px solid var(--border); }
+[data-theme="dark"] .prompt-bar { background:var(--surface); }
+.pb-dot { width:9px; height:9px; border-radius:50%; }
+.pb-dot:nth-child(1) { background:#FF5F57; }
+.pb-dot:nth-child(2) { background:#FEBC2E; }
+.pb-dot:nth-child(3) { background:#28C840; }
+.pb-label { font-family:'JetBrains Mono',monospace; font-size:.62rem; color:var(--text-muted); margin-left:auto; }
+.prompt-body { padding:20px; font-family:'JetBrains Mono',monospace; font-size:.8rem; line-height:2; color:var(--text-dim); white-space:pre-wrap; overflow-x:auto; }
+.prompt-body .cm { color:var(--text-muted); }
+.prompt-body .kw { color:var(--accent); font-weight:600; }
+.prompt-body .ed { background:var(--accent-glow); border:1px dashed var(--accent-border); border-radius:4px; padding:2px 8px; color:var(--blue,var(--accent)); min-width:100px; display:inline-block; outline:none; font-family:'JetBrains Mono',monospace; font-size:.8rem; }
+
+/* STEP CARDS */
+.step-cards { display:flex; flex-direction:column; border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; margin:12px 0; }
+.step-card { display:grid; grid-template-columns:44px 1fr; border-bottom:1px solid var(--border); }
+.step-card:last-child { border-bottom:none; }
+.sc-num { display:flex; align-items:center; justify-content:center; background:var(--accent); color:#fff; font-weight:800; font-size:.82rem; }
+.sc-text { padding:10px 16px; font-size:.88rem; color:var(--text-dim); line-height:1.6; }
+
+/* PATTERN TABLE */
+.pattern-table { width:100%; border-collapse:separate; border-spacing:0; border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; margin:12px 0; }
+.pattern-table th { background:var(--accent); color:#fff; font-size:.7rem; font-weight:700; text-transform:uppercase; letter-spacing:.5px; padding:8px 12px; text-align:left; }
+.pattern-table td { padding:8px 12px; border-bottom:1px solid var(--border); font-size:.85rem; }
+.pattern-table tr:last-child td { border-bottom:none; }
+.pattern-table tr:nth-child(even) td { background:var(--surface-raised); }
+[data-theme="dark"] .pattern-table tr:nth-child(even) td { background:var(--surface); }
+.pattern-table .sit { font-weight:700; color:var(--text); min-width:80px; }
+.pattern-table .say { color:var(--text-dim); font-family:'JetBrains Mono',monospace; font-size:.76rem; }
+
+/* BA TABLE */
+.ba-table { width:100%; border-collapse:separate; border-spacing:0; border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; margin:12px 0; }
+.ba-table th { font-size:.7rem; font-weight:700; text-transform:uppercase; letter-spacing:.5px; padding:8px 12px; }
+.ba-table th:nth-child(1) { background:var(--surface-raised); color:var(--text-dim); }
+[data-theme="dark"] .ba-table th:nth-child(1) { background:var(--surface); }
+.ba-table th:nth-child(2) { background:var(--red-dim); color:var(--red); }
+.ba-table th:nth-child(3) { background:var(--green-dim); color:var(--green); }
+.ba-table td { padding:6px 12px; border-bottom:1px solid var(--border); }
+.ba-table tr:last-child td { border-bottom:none; }
+.ba-table td:first-child { font-weight:600; color:var(--text); font-size:.85rem; background:var(--surface-raised); }
+[data-theme="dark"] .ba-table td:first-child { background:var(--surface); }
+.ba-table td input { width:100%; border:none; border-bottom:1px dashed var(--border-bright); background:transparent; font-family:inherit; font-size:.85rem; padding:4px 0; outline:none; color:var(--text); }
+
+/* CASE CARD */
+.case-card { border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; margin:16px 0; background:var(--surface); transition:border-color .2s; }
+.case-card:hover { border-color:var(--accent-border); }
+.case-header { display:flex; }
+.case-icon { width:90px; min-width:90px; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:16px; gap:4px; background:var(--accent-glow); }
+.case-icon .emoji { font-size:1.8rem; }
+.case-icon .time-save { font-family:'JetBrains Mono',monospace; font-size:.6rem; font-weight:600; color:var(--accent); text-align:center; line-height:1.3; }
+.case-meta { padding:16px 20px; display:flex; flex-direction:column; justify-content:center; }
+.case-role { font-family:'JetBrains Mono',monospace; font-size:.62rem; font-weight:600; letter-spacing:1.5px; text-transform:uppercase; color:var(--text-muted); }
+.case-title { font-size:1rem; font-weight:800; color:var(--text); line-height:1.4; }
+.case-body { padding:0 20px 20px; }
+.case-body > p { font-size:.85rem; color:var(--text-dim); line-height:1.75; margin-bottom:10px; }
+.case-body h4 { font-family:'JetBrains Mono',monospace; font-size:.68rem; font-weight:600; text-transform:uppercase; letter-spacing:1.5px; color:var(--accent); margin-bottom:6px; }
+.case-steps { border:1px solid var(--border); border-radius:var(--radius-sm); overflow:hidden; }
+.case-step { display:flex; gap:10px; padding:8px 12px; border-bottom:1px solid var(--border); align-items:flex-start; }
+.case-step:last-child { border-bottom:none; }
+.case-step:nth-child(even) { background:var(--surface-raised); }
+[data-theme="dark"] .case-step:nth-child(even) { background:var(--surface-hover); }
+.cs-n { min-width:22px; height:22px; border-radius:6px; background:var(--accent); color:#fff; display:flex; align-items:center; justify-content:center; font-size:.6rem; font-weight:800; margin-top:1px; }
+.cs-text { font-size:.82rem; color:var(--text-dim); line-height:1.5; }
+@media(max-width:640px) { .case-header { flex-direction:column; } .case-icon { width:100%; flex-direction:row; gap:10px; padding:10px 14px; } }
+
+/* SKILL GRID */
+.skill-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:12px 0; }
+@media(max-width:640px) { .skill-grid { grid-template-columns:1fr; } }
+.skill-card { border-radius:var(--radius); padding:16px; border:1px solid var(--border); background:var(--surface); }
+.skill-card .sk-icon { font-size:1.1rem; margin-bottom:4px; }
+.skill-card h4 { font-size:.85rem; font-weight:700; color:var(--text); margin-bottom:4px; }
+.skill-card p { font-size:.8rem; color:var(--text-dim); line-height:1.6; }
+.skill-card:nth-child(1) { background:var(--accent-glow); }
+.skill-card:nth-child(2) { background:var(--green-dim); }
+.skill-card:nth-child(3) { background:var(--blue-dim); }
+.skill-card:nth-child(4) { background:var(--orange-dim); }
+
+/* CHEAT GRID */
+.cheat-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin:12px 0; }
+@media(max-width:640px) { .cheat-grid { grid-template-columns:1fr; } }
+.cheat-card { border:1px solid var(--border); border-radius:var(--radius-sm); padding:12px 14px; background:var(--surface); }
+.cheat-card h5 { font-size:.78rem; font-weight:700; color:var(--accent); margin-bottom:4px; }
+.cheat-card code { font-family:'JetBrains Mono',monospace; font-size:.76rem; color:var(--text-dim); line-height:1.6; display:block; }
+
+/* LOG TABLE */
+.log-table { width:100%; border-collapse:separate; border-spacing:0; border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; margin:12px 0; }
+.log-table th { background:var(--surface-raised); color:var(--text-dim); font-size:.7rem; font-weight:700; text-transform:uppercase; letter-spacing:.5px; padding:8px 10px; text-align:left; border-bottom:1px solid var(--border); }
+[data-theme="dark"] .log-table th { background:var(--surface); }
+.log-table td { padding:4px 10px; border-bottom:1px solid var(--border); }
+.log-table tr:last-child td { border-bottom:none; }
+.log-table td input, .log-table td select { width:100%; border:none; background:transparent; font-family:inherit; font-size:.85rem; color:var(--text); padding:4px 0; outline:none; }
+.log-table td select { cursor:pointer; color:var(--text-dim); }
+
+/* DONE BOX */
+.done-box { text-align:center; padding:32px; border:2px solid var(--accent); border-radius:var(--radius-lg); background:var(--accent-glow); margin:24px 0; }
+.done-box h2 { font-size:1.4rem; font-weight:800; margin-bottom:8px; color:var(--text); }
+.done-box p { font-size:.9rem; color:var(--text-dim); line-height:1.8; }
+
+/* PROGRESS TRACKER */
+.progress-tracker { display:flex; gap:4px; margin:16px 0; padding:12px 16px; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); align-items:center; }
+.progress-tracker .prog-label { font-size:.72rem; font-weight:600; color:var(--text-muted); margin-right:8px; white-space:nowrap; }
+.progress-tracker .prog-bar { flex:1; height:6px; background:var(--border); border-radius:3px; overflow:hidden; }
+.progress-tracker .prog-fill { height:100%; background:var(--accent); border-radius:3px; width:0%; transition:width .5s; }
+.progress-tracker .prog-pct { font-family:'JetBrains Mono',monospace; font-size:.72rem; font-weight:600; color:var(--accent); margin-left:8px; min-width:32px; text-align:right; }
+
+/* CHAPTER NAV */
+.chapter-nav { display:flex; justify-content:space-between; padding:24px; max-width:800px; margin:0 auto; }
+.chapter-nav a { font-size:14px; font-weight:600; color:var(--accent); text-decoration:none; transition:opacity .2s; }
+.chapter-nav a:hover { opacity:.7; }
+
+footer { text-align:center; padding:24px; color:var(--text-muted); font-size:13px; }
+footer a { color:var(--accent); text-decoration:none; }
+</style>
+</head>
+<body>
+
+<a href="../index.html" class="back-link">
+  &larr; <span class="lang-ko">Claude Code 101로 돌아가기</span><span class="lang-en">Back to Claude Code 101</span>
+</a>
+
+<!-- ═══ HERO ═══ -->
+<div class="hero">
+  <div class="hero-badge"><span class="dot"></span>
+    <span class="lang-ko">Vibe Coding Workbook</span><span class="lang-en">Vibe Coding Workbook</span>
+  </div>
+  <h1>
+    <span class="lang-ko">바이브 코딩으로<br><span class="highlight">내 업무 1개</span><br>자동화하기</span>
+    <span class="lang-en">Automate <span class="highlight">One Task</span><br>with Vibe Coding</span>
+  </h1>
+  <p class="hero-sub">
+    <span class="lang-ko">코딩 경험이 전혀 없는 분들이 AI를 활용하여 반복 업무 1개를 자동화하는 실전 워크북입니다.</span>
+    <span class="lang-en">A hands-on workbook for non-coders to automate one repetitive task using AI.</span>
+  </p>
+  <div class="hero-cta">
+    <a href="#step1" class="btn btn-primary">
+      <span class="lang-ko">실습 시작하기</span><span class="lang-en">Start Practice</span>
+    </a>
+    <a href="#cases" class="btn btn-outline">
+      <span class="lang-ko">사례 먼저 보기</span><span class="lang-en">View Examples</span>
+    </a>
+  </div>
+  <div class="scroll-hint">
+    <svg width="24" height="24" fill="none" stroke="var(--text-muted)" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+  </div>
+</div>
+
+<!-- ═══ NAV ═══ -->
+<nav class="sticky-nav">
+  <a href="../index.html" class="nav-link nav-home">Home</a>
+  <a href="#intro" class="nav-link"><span class="lang-ko">개념</span><span class="lang-en">Intro</span></a>
+  <a href="#step1" class="nav-link"><span class="lang-ko">Step 1</span><span class="lang-en">Step 1</span></a>
+  <a href="#step2" class="nav-link"><span class="lang-ko">Step 2</span><span class="lang-en">Step 2</span></a>
+  <a href="#step3" class="nav-link"><span class="lang-ko">Step 3</span><span class="lang-en">Step 3</span></a>
+  <a href="#step4" class="nav-link"><span class="lang-ko">Step 4</span><span class="lang-en">Step 4</span></a>
+  <a href="#step5" class="nav-link"><span class="lang-ko">Step 5</span><span class="lang-en">Step 5</span></a>
+  <a href="#cases" class="nav-link"><span class="lang-ko">사례</span><span class="lang-en">Cases</span></a>
+  <a href="#cheat" class="nav-link"><span class="lang-ko">치트시트</span><span class="lang-en">Cheatsheet</span></a>
+</nav>
+
+<!-- ═══ INTRO: 바이브 코딩이란? ═══ -->
+<section id="intro">
+<div class="container">
+  <div class="section-number">00</div>
+  <div class="lang-ko">
+    <h2 class="section-title">바이브 코딩이란?</h2>
+    <p class="section-desc">코드를 직접 쓰는 대신, AI에게 "이런 걸 만들어줘"라고 대화하며 프로그램을 만드는 방식입니다.</p>
+  </div>
+  <div class="lang-en">
+    <h2 class="section-title">What is Vibe Coding?</h2>
+    <p class="section-desc">Instead of writing code yourself, you describe what you want to an AI in plain language and it builds it for you.</p>
+  </div>
+
+  <div class="compare-grid">
+    <div class="compare-bad">
+      <h4><span class="lang-ko">&#10060; 전통적 코딩</span><span class="lang-en">&#10060; Traditional Coding</span></h4>
+      <p><span class="lang-ko">문법 학습 3~6개월 → 개발환경 설치 → 직접 코드 작성 → 에러 직접 해석 → 실전까지 6개월~1년</span><span class="lang-en">Learn syntax 3-6 months → Setup dev environment → Write code → Debug errors → 6 months to a year until production</span></p>
+    </div>
+    <div class="compare-good">
+      <h4><span class="lang-ko">&#9989; 바이브 코딩</span><span class="lang-en">&#9989; Vibe Coding</span></h4>
+      <p><span class="lang-ko">일상 언어로 AI에게 설명 → AI가 코드 생성 → "이것 좀 바꿔줘"로 수정 → 에러도 AI에게 "고쳐줘" → 첫날부터 결과물 가능</span><span class="lang-en">Explain to AI in plain language → AI generates code → "Change this" to modify → "Fix this" for errors → Results from day one</span></p>
+    </div>
+  </div>
+
+  <h3 class="sub-title"><span class="lang-ko">필요한 역량 4가지 (코딩 지식 &#10007;)</span><span class="lang-en">4 Required Skills (No Coding Knowledge)</span></h3>
+  <div class="skill-grid">
+    <div class="skill-card"><div class="sk-icon">&#127919;</div><h4><span class="lang-ko">문제 정의 능력</span><span class="lang-en">Problem Definition</span></h4><p><span class="lang-ko">"뭘 자동화할까?"를 구체적으로 정의</span><span class="lang-en">Define specifically "what to automate"</span></p></div>
+    <div class="skill-card"><div class="sk-icon">&#128172;</div><h4><span class="lang-ko">절차 설명 능력</span><span class="lang-en">Process Description</span></h4><p><span class="lang-ko">업무 순서를 말로 풀어 AI에게 전달</span><span class="lang-en">Explain the workflow step by step to AI</span></p></div>
+    <div class="skill-card"><div class="sk-icon">&#128260;</div><h4><span class="lang-ko">반복 수정 태도</span><span class="lang-en">Iterative Mindset</span></h4><p><span class="lang-ko">5~10번 대화하며 점진적으로 완성</span><span class="lang-en">5-10 rounds of conversation to refine</span></p></div>
+    <div class="skill-card"><div class="sk-icon">&#129514;</div><h4><span class="lang-ko">결과 검증 능력</span><span class="lang-en">Result Validation</span></h4><p><span class="lang-ko">AI 결과물이 맞는지 업무 지식으로 확인</span><span class="lang-en">Verify AI output with your domain knowledge</span></p></div>
+  </div>
+
+  <div class="tip">
+    <span class="tip-icon">&#128161;</span>
+    <div>
+      <p><span class="lang-ko"><strong>시작 전 준비물:</strong> Claude(claude.ai) 또는 ChatGPT 계정 하나면 충분합니다.</span><span class="lang-en"><strong>What you need:</strong> Just one account — Claude (claude.ai) or ChatGPT.</span></p>
+    </div>
+  </div>
+</div>
+</section>
+<div class="divider"></div>
+
+<!-- ═══ STEP 1: 자동화 대상 업무 찾기 ═══ -->
+<section id="step1">
+<div class="container">
+  <div class="section-number">STEP 01</div>
+  <div class="lang-ko">
+    <h2 class="section-title">자동화 대상 업무 찾기</h2>
+    <p class="section-desc">자동화할 업무를 찾는 것이 가장 중요한 첫 단계입니다.</p>
+  </div>
+  <div class="lang-en">
+    <h2 class="section-title">Find a Task to Automate</h2>
+    <p class="section-desc">Finding the right task to automate is the most important first step.</p>
+  </div>
+
+  <h3 class="sub-title"><span class="lang-ko">체크리스트 A: 자동화 후보 발견</span><span class="lang-en">Checklist A: Spot Automation Candidates</span></h3>
+  <p style="font-size:.85rem;color:var(--text-dim);margin-bottom:8px"><span class="lang-ko">3개 이상 체크되면 자동화 후보입니다.</span><span class="lang-en">If 3+ items are checked, it's an automation candidate.</span></p>
+
+  <div class="checklist" id="checklistA">
+    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">&#10003;</div><span class="check-label"><span class="lang-ko">매주/매월 동일한 순서로 반복하는 업무가 있다</span><span class="lang-en">I have tasks I repeat in the same order weekly/monthly</span></span></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">&#10003;</div><span class="check-label"><span class="lang-ko">데이터를 복사-붙여넣기 하는 일이 있다</span><span class="lang-en">I copy-paste data between systems</span></span></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">&#10003;</div><span class="check-label"><span class="lang-ko">같은 형태의 엑셀 작업을 반복한다</span><span class="lang-en">I repeat the same type of Excel work</span></span></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">&#10003;</div><span class="check-label"><span class="lang-ko">매번 같은 양식의 보고서를 만든다</span><span class="lang-en">I create reports with the same template each time</span></span></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">&#10003;</div><span class="check-label"><span class="lang-ko">여러 파일 데이터를 하나로 합친다</span><span class="lang-en">I merge data from multiple files into one</span></span></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">&#10003;</div><span class="check-label"><span class="lang-ko">웹사이트에서 정보를 수동 확인/기록한다</span><span class="lang-en">I manually check/record info from websites</span></span></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">&#10003;</div><span class="check-label"><span class="lang-ko">같은 형식 이메일/메시지를 반복 발송한다</span><span class="lang-en">I send similar format emails/messages repeatedly</span></span></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">&#10003;</div><span class="check-label"><span class="lang-ko">"누가 대신해주면 좋겠다" 싶은 일이 있다</span><span class="lang-en">I wish someone else could do this for me</span></span></div>
+  </div>
+
+  <h3 class="sub-title"><span class="lang-ko">체크리스트 B: 좋은 첫 자동화 조건</span><span class="lang-en">Checklist B: Good First Automation Criteria</span></h3>
+  <div class="checklist" id="checklistB">
+    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">&#10003;</div><span class="check-label"><span class="lang-ko">한 번에 30분 이상 소요</span><span class="lang-en">Takes 30+ minutes per session</span></span></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">&#10003;</div><span class="check-label"><span class="lang-ko">절차가 명확하고 예외가 적다</span><span class="lang-en">Clear procedure with few exceptions</span></span></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">&#10003;</div><span class="check-label"><span class="lang-ko">입력과 출력 형태가 정해져 있다</span><span class="lang-en">Input and output formats are defined</span></span></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">&#10003;</div><span class="check-label"><span class="lang-ko">조금 틀려도 큰 문제 없다</span><span class="lang-en">Small mistakes are tolerable</span></span></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">&#10003;</div><span class="check-label"><span class="lang-ko">단독 처리 가능하다</span><span class="lang-en">Can be done independently</span></span></div>
+    <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">&#10003;</div><span class="check-label"><span class="lang-ko">직접 결과를 검증할 수 있다</span><span class="lang-en">You can verify the results yourself</span></span></div>
+  </div>
+
+  <div class="divider" style="margin:28px 0"></div>
+
+  <h3 class="sub-title"><span class="lang-ko">&#9998; 자동화 후보 목록</span><span class="lang-en">&#9998; Automation Candidate List</span></h3>
+  <table class="data-table">
+    <tr><th style="width:40px">#</th><th><span class="lang-ko">업무 이름</span><span class="lang-en">Task Name</span></th><th style="width:100px"><span class="lang-ko">빈도</span><span class="lang-en">Frequency</span></th><th style="width:100px"><span class="lang-ko">소요 시간</span><span class="lang-en">Duration</span></th><th style="width:80px"><span class="lang-ko">우선순위</span><span class="lang-en">Priority</span></th></tr>
+    <tr><td class="row-num">1</td><td><input type="text"></td><td><input type="text" placeholder="&#51452; 1&#54924;"></td><td><input type="text" placeholder="2&#49884;&#44036;"></td><td><input type="text" placeholder="&#9733;&#9733;&#9733;"></td></tr>
+    <tr><td class="row-num">2</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+    <tr><td class="row-num">3</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+  </table>
+
+  <div class="tip">
+    <span class="tip-icon">&#128161;</span>
+    <div><p><span class="lang-ko"><strong>우선순위:</strong> "소요 시간 x 빈도"가 가장 큰 업무를 1순위로. 절차가 명확할수록 좋습니다.</span><span class="lang-en"><strong>Priority:</strong> Rank by "duration x frequency". Clearer procedures are better.</span></p></div>
+  </div>
+
+  <h3 class="sub-title"><span class="lang-ko">&#9998; 최종 선택</span><span class="lang-en">&#9998; Final Selection</span></h3>
+  <div class="form-grid cols-2">
+    <div class="field"><label><span class="lang-ko">업무 이름</span><span class="lang-en">Task Name</span></label><input type="text"></div>
+    <div class="field"><label><span class="lang-ko">소요 시간</span><span class="lang-en">Duration</span></label><input type="text" placeholder="주 2시간"></div>
+    <div class="field"><label><span class="lang-ko">실행 빈도</span><span class="lang-en">Frequency</span></label><input type="text" placeholder="매주 월요일"></div>
+    <div class="field"><label><span class="lang-ko">선택 이유</span><span class="lang-en">Reason</span></label><input type="text"></div>
+  </div>
+</div>
+</section>
+<div class="divider"></div>
+
+<!-- ═══ STEP 2: 업무 분해 & 정의 ═══ -->
+<section id="step2">
+<div class="container">
+  <div class="section-number">STEP 02</div>
+  <div class="lang-ko">
+    <h2 class="section-title">업무 분해 &amp; 정의</h2>
+    <p class="section-desc">업무를 단계별로 쪼개고, 입력과 출력을 정의합니다.</p>
+  </div>
+  <div class="lang-en">
+    <h2 class="section-title">Break Down &amp; Define</h2>
+    <p class="section-desc">Break your task into steps and define inputs and outputs.</p>
+  </div>
+
+  <h3 class="sub-title"><span class="lang-ko">2-1. 업무 절차 분해</span><span class="lang-en">2-1. Process Breakdown</span></h3>
+  <table class="data-table">
+    <tr><th style="width:50px"><span class="lang-ko">단계</span><span class="lang-en">Step</span></th><th><span class="lang-ko">구체적 행동</span><span class="lang-en">Specific Action</span></th><th style="width:80px"><span class="lang-ko">소요</span><span class="lang-en">Time</span></th></tr>
+    <tr class="example-row"><td style="text-align:center"><span class="lang-ko">예시</span><span class="lang-en">Ex</span></td><td><span class="lang-ko">Google Ads에서 지난 주 캠페인 성과 엑셀을 다운로드</span><span class="lang-en">Download last week's campaign Excel from Google Ads</span></td><td style="text-align:center">5min</td></tr>
+    <tr><td class="row-num">1</td><td><input type="text"></td><td><input type="text"></td></tr>
+    <tr><td class="row-num">2</td><td><input type="text"></td><td><input type="text"></td></tr>
+    <tr><td class="row-num">3</td><td><input type="text"></td><td><input type="text"></td></tr>
+    <tr><td class="row-num">4</td><td><input type="text"></td><td><input type="text"></td></tr>
+    <tr><td class="row-num">5</td><td><input type="text"></td><td><input type="text"></td></tr>
+    <tr><td class="row-num">6</td><td><input type="text"></td><td><input type="text"></td></tr>
+  </table>
+
+  <div class="divider" style="margin:28px 0"></div>
+
+  <h3 class="sub-title"><span class="lang-ko">2-2. 입력 &amp; 출력 정의</span><span class="lang-en">2-2. Input &amp; Output Definition</span></h3>
+  <div class="form-grid" style="grid-template-columns:1fr">
+    <div class="field"><label><span class="lang-ko">입력 데이터 형식</span><span class="lang-en">Input Data Format</span></label><input type="text" placeholder="엑셀, CSV, 웹URL, 이메일 등"><span class="hint"><span class="lang-ko">AI에게 어떤 데이터를 줄 건지</span><span class="lang-en">What data you'll give to AI</span></span></div>
+    <div class="field"><label><span class="lang-ko">입력 데이터 위치</span><span class="lang-en">Input Data Location</span></label><input type="text" placeholder="이메일 첨부, 시스템 다운로드 등"></div>
+    <div class="field"><label><span class="lang-ko">주요 열(컬럼)</span><span class="lang-en">Key Columns</span></label><input type="text" placeholder="날짜, 부서, 이름, 매출액, 지역 등"></div>
+    <div class="field"><label><span class="lang-ko">결과물 형태</span><span class="lang-en">Output Format</span></label><input type="text" placeholder="정리된 엑셀, PDF, 차트, 이메일 등"></div>
+    <div class="field"><label><span class="lang-ko">전달 방식</span><span class="lang-en">Delivery Method</span></label><input type="text" placeholder="파일 저장, 이메일, 슬랙 등"></div>
+    <div class="field"><label><span class="lang-ko">주의사항</span><span class="lang-en">Notes</span></label><textarea placeholder="금액은 원 단위, 날짜는 yyyy-mm-dd 등"></textarea></div>
+    <div class="field"><label><span class="lang-ko">예외 상황</span><span class="lang-en">Edge Cases</span></label><textarea placeholder="빈 데이터 시 '없음' 표시 등"></textarea></div>
+  </div>
+</div>
+</section>
+<div class="divider"></div>
+
+<!-- ═══ STEP 3: AI 프롬프트 작성 ═══ -->
+<section id="step3">
+<div class="container">
+  <div class="section-number">STEP 03</div>
+  <div class="lang-ko">
+    <h2 class="section-title">AI 프롬프트 작성</h2>
+    <p class="section-desc">Step 2 내용을 템플릿에 옮기면 AI 요청문이 완성됩니다.</p>
+  </div>
+  <div class="lang-en">
+    <h2 class="section-title">Write Your AI Prompt</h2>
+    <p class="section-desc">Fill the template with Step 2 content to create your AI request.</p>
+  </div>
+
+  <h3 class="sub-title"><span class="lang-ko">나쁜 요청 vs 좋은 요청</span><span class="lang-en">Bad Request vs Good Request</span></h3>
+  <div class="compare-grid">
+    <div class="compare-bad">
+      <h4><span class="lang-ko">&#10060; 안 되는 요청</span><span class="lang-en">&#10060; Bad Request</span></h4>
+      <p><span class="lang-ko"><strong>"엑셀 정리해줘"</strong> — 뭘 정리?<br><strong>"보고서 자동화해줘"</strong> — 어떤 보고서?</span><span class="lang-en"><strong>"Clean up the Excel"</strong> — Clean up what?<br><strong>"Automate the report"</strong> — Which report?</span></p>
+    </div>
+    <div class="compare-good">
+      <h4><span class="lang-ko">&#9989; 좋은 요청</span><span class="lang-en">&#9989; Good Request</span></h4>
+      <p><span class="lang-ko"><strong>"첨부한 매출.xlsx에서 B열이 서울인 행만 필터링해서 새 엑셀로 저장해줘"</strong></span><span class="lang-en"><strong>"Filter rows where column B is 'Seoul' from the attached sales.xlsx and save as a new Excel file"</strong></span></p>
+    </div>
+  </div>
+
+  <div class="divider" style="margin:28px 0"></div>
+
+  <h3 class="sub-title"><span class="lang-ko">&#128203; 만능 프롬프트 템플릿</span><span class="lang-en">&#128203; Universal Prompt Template</span></h3>
+  <p style="font-size:.85rem;color:var(--text-dim);margin-bottom:8px"><span class="lang-ko">파란색 빈 칸을 클릭해서 편집 후, 전체를 복사하여 AI에 붙여넣기.</span><span class="lang-en">Click blue fields to edit, then copy everything and paste into AI.</span></p>
+
+  <div class="prompt-block">
+    <div class="prompt-bar"><div class="pb-dot"></div><div class="pb-dot"></div><div class="pb-dot"></div><div class="pb-label"><span class="lang-ko">복사 → AI에 붙여넣기</span><span class="lang-en">Copy → Paste into AI</span></div></div>
+    <div class="prompt-body" id="promptTemplate"><span class="cm"># 업무 자동화 요청</span>
+
+<span class="kw">## 나의 역할</span>
+나는 <span class="ed" contenteditable="true" data-ph="팀 이름"></span> 팀의 <span class="ed" contenteditable="true" data-ph="직급/역할"></span> 이고,
+<span class="ed" contenteditable="true" data-ph="매주/매월/매일"></span> 마다 <span class="ed" contenteditable="true" data-ph="업무 이름"></span> 업무를 합니다.
+
+<span class="kw">## 현재 작업 순서</span>
+1. <span class="ed" contenteditable="true" data-ph="첫 번째 단계"></span>
+2. <span class="ed" contenteditable="true" data-ph="두 번째 단계"></span>
+3. <span class="ed" contenteditable="true" data-ph="세 번째 단계"></span>
+4. <span class="ed" contenteditable="true" data-ph="네 번째 단계"></span>
+5. <span class="ed" contenteditable="true" data-ph="다섯 번째 단계"></span>
+
+<span class="kw">## 입력 데이터</span>
+- 형식: <span class="ed" contenteditable="true" data-ph="엑셀 / CSV / 웹 / 이메일"></span>
+- 주요 열: <span class="ed" contenteditable="true" data-ph="날짜, 부서, 매출액 등"></span>
+<span class="cm">(실제 파일 또는 샘플 3~5행을 함께 첨부합니다)</span>
+
+<span class="kw">## 원하는 결과물</span>
+- <span class="ed" contenteditable="true" data-ph="결과물 형태"></span>
+- 저장/전달: <span class="ed" contenteditable="true" data-ph="파일 저장 / 이메일 등"></span>
+
+<span class="kw">## 주의사항</span>
+- <span class="ed" contenteditable="true" data-ph="규칙"></span>
+- 예외: <span class="ed" contenteditable="true" data-ph="예외 처리"></span>
+
+<span class="cm"># 위 업무를 자동화해주세요. 비전공자도 실행 가능하게 안내해주세요.</span></div>
+  </div>
+
+  <div class="divider" style="margin:28px 0"></div>
+
+  <h3 class="sub-title"><span class="lang-ko">프롬프트 4원칙</span><span class="lang-en">4 Prompt Principles</span></h3>
+  <div class="skill-grid">
+    <div class="skill-card"><div class="sk-icon" style="font-family:'JetBrains Mono',monospace;font-size:1.2rem;font-weight:800;color:var(--accent)">01</div><h4><span class="lang-ko">맥락 제공</span><span class="lang-en">Give Context</span></h4><p><span class="lang-ko">역할과 상황을 먼저 설명</span><span class="lang-en">Explain your role and situation first</span></p></div>
+    <div class="skill-card"><div class="sk-icon" style="font-family:'JetBrains Mono',monospace;font-size:1.2rem;font-weight:800;color:var(--green)">02</div><h4><span class="lang-ko">절차 분해</span><span class="lang-en">Break It Down</span></h4><p><span class="lang-ko">업무를 1,2,3 단계로 나열</span><span class="lang-en">List tasks as step 1, 2, 3</span></p></div>
+    <div class="skill-card"><div class="sk-icon" style="font-family:'JetBrains Mono',monospace;font-size:1.2rem;font-weight:800;color:var(--blue)">03</div><h4><span class="lang-ko">예시 데이터</span><span class="lang-en">Sample Data</span></h4><p><span class="lang-ko">실제 데이터 3~5행 첨부</span><span class="lang-en">Attach 3-5 rows of real data</span></p></div>
+    <div class="skill-card"><div class="sk-icon" style="font-family:'JetBrains Mono',monospace;font-size:1.2rem;font-weight:800;color:var(--orange)">04</div><h4><span class="lang-ko">결과물 명시</span><span class="lang-en">Specify Output</span></h4><p><span class="lang-ko">"엑셀로", "PDF로" 구체적으로</span><span class="lang-en">"as Excel", "as PDF" — be specific</span></p></div>
+  </div>
+
+  <div class="tip">
+    <span class="tip-icon">&#128161;</span>
+    <div><p><span class="lang-ko"><strong>샘플 데이터:</strong> 민감 데이터 대신 AI에게 "이 구조와 같은 더미 데이터 20행 만들어줘"라고 요청하세요.</span><span class="lang-en"><strong>Sample Data:</strong> Instead of sensitive data, ask AI to "generate 20 rows of dummy data with this structure".</span></p></div>
+  </div>
+</div>
+</section>
+<div class="divider"></div>
+
+<!-- ═══ STEP 4: 실행 & 반복 수정 ═══ -->
+<section id="step4">
+<div class="container">
+  <div class="section-number">STEP 04</div>
+  <div class="lang-ko">
+    <h2 class="section-title">실행 &amp; 반복 수정</h2>
+    <p class="section-desc">AI에게 보내고, 확인하고, 대화로 수정. 5~10번 반복이 정상입니다.</p>
+  </div>
+  <div class="lang-en">
+    <h2 class="section-title">Execute &amp; Iterate</h2>
+    <p class="section-desc">Send to AI, check, modify via conversation. 5-10 iterations is normal.</p>
+  </div>
+
+  <h3 class="sub-title"><span class="lang-ko">실행 순서</span><span class="lang-en">Execution Order</span></h3>
+  <div class="step-cards">
+    <div class="step-card"><div class="sc-num">1</div><div class="sc-text"><span class="lang-ko">프롬프트를 Claude/ChatGPT에 붙여넣기</span><span class="lang-en">Paste prompt into Claude/ChatGPT</span></div></div>
+    <div class="step-card"><div class="sc-num">2</div><div class="sc-text"><span class="lang-ko">샘플 데이터 파일 함께 업로드</span><span class="lang-en">Upload sample data file</span></div></div>
+    <div class="step-card"><div class="sc-num">3</div><div class="sc-text"><span class="lang-ko">결과물(코드/파일/차트) 확인</span><span class="lang-en">Check results (code/file/chart)</span></div></div>
+    <div class="step-card"><div class="sc-num">4</div><div class="sc-text"><span class="lang-ko">안 된 부분 구체적 수정 요청</span><span class="lang-en">Request specific fixes for issues</span></div></div>
+    <div class="step-card"><div class="sc-num">5</div><div class="sc-text"><span class="lang-ko">수정→확인→수정 5~10회 반복</span><span class="lang-en">Fix→Check→Fix, repeat 5-10 times</span></div></div>
+  </div>
+
+  <div class="divider" style="margin:28px 0"></div>
+
+  <h3 class="sub-title"><span class="lang-ko">수정 요청 패턴</span><span class="lang-en">Modification Patterns</span></h3>
+  <table class="pattern-table">
+    <tr><th><span class="lang-ko">상황</span><span class="lang-en">Situation</span></th><th><span class="lang-ko">이렇게 말하세요</span><span class="lang-en">Say This</span></th></tr>
+    <tr><td class="sit"><span class="lang-ko">결과 다름</span><span class="lang-en">Wrong result</span></td><td class="say"><span class="lang-ko">"B열 기준 정렬인데 A열로 나왔어. B열 매출 내림차순으로"</span><span class="lang-en">"It sorted by column A instead of B. Sort by column B sales descending"</span></td></tr>
+    <tr><td class="sit"><span class="lang-ko">형식 변경</span><span class="lang-en">Format change</span></td><td class="say"><span class="lang-ko">"날짜를 2024-01-15 형식으로 바꿔줘"</span><span class="lang-en">"Change date format to 2024-01-15"</span></td></tr>
+    <tr><td class="sit"><span class="lang-ko">항목 추가</span><span class="lang-en">Add items</span></td><td class="say"><span class="lang-ko">"합계 행 추가" / "부서별 소계도"</span><span class="lang-en">"Add total row" / "Add subtotals by dept"</span></td></tr>
+    <tr><td class="sit"><span class="lang-ko">시각화</span><span class="lang-en">Visualize</span></td><td class="say"><span class="lang-ko">"막대 차트로, 부서별 색 다르게"</span><span class="lang-en">"Bar chart, different colors per dept"</span></td></tr>
+    <tr><td class="sit"><span class="lang-ko">에러</span><span class="lang-en">Error</span></td><td class="say"><span class="lang-ko">"이 에러 고쳐줘: [에러 메시지 붙여넣기]"</span><span class="lang-en">"Fix this error: [paste error message]"</span></td></tr>
+    <tr><td class="sit"><span class="lang-ko">처음부터</span><span class="lang-en">Start over</span></td><td class="say"><span class="lang-ko">"방향이 다른 것 같아. 처음부터 다시"</span><span class="lang-en">"This isn't right. Let's start over"</span></td></tr>
+  </table>
+
+  <div class="divider" style="margin:28px 0"></div>
+
+  <h3 class="sub-title"><span class="lang-ko">&#9998; 수정 대화 기록</span><span class="lang-en">&#9998; Iteration Log</span></h3>
+  <table class="log-table">
+    <tr><th style="width:36px">#</th><th><span class="lang-ko">요청한 수정 내용</span><span class="lang-en">Modification Requested</span></th><th style="width:110px"><span class="lang-ko">결과</span><span class="lang-en">Result</span></th></tr>
+    <tr><td style="text-align:center;color:var(--text-muted)">1</td><td><input type="text"></td><td><select><option value="">-</option><option>&#9989; OK</option><option>&#9888; Partial</option><option>&#10060; Fail</option></select></td></tr>
+    <tr><td style="text-align:center;color:var(--text-muted)">2</td><td><input type="text"></td><td><select><option value="">-</option><option>&#9989; OK</option><option>&#9888; Partial</option><option>&#10060; Fail</option></select></td></tr>
+    <tr><td style="text-align:center;color:var(--text-muted)">3</td><td><input type="text"></td><td><select><option value="">-</option><option>&#9989; OK</option><option>&#9888; Partial</option><option>&#10060; Fail</option></select></td></tr>
+    <tr><td style="text-align:center;color:var(--text-muted)">4</td><td><input type="text"></td><td><select><option value="">-</option><option>&#9989; OK</option><option>&#9888; Partial</option><option>&#10060; Fail</option></select></td></tr>
+    <tr><td style="text-align:center;color:var(--text-muted)">5</td><td><input type="text"></td><td><select><option value="">-</option><option>&#9989; OK</option><option>&#9888; Partial</option><option>&#10060; Fail</option></select></td></tr>
+    <tr><td style="text-align:center;color:var(--text-muted)">6</td><td><input type="text"></td><td><select><option value="">-</option><option>&#9989; OK</option><option>&#9888; Partial</option><option>&#10060; Fail</option></select></td></tr>
+    <tr><td style="text-align:center;color:var(--text-muted)">7</td><td><input type="text"></td><td><select><option value="">-</option><option>&#9989; OK</option><option>&#9888; Partial</option><option>&#10060; Fail</option></select></td></tr>
+    <tr><td style="text-align:center;color:var(--text-muted)">8</td><td><input type="text"></td><td><select><option value="">-</option><option>&#9989; OK</option><option>&#9888; Partial</option><option>&#10060; Fail</option></select></td></tr>
+  </table>
+</div>
+</section>
+<div class="divider"></div>
+
+<!-- ═══ STEP 5: 완성 & 효과 측정 ═══ -->
+<section id="step5">
+<div class="container">
+  <div class="section-number">STEP 05</div>
+  <div class="lang-ko">
+    <h2 class="section-title">완성 &amp; 효과 측정</h2>
+    <p class="section-desc">효과를 수치로 기록하면 팀 공유 시 설득력이 높아집니다.</p>
+  </div>
+  <div class="lang-en">
+    <h2 class="section-title">Complete &amp; Measure Impact</h2>
+    <p class="section-desc">Recording metrics makes your results more convincing when sharing with your team.</p>
+  </div>
+
+  <h3 class="sub-title"><span class="lang-ko">5-1. Before / After</span><span class="lang-en">5-1. Before / After</span></h3>
+  <table class="ba-table">
+    <tr><th><span class="lang-ko">측정 항목</span><span class="lang-en">Metric</span></th><th>Before</th><th>After</th></tr>
+    <tr><td><span class="lang-ko">1회 소요 시간</span><span class="lang-en">Time per session</span></td><td><input type="text" placeholder="2시간"></td><td><input type="text" placeholder="5분"></td></tr>
+    <tr><td><span class="lang-ko">월간 총 시간</span><span class="lang-en">Monthly total</span></td><td><input type="text" placeholder="8시간"></td><td><input type="text" placeholder="20분"></td></tr>
+    <tr><td><span class="lang-ko">실수/재작업</span><span class="lang-en">Errors/rework</span></td><td><input type="text" placeholder="월 2~3회"></td><td><input type="text" placeholder="거의 없음"></td></tr>
+    <tr><td><span class="lang-ko">품질 (1~5)</span><span class="lang-en">Quality (1-5)</span></td><td><input type="text" placeholder="3"></td><td><input type="text" placeholder="5"></td></tr>
+    <tr><td><span class="lang-ko">스트레스 (1~5)</span><span class="lang-en">Stress (1-5)</span></td><td><input type="text" placeholder="4"></td><td><input type="text" placeholder="1"></td></tr>
+  </table>
+
+  <div class="divider" style="margin:28px 0"></div>
+
+  <h3 class="sub-title"><span class="lang-ko">5-2. 한 줄 요약</span><span class="lang-en">5-2. One-line Summary</span></h3>
+  <div class="tip">
+    <span class="tip-icon">&#128161;</span>
+    <div><p><span class="lang-ko"><strong>예시:</strong> "매주 4시간 광고 리포트를 5분으로 단축. 월 16시간(연 192시간) 절약. 실수율 제로."</span><span class="lang-en"><strong>Example:</strong> "Reduced weekly 4-hour ad report to 5 minutes. Saved 16hrs/month (192hrs/year). Zero errors."</span></p></div>
+  </div>
+  <div class="field" style="margin-top:12px">
+    <label><span class="lang-ko">내 한 줄 요약</span><span class="lang-en">My One-line Summary</span></label>
+    <textarea placeholder="자동화 효과를 한 문장으로" style="min-height:80px"></textarea>
+  </div>
+
+  <div class="divider" style="margin:28px 0"></div>
+
+  <h3 class="sub-title"><span class="lang-ko">5-3. 다음 자동화</span><span class="lang-en">5-3. Next Automation</span></h3>
+  <div class="form-grid cols-2">
+    <div class="field"><label><span class="lang-ko">다음 업무</span><span class="lang-en">Next Task</span></label><input type="text"></div>
+    <div class="field"><label><span class="lang-ko">예상 절약</span><span class="lang-en">Expected Savings</span></label><input type="text"></div>
+  </div>
+
+  <div class="done-box">
+    <h2><span class="lang-ko">축하합니다!</span><span class="lang-en">Congratulations!</span></h2>
+    <p><span class="lang-ko">워크북을 완성했다면, 당신은 이미 바이브 코더입니다.<br>첫 자동화의 성공은 두 번째를 훨씬 쉽게 만들어줍니다.</span><span class="lang-en">If you completed this workbook, you are already a vibe coder.<br>Your first automation makes the second one much easier.</span></p>
+  </div>
+</div>
+</section>
+<div class="divider"></div>
+
+<!-- ═══ CASES ═══ -->
+<section id="cases">
+<div class="container">
+  <div class="section-number"><span class="lang-ko">참고 사례</span><span class="lang-en">CASE STUDIES</span></div>
+  <div class="lang-ko">
+    <h2 class="section-title">이런 업무를, 이렇게 자동화했습니다</h2>
+    <p class="section-desc">6가지 실전 사례를 참고하세요.</p>
+  </div>
+  <div class="lang-en">
+    <h2 class="section-title">Real-world Automation Examples</h2>
+    <p class="section-desc">6 practical case studies for reference.</p>
+  </div>
+
+  <div class="case-card"><div class="case-header"><div class="case-icon"><div class="emoji">&#128202;</div><div class="time-save"><span class="lang-ko">주 4시간→5분</span><span class="lang-en">4h→5min/wk</span></div></div><div class="case-meta"><div class="case-role"><span class="lang-ko">마케팅 팀장</span><span class="lang-en">Marketing Manager</span></div><div class="case-title"><span class="lang-ko">광고 플랫폼 3개 주간 성과 리포트 자동 생성</span><span class="lang-en">Auto-generate weekly performance report from 3 ad platforms</span></div></div></div><div class="case-body"><p><span class="lang-ko">Google Ads, Meta Ads, 네이버 광고 엑셀 → 통합 → ROI → 차트 → PDF 전체 자동화.</span><span class="lang-en">Google Ads, Meta Ads, Naver Ads Excel → Merge → ROI calc → Charts → PDF fully automated.</span></p><h4><span class="lang-ko">AI에게 요청한 순서</span><span class="lang-en">Steps Requested to AI</span></h4><div class="case-steps"><div class="case-step"><div class="cs-n">1</div><div class="cs-text"><span class="lang-ko">3개 엑셀 업로드 → "구조 분석, 공통 컬럼 찾아줘"</span><span class="lang-en">Upload 3 Excel files → "Analyze structure, find common columns"</span></div></div><div class="case-step"><div class="cs-n">2</div><div class="cs-text"><span class="lang-ko">"합치고 '플랫폼' 열 추가"</span><span class="lang-en">"Merge and add 'Platform' column"</span></div></div><div class="case-step"><div class="cs-n">3</div><div class="cs-text"><span class="lang-ko">"캠페인별 ROI 계산"</span><span class="lang-en">"Calculate ROI per campaign"</span></div></div><div class="case-step"><div class="cs-n">4</div><div class="cs-text"><span class="lang-ko">"비교 차트 + ROI 차트"</span><span class="lang-en">"Comparison chart + ROI chart"</span></div></div><div class="case-step"><div class="cs-n">5</div><div class="cs-text"><span class="lang-ko">"PDF 리포트 생성"</span><span class="lang-en">"Generate PDF report"</span></div></div></div></div></div>
+
+  <div class="case-card"><div class="case-header"><div class="case-icon"><div class="emoji">&#128203;</div><div class="time-save"><span class="lang-ko">월 8시간→15분</span><span class="lang-en">8h→15min/mo</span></div></div><div class="case-meta"><div class="case-role"><span class="lang-ko">인사팀 담당자</span><span class="lang-en">HR Staff</span></div><div class="case-title"><span class="lang-ko">근태 데이터 자동 정리 &amp; 이상 감지</span><span class="lang-en">Auto-sort attendance data &amp; anomaly detection</span></div></div></div><div class="case-body"><p><span class="lang-ko">출퇴근 CSV → 부서별 분류 → 지각/조퇴/초과근무 → 이상 감지 → 보고서.</span><span class="lang-en">Attendance CSV → Sort by dept → Late/early leave/overtime → Anomaly detect → Report.</span></p><h4><span class="lang-ko">AI에게 요청한 순서</span><span class="lang-en">Steps Requested to AI</span></h4><div class="case-steps"><div class="case-step"><div class="cs-n">1</div><div class="cs-text"><span class="lang-ko">"지각(9:10↑), 조퇴(18:00↓), 초과(21:00↑) 판별 열 추가"</span><span class="lang-en">"Add columns for late(>9:10), early leave(<18:00), overtime(>21:00)"</span></div></div><div class="case-step"><div class="cs-n">2</div><div class="cs-text"><span class="lang-ko">"부서별 시트 분리 + 요약표"</span><span class="lang-en">"Separate sheets by dept + summary table"</span></div></div><div class="case-step"><div class="cs-n">3</div><div class="cs-text"><span class="lang-ko">"3회+ 지각자 빨간 표시 + 주의 대상 시트"</span><span class="lang-en">"Highlight 3+ latecomers in red + watchlist sheet"</span></div></div><div class="case-step"><div class="cs-n">4</div><div class="cs-text"><span class="lang-ko">"차트 + PDF 보고서"</span><span class="lang-en">"Charts + PDF report"</span></div></div></div></div></div>
+
+  <div class="case-card"><div class="case-header"><div class="case-icon"><div class="emoji">&#128231;</div><div class="time-save"><span class="lang-ko">주 5시간→10분</span><span class="lang-en">5h→10min/wk</span></div></div><div class="case-meta"><div class="case-role"><span class="lang-ko">영업팀 담당자</span><span class="lang-en">Sales Rep</span></div><div class="case-title"><span class="lang-ko">고객 세그먼트별 맞춤 이메일 자동 발송</span><span class="lang-en">Auto-send personalized emails by customer segment</span></div></div></div><div class="case-body"><p><span class="lang-ko">CRM 500명 → VIP/일반/휴면 분류 → 유형별 개인화 이메일 자동 생성.</span><span class="lang-en">CRM 500 contacts → VIP/Regular/Dormant segmentation → Personalized emails auto-generated.</span></p><h4><span class="lang-ko">AI에게 요청한 순서</span><span class="lang-en">Steps Requested to AI</span></h4><div class="case-steps"><div class="case-step"><div class="cs-n">1</div><div class="cs-text"><span class="lang-ko">"구매금액 기준 VIP/일반/휴면 분류"</span><span class="lang-en">"Classify VIP/Regular/Dormant by purchase amount"</span></div></div><div class="case-step"><div class="cs-n">2</div><div class="cs-text"><span class="lang-ko">"유형별 이메일 템플릿"</span><span class="lang-en">"Email template per segment"</span></div></div><div class="case-step"><div class="cs-n">3</div><div class="cs-text"><span class="lang-ko">"{이름}, {상품} 자동 채우기"</span><span class="lang-en">"Auto-fill {name}, {product}"</span></div></div><div class="case-step"><div class="cs-n">4</div><div class="cs-text"><span class="lang-ko">"미리보기 + 일괄 발송"</span><span class="lang-en">"Preview + batch send"</span></div></div></div></div></div>
+
+  <div class="case-card"><div class="case-header"><div class="case-icon"><div class="emoji">&#128269;</div><div class="time-save"><span class="lang-ko">매일 30분→자동</span><span class="lang-en">30min→auto/day</span></div></div><div class="case-meta"><div class="case-role"><span class="lang-ko">기획팀 PM</span><span class="lang-en">Product Manager</span></div><div class="case-title"><span class="lang-ko">경쟁사 가격 모니터링 &amp; 슬랙 알림</span><span class="lang-en">Competitor price monitoring &amp; Slack alerts</span></div></div></div><div class="case-body"><p><span class="lang-ko">5곳 쇼핑몰 x 20제품 가격 매일 자동 수집, 변동분만 슬랙 알림.</span><span class="lang-en">Daily auto-collect prices from 5 sites x 20 products, Slack alert for changes only.</span></p><h4><span class="lang-ko">AI에게 요청한 순서</span><span class="lang-en">Steps Requested to AI</span></h4><div class="case-steps"><div class="case-step"><div class="cs-n">1</div><div class="cs-text"><span class="lang-ko">"URL에서 상품명/가격 스크래핑"</span><span class="lang-en">"Scrape product name/price from URLs"</span></div></div><div class="case-step"><div class="cs-n">2</div><div class="cs-text"><span class="lang-ko">"5개 사이트 수집 → 엑셀 저장"</span><span class="lang-en">"Collect from 5 sites → save to Excel"</span></div></div><div class="case-step"><div class="cs-n">3</div><div class="cs-text"><span class="lang-ko">"전날과 비교, 변동 추출"</span><span class="lang-en">"Compare with yesterday, extract changes"</span></div></div><div class="case-step"><div class="cs-n">4</div><div class="cs-text"><span class="lang-ko">"슬랙 자동 알림"</span><span class="lang-en">"Auto Slack notification"</span></div></div><div class="case-step"><div class="cs-n">5</div><div class="cs-text"><span class="lang-ko">"매일 오전 8시 자동 실행"</span><span class="lang-en">"Auto-run daily at 8 AM"</span></div></div></div></div></div>
+
+  <div class="case-card"><div class="case-header"><div class="case-icon"><div class="emoji">&#129534;</div><div class="time-save"><span class="lang-ko">월 6시간→20분</span><span class="lang-en">6h→20min/mo</span></div></div><div class="case-meta"><div class="case-role"><span class="lang-ko">경리/회계 담당</span><span class="lang-en">Accounting Staff</span></div><div class="case-title"><span class="lang-ko">세금계산서 자동 분류 &amp; 검증</span><span class="lang-en">Auto-classify &amp; verify tax invoices</span></div></div></div><div class="case-body"><p><span class="lang-ko">홈택스 200건+ + 사내 발주 → 사업자번호 매칭 → 불일치/누락 자동 검출.</span><span class="lang-en">HomeTax 200+ invoices + internal POs → Business ID matching → Auto-detect mismatches.</span></p><h4><span class="lang-ko">AI에게 요청한 순서</span><span class="lang-en">Steps Requested to AI</span></h4><div class="case-steps"><div class="case-step"><div class="cs-n">1</div><div class="cs-text"><span class="lang-ko">"두 파일 구조 분석"</span><span class="lang-en">"Analyze structure of both files"</span></div></div><div class="case-step"><div class="cs-n">2</div><div class="cs-text"><span class="lang-ko">"사업자번호 기준 매칭"</span><span class="lang-en">"Match by business registration number"</span></div></div><div class="case-step"><div class="cs-n">3</div><div class="cs-text"><span class="lang-ko">"100원+ 차이 = 불일치, 한쪽만 = 누락"</span><span class="lang-en">"100+ won diff = mismatch, one-sided = missing"</span></div></div><div class="case-step"><div class="cs-n">4</div><div class="cs-text"><span class="lang-ko">"거래처별 시트 + 검증 요약"</span><span class="lang-en">"Sheet per vendor + verification summary"</span></div></div></div></div></div>
+
+  <div class="case-card"><div class="case-header"><div class="case-icon"><div class="emoji">&#128209;</div><div class="time-save"><span class="lang-ko">주 3시간→15분</span><span class="lang-en">3h→15min/wk</span></div></div><div class="case-meta"><div class="case-role"><span class="lang-ko">총무팀 담당자</span><span class="lang-en">General Affairs</span></div><div class="case-title"><span class="lang-ko">비품 신청 자동 집계 &amp; 발주서 생성</span><span class="lang-en">Auto-aggregate supply requests &amp; generate POs</span></div></div></div><div class="case-body"><p><span class="lang-ko">구글 폼 50건+ → 품목별 집계 → 재고 대조 → 부족분 발주서 자동 생성.</span><span class="lang-en">Google Form 50+ entries → Aggregate by item → Check inventory → Auto-generate PO for shortages.</span></p><h4><span class="lang-ko">AI에게 요청한 순서</span><span class="lang-en">Steps Requested to AI</span></h4><div class="case-steps"><div class="case-step"><div class="cs-n">1</div><div class="cs-text"><span class="lang-ko">"CSV 품목별 합산"</span><span class="lang-en">"Sum CSV by item"</span></div></div><div class="case-step"><div class="cs-n">2</div><div class="cs-text"><span class="lang-ko">"재고 매칭, 부족분 추출"</span><span class="lang-en">"Match inventory, extract shortages"</span></div></div><div class="case-step"><div class="cs-n">3</div><div class="cs-text"><span class="lang-ko">"발주서 양식 생성"</span><span class="lang-en">"Generate PO form"</span></div></div><div class="case-step"><div class="cs-n">4</div><div class="cs-text"><span class="lang-ko">"부서별 요약표"</span><span class="lang-en">"Summary table by department"</span></div></div></div></div></div>
+</div>
+</section>
+<div class="divider"></div>
+
+<!-- ═══ CHEATSHEET ═══ -->
+<section id="cheat">
+<div class="container">
+  <div class="section-number"><span class="lang-ko">부록</span><span class="lang-en">APPENDIX</span></div>
+  <div class="lang-ko">
+    <h2 class="section-title">프롬프트 치트시트</h2>
+    <p class="section-desc">자주 쓰는 프롬프트 패턴 12가지.</p>
+  </div>
+  <div class="lang-en">
+    <h2 class="section-title">Prompt Cheatsheet</h2>
+    <p class="section-desc">12 frequently used prompt patterns.</p>
+  </div>
+
+  <div class="cheat-grid">
+    <div class="cheat-card"><h5>&#128194; <span class="lang-ko">파일 분석</span><span class="lang-en">File Analysis</span></h5><code><span class="lang-ko">"이 엑셀 구조 분석해줘. 열 이름, 타입, 행 수"</span><span class="lang-en">"Analyze this Excel structure. Column names, types, row count"</span></code></div>
+    <div class="cheat-card"><h5>&#128270; <span class="lang-ko">필터링</span><span class="lang-en">Filtering</span></h5><code><span class="lang-ko">"A열 서울 + B열 100이상 행만 추출"</span><span class="lang-en">"Extract rows where col A='Seoul' AND col B>=100"</span></code></div>
+    <div class="cheat-card"><h5>&#10133; <span class="lang-ko">합산/집계</span><span class="lang-en">Aggregation</span></h5><code><span class="lang-ko">"부서별 매출 합계, 평균, 건수 요약표"</span><span class="lang-en">"Summary table: total, avg, count by dept"</span></code></div>
+    <div class="cheat-card"><h5>&#128206; <span class="lang-ko">파일 합치기</span><span class="lang-en">Merge Files</span></h5><code><span class="lang-ko">"폴더 CSV 합쳐줘. 파일명을 출처 열로"</span><span class="lang-en">"Merge folder CSVs. Add filename as source column"</span></code></div>
+    <div class="cheat-card"><h5>&#128683; <span class="lang-ko">중복 제거</span><span class="lang-en">Dedup</span></h5><code><span class="lang-ko">"이메일 기준 중복 찾고 최신만 남기기"</span><span class="lang-en">"Find duplicates by email, keep latest only"</span></code></div>
+    <div class="cheat-card"><h5>&#128202; <span class="lang-ko">차트</span><span class="lang-en">Charts</span></h5><code><span class="lang-ko">"월별 꺾은선 + 부서별 원형 차트"</span><span class="lang-en">"Monthly line chart + dept pie chart"</span></code></div>
+    <div class="cheat-card"><h5>&#128196; PDF</h5><code><span class="lang-ko">"표+차트 포함 PDF 보고서"</span><span class="lang-en">"PDF report with tables + charts"</span></code></div>
+    <div class="cheat-card"><h5>&#128260; <span class="lang-ko">형식 변환</span><span class="lang-en">Format</span></h5><code><span class="lang-ko">"날짜 yyyy-mm-dd, 금액 천단위 쉼표"</span><span class="lang-en">"Date as yyyy-mm-dd, amounts with comma separator"</span></code></div>
+    <div class="cheat-card"><h5>&#127912; <span class="lang-ko">조건부 표시</span><span class="lang-en">Conditional</span></h5><code><span class="lang-ko">"미달 빨간, 초과 녹색으로"</span><span class="lang-en">"Below target = red, above = green"</span></code></div>
+    <div class="cheat-card"><h5>&#128295; <span class="lang-ko">에러</span><span class="lang-en">Error Fix</span></h5><code><span class="lang-ko">"이 에러 고쳐줘: [붙여넣기]"</span><span class="lang-en">"Fix this error: [paste message]"</span></code></div>
+    <div class="cheat-card"><h5>&#128172; <span class="lang-ko">설명</span><span class="lang-en">Explain</span></h5><code><span class="lang-ko">"비전공자도 이해하게 설명해줘"</span><span class="lang-en">"Explain so a non-coder can understand"</span></code></div>
+    <div class="cheat-card"><h5>&#9200; <span class="lang-ko">스케줄</span><span class="lang-en">Schedule</span></h5><code><span class="lang-ko">"매일 오전 9시 자동 실행 설정"</span><span class="lang-en">"Set up to auto-run daily at 9 AM"</span></code></div>
+  </div>
+</div>
+</section>
+
+<!-- ═══ CHAPTER NAV ═══ -->
+<div class="chapter-nav">
+  <a href="prompting.html">&larr; <span class="lang-ko">프롬프팅 가이드</span><span class="lang-en">Prompting Guide</span></a>
+  <a href="workflow.html"><span class="lang-ko">워크플로우</span><span class="lang-en">Workflow</span> &rarr;</a>
+</div>
+
+<footer>
+  <p>Made with Claude · <a href="../index.html">Claude Code 101</a> · Vibe Coding Workbook</p>
+</footer>
+
+<script>
+// Checklist toggle
+function toggleCheck(el) {
+  el.classList.toggle('checked');
+  updateProgress();
+}
+
+// Progress tracker
+function updateProgress() {
+  var total = document.querySelectorAll('.check-item').length;
+  var checked = document.querySelectorAll('.check-item.checked').length;
+  var inputs = document.querySelectorAll('.field input, .field textarea, .data-table td input, .ba-table td input');
+  var filled = 0;
+  inputs.forEach(function(inp) { if (inp.value.trim()) filled++; });
+  var allItems = total + inputs.length;
+  var doneItems = checked + filled;
+  var pct = allItems > 0 ? Math.round((doneItems / allItems) * 100) : 0;
+  var bar = document.querySelector('.prog-fill');
+  var label = document.querySelector('.prog-pct');
+  if (bar) bar.style.width = pct + '%';
+  if (label) label.textContent = pct + '%';
+}
+
+// Editable placeholders
+document.querySelectorAll('.ed').forEach(function(el) {
+  var ph = el.dataset.ph;
+  if (!el.textContent.trim()) el.textContent = ph;
+  el.addEventListener('focus', function() { if (el.textContent === ph) el.textContent = ''; });
+  el.addEventListener('blur', function() { if (!el.textContent.trim()) el.textContent = ph; });
+});
+
+// Track input changes for progress
+document.querySelectorAll('.field input, .field textarea, .data-table td input, .ba-table td input').forEach(function(inp) {
+  inp.addEventListener('input', updateProgress);
+});
+
+// Active nav link on scroll
+var navLinks = document.querySelectorAll('.sticky-nav .nav-link:not(.nav-home)');
+var sections = [];
+navLinks.forEach(function(link) {
+  var href = link.getAttribute('href');
+  if (href && href.startsWith('#')) {
+    var sec = document.getElementById(href.slice(1));
+    if (sec) sections.push({ el: sec, link: link });
+  }
+});
+window.addEventListener('scroll', function() {
+  var scrollY = window.scrollY + 120;
+  var active = null;
+  sections.forEach(function(s) {
+    if (s.el.offsetTop <= scrollY) active = s;
+  });
+  navLinks.forEach(function(l) { l.classList.remove('active'); });
+  if (active) active.link.classList.add('active');
+}, { passive: true });
+
+// Initial progress
+updateProgress();
+</script>
+<script src="theme.js"></script>
+<script src="community.js"></script>
+<script src="lang.js"></script>
+</body>
+</html>
