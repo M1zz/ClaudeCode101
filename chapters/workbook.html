@@ -238,6 +238,65 @@ h3.sub-title { font-size:1.1rem; font-weight:700; margin:28px 0 12px; color:var(
 
 footer { text-align:center; padding:24px; color:var(--text-muted); font-size:13px; }
 footer a { color:var(--accent); text-decoration:none; }
+
+/* FLOATING PROGRESS BAR */
+.nav-progress { display:flex; align-items:center; gap:6px; margin-left:auto; padding-right:4px; }
+.nav-prog-bar { width:80px; height:5px; background:var(--border); border-radius:3px; overflow:hidden; }
+.nav-prog-fill { height:100%; background:var(--accent); border-radius:3px; width:0%; transition:width .5s; }
+.nav-prog-pct { font-family:'JetBrains Mono',monospace; font-size:.65rem; font-weight:600; color:var(--accent); min-width:28px; text-align:right; }
+
+/* COPY BUTTON */
+.copy-prompt-btn { display:inline-flex; align-items:center; gap:6px; padding:8px 20px; border-radius:100px; border:1.5px solid var(--accent-border); background:var(--accent-glow); color:var(--accent); font-size:.82rem; font-weight:600; cursor:pointer; transition:all .2s; font-family:inherit; margin-top:12px; }
+.copy-prompt-btn:hover { background:var(--accent); color:#fff; }
+.copy-prompt-btn.copied { background:var(--green); border-color:var(--green); color:#fff; }
+
+/* CALCULATOR */
+.calc-box { border:1px solid var(--accent-border); border-radius:var(--radius); padding:20px; background:var(--accent-glow); margin:16px 0; }
+.calc-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; margin-bottom:12px; }
+@media(max-width:640px) { .calc-grid { grid-template-columns:1fr; } }
+.calc-field label { font-size:.72rem; font-weight:600; color:var(--text-muted); display:block; margin-bottom:4px; }
+.calc-field input, .calc-field select { width:100%; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-sm); padding:8px 10px; font-family:inherit; font-size:.88rem; color:var(--text); outline:none; }
+.calc-field input:focus { border-color:var(--accent); }
+.calc-result { text-align:center; padding:16px; background:var(--surface); border-radius:var(--radius-sm); border:1px solid var(--border); }
+.calc-result .big-num { font-family:'JetBrains Mono',monospace; font-size:1.8rem; font-weight:800; color:var(--accent); }
+.calc-result .sub-num { font-size:.82rem; color:var(--text-dim); margin-top:4px; }
+
+/* SAMPLE DOWNLOAD */
+.sample-btn { display:inline-flex; align-items:center; gap:6px; padding:8px 18px; border-radius:100px; border:1.5px solid var(--border-bright); background:var(--surface); color:var(--text-dim); font-size:.82rem; font-weight:600; cursor:pointer; transition:all .2s; font-family:inherit; }
+.sample-btn:hover { border-color:var(--accent); color:var(--accent); }
+
+/* CHAT MOCKUP */
+.chat-mockup { border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; margin:10px 0; background:var(--surface); }
+.chat-bar { padding:8px 14px; background:var(--surface-raised); border-bottom:1px solid var(--border); display:flex; align-items:center; gap:6px; }
+[data-theme="dark"] .chat-bar { background:var(--surface); }
+.chat-bar .chat-avatar { width:20px; height:20px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:.6rem; font-weight:800; }
+.chat-bar .chat-avatar.user { background:var(--accent-glow); color:var(--accent); }
+.chat-bar .chat-avatar.ai { background:var(--green-dim); color:var(--green); }
+.chat-bar .chat-name { font-size:.7rem; font-weight:600; color:var(--text-muted); }
+.chat-msgs { padding:12px 14px; display:flex; flex-direction:column; gap:8px; }
+.chat-msg { display:flex; gap:8px; align-items:flex-start; }
+.chat-msg .chat-bubble { font-size:.78rem; line-height:1.6; padding:8px 12px; border-radius:10px; max-width:85%; color:var(--text-dim); }
+.chat-msg.from-user .chat-bubble { background:var(--accent-glow); border:1px solid var(--accent-border); margin-left:auto; }
+.chat-msg.from-ai .chat-bubble { background:var(--surface-raised); border:1px solid var(--border); }
+[data-theme="dark"] .chat-msg.from-ai .chat-bubble { background:var(--surface-hover); }
+
+/* FAQ */
+.faq-item { border:1px solid var(--border); border-radius:var(--radius); margin-bottom:8px; overflow:hidden; }
+.faq-q { display:flex; align-items:center; justify-content:space-between; padding:12px 16px; cursor:pointer; background:var(--surface); transition:background .15s; font-size:.88rem; font-weight:600; color:var(--text); }
+.faq-q:hover { background:var(--surface-hover); }
+.faq-q .arrow { font-size:.7rem; color:var(--text-muted); transition:transform .3s; }
+.faq-item.open .faq-q .arrow { transform:rotate(180deg); }
+.faq-a { max-height:0; overflow:hidden; transition:max-height .35s ease; }
+.faq-a-inner { padding:0 16px 14px; font-size:.85rem; color:var(--text-dim); line-height:1.75; }
+.faq-item.open .faq-a { max-height:300px; }
+
+/* SAVE INDICATOR */
+.save-toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(80px); background:var(--surface); border:1px solid var(--green-border); color:var(--green); padding:8px 20px; border-radius:100px; font-size:.78rem; font-weight:600; z-index:200; transition:transform .3s; pointer-events:none; box-shadow:var(--shadow-card); }
+.save-toast.show { transform:translateX(-50%) translateY(0); }
+
+/* PDF EXPORT */
+.export-btn { display:inline-flex; align-items:center; gap:6px; padding:8px 18px; border-radius:100px; border:1.5px solid var(--border-bright); background:var(--surface); color:var(--text-dim); font-size:.82rem; font-weight:600; cursor:pointer; transition:all .2s; font-family:inherit; }
+.export-btn:hover { border-color:var(--accent); color:var(--accent); }
 </style>
 </head>
 <body>
@@ -283,6 +342,8 @@ footer a { color:var(--accent); text-decoration:none; }
   <a href="#step5" class="nav-link"><span class="lang-ko">Step 5</span><span class="lang-en">Step 5</span></a>
   <a href="#cases" class="nav-link"><span class="lang-ko">사례</span><span class="lang-en">Cases</span></a>
   <a href="#cheat" class="nav-link"><span class="lang-ko">치트시트</span><span class="lang-en">Cheatsheet</span></a>
+  <a href="#faq" class="nav-link">FAQ</a>
+  <div class="nav-progress"><div class="nav-prog-bar"><div class="nav-prog-fill" id="navProgFill"></div></div><span class="nav-prog-pct" id="navProgPct">0%</span></div>
 </nav>
 
 <!-- ═══ INTRO: 바이브 코딩이란? ═══ -->
@@ -403,6 +464,18 @@ footer a { color:var(--accent); text-decoration:none; }
     <p class="section-desc">Break your task into steps and define inputs and outputs.</p>
   </div>
 
+  <div class="tip">
+    <span class="tip-icon">&#128229;</span>
+    <div>
+      <p><span class="lang-ko"><strong>실습용 샘플 데이터:</strong> 아래 CSV를 다운로드해서 AI에게 업로드하며 따라해보세요.</span><span class="lang-en"><strong>Practice Sample Data:</strong> Download the CSV below and upload it to AI to follow along.</span></p>
+      <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
+        <button class="sample-btn" onclick="downloadSample('sales')"><span class="lang-ko">&#128200; 매출 데이터</span><span class="lang-en">&#128200; Sales Data</span></button>
+        <button class="sample-btn" onclick="downloadSample('hr')"><span class="lang-ko">&#128197; 근태 데이터</span><span class="lang-en">&#128197; Attendance</span></button>
+        <button class="sample-btn" onclick="downloadSample('crm')"><span class="lang-ko">&#128101; 고객 CRM</span><span class="lang-en">&#128101; Customer CRM</span></button>
+      </div>
+    </div>
+  </div>
+
   <h3 class="sub-title"><span class="lang-ko">2-1. 업무 절차 분해</span><span class="lang-en">2-1. Process Breakdown</span></h3>
   <table class="data-table">
     <tr><th style="width:50px"><span class="lang-ko">단계</span><span class="lang-en">Step</span></th><th><span class="lang-ko">구체적 행동</span><span class="lang-en">Specific Action</span></th><th style="width:80px"><span class="lang-ko">소요</span><span class="lang-en">Time</span></th></tr>
@@ -491,6 +564,7 @@ footer a { color:var(--accent); text-decoration:none; }
 
 <span class="cm"># 위 업무를 자동화해주세요. 비전공자도 실행 가능하게 안내해주세요.</span></div>
   </div>
+  <button class="copy-prompt-btn" onclick="copyPrompt(this)"><span class="lang-ko">&#128203; 프롬프트 복사하기</span><span class="lang-en">&#128203; Copy Prompt</span></button>
 
   <div class="divider" style="margin:28px 0"></div>
 
@@ -576,6 +650,19 @@ footer a { color:var(--accent); text-decoration:none; }
     <p class="section-desc">Recording metrics makes your results more convincing when sharing with your team.</p>
   </div>
 
+  <h3 class="sub-title"><span class="lang-ko">&#9201; 시간 절약 계산기</span><span class="lang-en">&#9201; Time Savings Calculator</span></h3>
+  <div class="calc-box">
+    <div class="calc-grid">
+      <div class="calc-field"><label><span class="lang-ko">1회 소요 시간 (분)</span><span class="lang-en">Minutes per task</span></label><input type="number" id="calcMin" value="120" min="1" oninput="calcSavings()"></div>
+      <div class="calc-field"><label><span class="lang-ko">빈도</span><span class="lang-en">Frequency</span></label><select id="calcFreq" onchange="calcSavings()"><option value="52"><span class="lang-ko">주 1회</span></option><option value="12">월 1회</option><option value="104">주 2회</option><option value="260">매일</option></select></div>
+      <div class="calc-field"><label><span class="lang-ko">자동화 후 (분)</span><span class="lang-en">Minutes after automation</span></label><input type="number" id="calcAfter" value="5" min="0" oninput="calcSavings()"></div>
+    </div>
+    <div class="calc-result">
+      <div class="big-num" id="calcYearHrs">—</div>
+      <div class="sub-num"><span class="lang-ko" id="calcDetail">숫자를 입력하면 자동 계산됩니다</span><span class="lang-en" id="calcDetailEn">Enter numbers to calculate automatically</span></div>
+    </div>
+  </div>
+
   <h3 class="sub-title"><span class="lang-ko">5-1. Before / After</span><span class="lang-en">5-1. Before / After</span></h3>
   <table class="ba-table">
     <tr><th><span class="lang-ko">측정 항목</span><span class="lang-en">Metric</span></th><th>Before</th><th>After</th></tr>
@@ -606,6 +693,11 @@ footer a { color:var(--accent); text-decoration:none; }
     <div class="field"><label><span class="lang-ko">예상 절약</span><span class="lang-en">Expected Savings</span></label><input type="text"></div>
   </div>
 
+  <div style="display:flex;gap:8px;margin:16px 0;flex-wrap:wrap">
+    <button class="export-btn" onclick="window.print()"><span class="lang-ko">&#128424; PDF로 내보내기 (인쇄)</span><span class="lang-en">&#128424; Export as PDF (Print)</span></button>
+    <button class="export-btn" onclick="resetAll()"><span class="lang-ko">&#128260; 초기화</span><span class="lang-en">&#128260; Reset All</span></button>
+  </div>
+
   <div class="done-box">
     <h2><span class="lang-ko">축하합니다!</span><span class="lang-en">Congratulations!</span></h2>
     <p><span class="lang-ko">워크북을 완성했다면, 당신은 이미 바이브 코더입니다.<br>첫 자동화의 성공은 두 번째를 훨씬 쉽게 만들어줍니다.</span><span class="lang-en">If you completed this workbook, you are already a vibe coder.<br>Your first automation makes the second one much easier.</span></p>
@@ -627,9 +719,15 @@ footer a { color:var(--accent); text-decoration:none; }
     <p class="section-desc">6 practical case studies for reference.</p>
   </div>
 
-  <div class="case-card"><div class="case-header"><div class="case-icon"><div class="emoji">&#128202;</div><div class="time-save"><span class="lang-ko">주 4시간→5분</span><span class="lang-en">4h→5min/wk</span></div></div><div class="case-meta"><div class="case-role"><span class="lang-ko">마케팅 팀장</span><span class="lang-en">Marketing Manager</span></div><div class="case-title"><span class="lang-ko">광고 플랫폼 3개 주간 성과 리포트 자동 생성</span><span class="lang-en">Auto-generate weekly performance report from 3 ad platforms</span></div></div></div><div class="case-body"><p><span class="lang-ko">Google Ads, Meta Ads, 네이버 광고 엑셀 → 통합 → ROI → 차트 → PDF 전체 자동화.</span><span class="lang-en">Google Ads, Meta Ads, Naver Ads Excel → Merge → ROI calc → Charts → PDF fully automated.</span></p><h4><span class="lang-ko">AI에게 요청한 순서</span><span class="lang-en">Steps Requested to AI</span></h4><div class="case-steps"><div class="case-step"><div class="cs-n">1</div><div class="cs-text"><span class="lang-ko">3개 엑셀 업로드 → "구조 분석, 공통 컬럼 찾아줘"</span><span class="lang-en">Upload 3 Excel files → "Analyze structure, find common columns"</span></div></div><div class="case-step"><div class="cs-n">2</div><div class="cs-text"><span class="lang-ko">"합치고 '플랫폼' 열 추가"</span><span class="lang-en">"Merge and add 'Platform' column"</span></div></div><div class="case-step"><div class="cs-n">3</div><div class="cs-text"><span class="lang-ko">"캠페인별 ROI 계산"</span><span class="lang-en">"Calculate ROI per campaign"</span></div></div><div class="case-step"><div class="cs-n">4</div><div class="cs-text"><span class="lang-ko">"비교 차트 + ROI 차트"</span><span class="lang-en">"Comparison chart + ROI chart"</span></div></div><div class="case-step"><div class="cs-n">5</div><div class="cs-text"><span class="lang-ko">"PDF 리포트 생성"</span><span class="lang-en">"Generate PDF report"</span></div></div></div></div></div>
+  <div class="case-card"><div class="case-header"><div class="case-icon"><div class="emoji">&#128202;</div><div class="time-save"><span class="lang-ko">주 4시간→5분</span><span class="lang-en">4h→5min/wk</span></div></div><div class="case-meta"><div class="case-role"><span class="lang-ko">마케팅 팀장</span><span class="lang-en">Marketing Manager</span></div><div class="case-title"><span class="lang-ko">광고 플랫폼 3개 주간 성과 리포트 자동 생성</span><span class="lang-en">Auto-generate weekly performance report from 3 ad platforms</span></div></div></div><div class="case-body"><p><span class="lang-ko">Google Ads, Meta Ads, 네이버 광고 엑셀 → 통합 → ROI → 차트 → PDF 전체 자동화.</span><span class="lang-en">Google Ads, Meta Ads, Naver Ads Excel → Merge → ROI calc → Charts → PDF fully automated.</span></p><h4><span class="lang-ko">AI에게 요청한 순서</span><span class="lang-en">Steps Requested to AI</span></h4><div class="case-steps"><div class="case-step"><div class="cs-n">1</div><div class="cs-text"><span class="lang-ko">3개 엑셀 업로드 → "구조 분석, 공통 컬럼 찾아줘"</span><span class="lang-en">Upload 3 Excel files → "Analyze structure, find common columns"</span></div></div><div class="case-step"><div class="cs-n">2</div><div class="cs-text"><span class="lang-ko">"합치고 '플랫폼' 열 추가"</span><span class="lang-en">"Merge and add 'Platform' column"</span></div></div><div class="case-step"><div class="cs-n">3</div><div class="cs-text"><span class="lang-ko">"캠페인별 ROI 계산"</span><span class="lang-en">"Calculate ROI per campaign"</span></div></div><div class="case-step"><div class="cs-n">4</div><div class="cs-text"><span class="lang-ko">"비교 차트 + ROI 차트"</span><span class="lang-en">"Comparison chart + ROI chart"</span></div></div><div class="case-step"><div class="cs-n">5</div><div class="cs-text"><span class="lang-ko">"PDF 리포트 생성"</span><span class="lang-en">"Generate PDF report"</span></div></div></div>
+  <h4 style="margin-top:12px"><span class="lang-ko">실제 AI 대화 예시</span><span class="lang-en">Actual AI Conversation Example</span></h4>
+  <div class="chat-mockup"><div class="chat-bar"><div class="chat-avatar user">U</div><div class="chat-name">User</div></div><div class="chat-msgs"><div class="chat-msg from-user"><div class="chat-bubble"><span class="lang-ko">이 3개 엑셀 파일을 분석해줘. 공통 컬럼을 찾아서 하나로 합쳐줘. 각 파일이 어떤 플랫폼인지 알 수 있게 '플랫폼' 열도 추가해줘.</span><span class="lang-en">Analyze these 3 Excel files. Find common columns and merge them. Add a 'Platform' column so I know which file each row came from.</span></div></div><div class="chat-msg from-ai"><div class="chat-bubble"><span class="lang-ko">3개 파일을 분석했습니다. 공통 컬럼은 [캠페인명, 노출수, 클릭수, 비용, 전환수]입니다. 합친 결과에 '플랫폼' 열(Google/Meta/Naver)을 추가했습니다. 총 847행입니다. 다음 단계로 ROI를 계산할까요?</span><span class="lang-en">Analyzed all 3 files. Common columns: [Campaign, Impressions, Clicks, Cost, Conversions]. Merged with 'Platform' column (Google/Meta/Naver) added. Total 847 rows. Shall I calculate ROI next?</span></div></div><div class="chat-msg from-user"><div class="chat-bubble"><span class="lang-ko">좋아! 캠페인별 ROI 계산하고, 플랫폼별 비교 차트도 만들어줘.</span><span class="lang-en">Great! Calculate ROI per campaign and create a comparison chart by platform.</span></div></div></div></div>
+  </div></div>
 
-  <div class="case-card"><div class="case-header"><div class="case-icon"><div class="emoji">&#128203;</div><div class="time-save"><span class="lang-ko">월 8시간→15분</span><span class="lang-en">8h→15min/mo</span></div></div><div class="case-meta"><div class="case-role"><span class="lang-ko">인사팀 담당자</span><span class="lang-en">HR Staff</span></div><div class="case-title"><span class="lang-ko">근태 데이터 자동 정리 &amp; 이상 감지</span><span class="lang-en">Auto-sort attendance data &amp; anomaly detection</span></div></div></div><div class="case-body"><p><span class="lang-ko">출퇴근 CSV → 부서별 분류 → 지각/조퇴/초과근무 → 이상 감지 → 보고서.</span><span class="lang-en">Attendance CSV → Sort by dept → Late/early leave/overtime → Anomaly detect → Report.</span></p><h4><span class="lang-ko">AI에게 요청한 순서</span><span class="lang-en">Steps Requested to AI</span></h4><div class="case-steps"><div class="case-step"><div class="cs-n">1</div><div class="cs-text"><span class="lang-ko">"지각(9:10↑), 조퇴(18:00↓), 초과(21:00↑) 판별 열 추가"</span><span class="lang-en">"Add columns for late(>9:10), early leave(<18:00), overtime(>21:00)"</span></div></div><div class="case-step"><div class="cs-n">2</div><div class="cs-text"><span class="lang-ko">"부서별 시트 분리 + 요약표"</span><span class="lang-en">"Separate sheets by dept + summary table"</span></div></div><div class="case-step"><div class="cs-n">3</div><div class="cs-text"><span class="lang-ko">"3회+ 지각자 빨간 표시 + 주의 대상 시트"</span><span class="lang-en">"Highlight 3+ latecomers in red + watchlist sheet"</span></div></div><div class="case-step"><div class="cs-n">4</div><div class="cs-text"><span class="lang-ko">"차트 + PDF 보고서"</span><span class="lang-en">"Charts + PDF report"</span></div></div></div></div></div>
+  <div class="case-card"><div class="case-header"><div class="case-icon"><div class="emoji">&#128203;</div><div class="time-save"><span class="lang-ko">월 8시간→15분</span><span class="lang-en">8h→15min/mo</span></div></div><div class="case-meta"><div class="case-role"><span class="lang-ko">인사팀 담당자</span><span class="lang-en">HR Staff</span></div><div class="case-title"><span class="lang-ko">근태 데이터 자동 정리 &amp; 이상 감지</span><span class="lang-en">Auto-sort attendance data &amp; anomaly detection</span></div></div></div><div class="case-body"><p><span class="lang-ko">출퇴근 CSV → 부서별 분류 → 지각/조퇴/초과근무 → 이상 감지 → 보고서.</span><span class="lang-en">Attendance CSV → Sort by dept → Late/early leave/overtime → Anomaly detect → Report.</span></p><h4><span class="lang-ko">AI에게 요청한 순서</span><span class="lang-en">Steps Requested to AI</span></h4><div class="case-steps"><div class="case-step"><div class="cs-n">1</div><div class="cs-text"><span class="lang-ko">"지각(9:10↑), 조퇴(18:00↓), 초과(21:00↑) 판별 열 추가"</span><span class="lang-en">"Add columns for late(>9:10), early leave(<18:00), overtime(>21:00)"</span></div></div><div class="case-step"><div class="cs-n">2</div><div class="cs-text"><span class="lang-ko">"부서별 시트 분리 + 요약표"</span><span class="lang-en">"Separate sheets by dept + summary table"</span></div></div><div class="case-step"><div class="cs-n">3</div><div class="cs-text"><span class="lang-ko">"3회+ 지각자 빨간 표시 + 주의 대상 시트"</span><span class="lang-en">"Highlight 3+ latecomers in red + watchlist sheet"</span></div></div><div class="case-step"><div class="cs-n">4</div><div class="cs-text"><span class="lang-ko">"차트 + PDF 보고서"</span><span class="lang-en">"Charts + PDF report"</span></div></div></div>
+  <h4 style="margin-top:12px"><span class="lang-ko">실제 AI 대화 예시</span><span class="lang-en">Actual AI Conversation Example</span></h4>
+  <div class="chat-mockup"><div class="chat-bar"><div class="chat-avatar user">U</div><div class="chat-name">User</div></div><div class="chat-msgs"><div class="chat-msg from-user"><div class="chat-bubble"><span class="lang-ko">이 출퇴근 CSV 파일을 분석해줘. 9시 10분 이후 출근은 지각, 18시 전 퇴근은 조퇴, 21시 이후 퇴근은 초과근무로 분류해줘.</span><span class="lang-en">Analyze this attendance CSV. Classify: clock-in after 9:10 = late, clock-out before 18:00 = early leave, after 21:00 = overtime.</span></div></div><div class="chat-msg from-ai"><div class="chat-bubble"><span class="lang-ko">분석 완료! 312명 데이터에서 지각 45건, 조퇴 12건, 초과근무 67건을 감지했습니다. 부서별로 시트를 분리할까요, 아니면 먼저 요약 통계를 볼까요?</span><span class="lang-en">Done! From 312 records: 45 late, 12 early leaves, 67 overtime detected. Want me to split sheets by department or show summary stats first?</span></div></div></div></div>
+  </div></div>
 
   <div class="case-card"><div class="case-header"><div class="case-icon"><div class="emoji">&#128231;</div><div class="time-save"><span class="lang-ko">주 5시간→10분</span><span class="lang-en">5h→10min/wk</span></div></div><div class="case-meta"><div class="case-role"><span class="lang-ko">영업팀 담당자</span><span class="lang-en">Sales Rep</span></div><div class="case-title"><span class="lang-ko">고객 세그먼트별 맞춤 이메일 자동 발송</span><span class="lang-en">Auto-send personalized emails by customer segment</span></div></div></div><div class="case-body"><p><span class="lang-ko">CRM 500명 → VIP/일반/휴면 분류 → 유형별 개인화 이메일 자동 생성.</span><span class="lang-en">CRM 500 contacts → VIP/Regular/Dormant segmentation → Personalized emails auto-generated.</span></p><h4><span class="lang-ko">AI에게 요청한 순서</span><span class="lang-en">Steps Requested to AI</span></h4><div class="case-steps"><div class="case-step"><div class="cs-n">1</div><div class="cs-text"><span class="lang-ko">"구매금액 기준 VIP/일반/휴면 분류"</span><span class="lang-en">"Classify VIP/Regular/Dormant by purchase amount"</span></div></div><div class="case-step"><div class="cs-n">2</div><div class="cs-text"><span class="lang-ko">"유형별 이메일 템플릿"</span><span class="lang-en">"Email template per segment"</span></div></div><div class="case-step"><div class="cs-n">3</div><div class="cs-text"><span class="lang-ko">"{이름}, {상품} 자동 채우기"</span><span class="lang-en">"Auto-fill {name}, {product}"</span></div></div><div class="case-step"><div class="cs-n">4</div><div class="cs-text"><span class="lang-ko">"미리보기 + 일괄 발송"</span><span class="lang-en">"Preview + batch send"</span></div></div></div></div></div>
 
@@ -672,6 +770,52 @@ footer a { color:var(--accent); text-decoration:none; }
 </div>
 </section>
 
+<!-- ═══ FAQ ═══ -->
+<section id="faq">
+<div class="container">
+  <div class="section-number">FAQ</div>
+  <div class="lang-ko">
+    <h2 class="section-title">자주 묻는 질문</h2>
+    <p class="section-desc">바이브 코딩을 시작할 때 가장 많이 하는 질문들.</p>
+  </div>
+  <div class="lang-en">
+    <h2 class="section-title">Frequently Asked Questions</h2>
+    <p class="section-desc">The most common questions when starting vibe coding.</p>
+  </div>
+
+  <div class="faq-item" onclick="this.classList.toggle('open')">
+    <div class="faq-q"><span><span class="lang-ko">AI가 엉뚱한 결과를 주면 어떡하나요?</span><span class="lang-en">What if AI gives me wrong results?</span></span><span class="arrow">&#9660;</span></div>
+    <div class="faq-a"><div class="faq-a-inner"><span class="lang-ko">정상입니다! 첫 시도에 완벽한 결과가 나오는 경우는 드뭅니다. <strong>"B열 기준인데 A열로 나왔어"</strong>처럼 구체적으로 뭐가 잘못됐는지 알려주면 AI가 바로 수정합니다. 보통 5~10번 대화하면 원하는 결과가 나옵니다.</span><span class="lang-en">That's normal! It's rare to get perfect results on the first try. Tell AI specifically what's wrong, like <strong>"It sorted by column A instead of B"</strong>, and it will fix it immediately. Usually 5-10 conversations get you what you want.</span></div></div>
+  </div>
+
+  <div class="faq-item" onclick="this.classList.toggle('open')">
+    <div class="faq-q"><span><span class="lang-ko">회사 데이터를 AI에 넣어도 되나요?</span><span class="lang-en">Is it safe to upload company data to AI?</span></span><span class="arrow">&#9660;</span></div>
+    <div class="faq-a"><div class="faq-a-inner"><span class="lang-ko"><strong>민감한 데이터는 넣지 마세요.</strong> 대신 AI에게 <em>"이 구조와 같은 더미 데이터 20행 만들어줘"</em>라고 요청하세요. 더미 데이터로 자동화를 완성한 뒤, 실제 데이터로 교체하면 됩니다. 회사 보안 정책을 먼저 확인하세요.</span><span class="lang-en"><strong>Don't upload sensitive data.</strong> Instead, ask AI to <em>"generate 20 rows of dummy data with this structure"</em>. Build automation with dummy data, then swap in real data. Always check your company's security policy first.</span></div></div>
+  </div>
+
+  <div class="faq-item" onclick="this.classList.toggle('open')">
+    <div class="faq-q"><span><span class="lang-ko">코딩을 전혀 몰라도 정말 가능한가요?</span><span class="lang-en">Can I really do this with zero coding knowledge?</span></span><span class="arrow">&#9660;</span></div>
+    <div class="faq-a"><div class="faq-a-inner"><span class="lang-ko">네! 이 워크북의 핵심은 코드를 쓰는 게 아니라 <strong>업무를 말로 설명하는 것</strong>입니다. "이 엑셀에서 서울 데이터만 뽑아줘"라고 말할 수 있으면 충분합니다. AI가 코드를 만들고, 에러가 나면 에러 메시지를 붙여넣기만 하면 됩니다.</span><span class="lang-en">Yes! The key isn't writing code — it's <strong>describing your work in plain language</strong>. If you can say "filter Seoul data from this Excel", that's enough. AI writes the code, and if there's an error, just paste the error message back.</span></div></div>
+  </div>
+
+  <div class="faq-item" onclick="this.classList.toggle('open')">
+    <div class="faq-q"><span><span class="lang-ko">Claude와 ChatGPT 중 뭘 써야 하나요?</span><span class="lang-en">Should I use Claude or ChatGPT?</span></span><span class="arrow">&#9660;</span></div>
+    <div class="faq-a"><div class="faq-a-inner"><span class="lang-ko">둘 다 좋습니다. <strong>Claude</strong>는 긴 문서 분석과 정확한 지시 수행에 강하고, <strong>ChatGPT</strong>는 코드 실행과 차트 생성에 편리합니다. 무료 버전으로 먼저 시도해보고, 자주 쓰게 되면 유료 구독을 추천합니다.</span><span class="lang-en">Both are great. <strong>Claude</strong> excels at long document analysis and precise instructions. <strong>ChatGPT</strong> is convenient for code execution and chart generation. Try the free version first, then subscribe if you use it regularly.</span></div></div>
+  </div>
+
+  <div class="faq-item" onclick="this.classList.toggle('open')">
+    <div class="faq-q"><span><span class="lang-ko">자동화한 걸 매번 AI에 다시 요청해야 하나요?</span><span class="lang-en">Do I have to ask AI every time to run the automation?</span></span><span class="arrow">&#9660;</span></div>
+    <div class="faq-a"><div class="faq-a-inner"><span class="lang-ko">처음에는 그렇습니다. 하지만 AI가 만들어준 코드(Python 등)를 저장해두면, 다음부터는 <strong>데이터만 바꿔서 실행</strong>할 수 있습니다. 더 나아가면 매일/매주 자동 실행되게 스케줄을 설정할 수도 있습니다.</span><span class="lang-en">Initially, yes. But once AI generates code (Python etc.), save it — next time you just <strong>swap the data and run it</strong>. You can even schedule it to run automatically daily/weekly.</span></div></div>
+  </div>
+
+  <div class="faq-item" onclick="this.classList.toggle('open')">
+    <div class="faq-q"><span><span class="lang-ko">AI 결과를 어떻게 검증하나요?</span><span class="lang-en">How do I verify AI's results?</span></span><span class="arrow">&#9660;</span></div>
+    <div class="faq-a"><div class="faq-a-inner"><span class="lang-ko"><strong>처음 3~5건은 수동으로 대조하세요.</strong> 예: AI가 만든 요약표의 합계를 엑셀에서 직접 확인. 소수점, 날짜 형식, 빈 값 처리가 맞는지 체크. 몇 건만 확인하면 패턴을 파악할 수 있습니다.</span><span class="lang-en"><strong>Manually cross-check the first 3-5 items.</strong> E.g.: verify totals in AI's summary against your Excel. Check decimals, date formats, empty value handling. A few spot checks reveal the pattern.</span></div></div>
+  </div>
+</div>
+</section>
+<div class="divider"></div>
+
 <!-- ═══ CHAPTER NAV ═══ -->
 <div class="chapter-nav">
   <a href="prompting.html">&larr; <span class="lang-ko">프롬프팅 가이드</span><span class="lang-en">Prompting Guide</span></a>
@@ -682,63 +826,190 @@ footer a { color:var(--accent); text-decoration:none; }
   <p>Made with Claude · <a href="../index.html">Claude Code 101</a> · Vibe Coding Workbook</p>
 </footer>
 
+<div class="save-toast" id="saveToast"><span class="lang-ko">&#9989; 자동 저장됨</span><span class="lang-en">&#9989; Auto-saved</span></div>
+
 <script>
-// Checklist toggle
+var SAVE_KEY = 'wb-workbook-data';
+var saveTimer = null;
+
+// ===== CHECKLIST =====
 function toggleCheck(el) {
   el.classList.toggle('checked');
   updateProgress();
+  scheduleSave();
 }
 
-// Progress tracker
+// ===== PROGRESS (nav bar + inline) =====
 function updateProgress() {
   var total = document.querySelectorAll('.check-item').length;
   var checked = document.querySelectorAll('.check-item.checked').length;
-  var inputs = document.querySelectorAll('.field input, .field textarea, .data-table td input, .ba-table td input');
+  var inputs = document.querySelectorAll('.field input, .field textarea, .data-table td input, .ba-table td input, .log-table td input');
   var filled = 0;
   inputs.forEach(function(inp) { if (inp.value.trim()) filled++; });
   var allItems = total + inputs.length;
   var doneItems = checked + filled;
   var pct = allItems > 0 ? Math.round((doneItems / allItems) * 100) : 0;
-  var bar = document.querySelector('.prog-fill');
-  var label = document.querySelector('.prog-pct');
-  if (bar) bar.style.width = pct + '%';
-  if (label) label.textContent = pct + '%';
+  // Nav progress bar
+  var navBar = document.getElementById('navProgFill');
+  var navPct = document.getElementById('navProgPct');
+  if (navBar) navBar.style.width = pct + '%';
+  if (navPct) navPct.textContent = pct + '%';
 }
 
-// Editable placeholders
+// ===== EDITABLE PLACEHOLDERS =====
 document.querySelectorAll('.ed').forEach(function(el) {
   var ph = el.dataset.ph;
   if (!el.textContent.trim()) el.textContent = ph;
   el.addEventListener('focus', function() { if (el.textContent === ph) el.textContent = ''; });
-  el.addEventListener('blur', function() { if (!el.textContent.trim()) el.textContent = ph; });
+  el.addEventListener('blur', function() {
+    if (!el.textContent.trim()) el.textContent = ph;
+    scheduleSave();
+  });
 });
 
-// Track input changes for progress
-document.querySelectorAll('.field input, .field textarea, .data-table td input, .ba-table td input').forEach(function(inp) {
-  inp.addEventListener('input', updateProgress);
+// ===== INPUT TRACKING =====
+document.querySelectorAll('.field input, .field textarea, .data-table td input, .ba-table td input, .log-table td input, .log-table td select').forEach(function(inp) {
+  inp.addEventListener('input', function() { updateProgress(); scheduleSave(); });
+  inp.addEventListener('change', function() { updateProgress(); scheduleSave(); });
 });
 
-// Active nav link on scroll
-var navLinks = document.querySelectorAll('.sticky-nav .nav-link:not(.nav-home)');
-var sections = [];
+// ===== SCROLL NAV =====
+var navLinks = document.querySelectorAll('.sticky-nav .nav-link:not(.nav-home):not([href="#"])');
+var navSections = [];
 navLinks.forEach(function(link) {
   var href = link.getAttribute('href');
   if (href && href.startsWith('#')) {
     var sec = document.getElementById(href.slice(1));
-    if (sec) sections.push({ el: sec, link: link });
+    if (sec) navSections.push({ el: sec, link: link });
   }
 });
 window.addEventListener('scroll', function() {
   var scrollY = window.scrollY + 120;
   var active = null;
-  sections.forEach(function(s) {
-    if (s.el.offsetTop <= scrollY) active = s;
-  });
+  navSections.forEach(function(s) { if (s.el.offsetTop <= scrollY) active = s; });
   navLinks.forEach(function(l) { l.classList.remove('active'); });
   if (active) active.link.classList.add('active');
 }, { passive: true });
 
-// Initial progress
+// ===== COPY PROMPT =====
+function copyPrompt(btn) {
+  var el = document.getElementById('promptTemplate');
+  var text = el.innerText || el.textContent;
+  navigator.clipboard.writeText(text).then(function() {
+    btn.classList.add('copied');
+    var orig = btn.innerHTML;
+    btn.innerHTML = '<span class="lang-ko">&#9989; 복사 완료!</span><span class="lang-en">&#9989; Copied!</span>';
+    // Re-apply language visibility
+    var lang = document.documentElement.getAttribute('lang') || 'ko';
+    btn.querySelectorAll('.lang-ko,.lang-en').forEach(function(s) {
+      s.style.display = s.classList.contains('lang-' + lang) ? '' : 'none';
+    });
+    setTimeout(function() { btn.classList.remove('copied'); btn.innerHTML = orig; }, 2000);
+  });
+}
+
+// ===== SAMPLE DATA DOWNLOAD =====
+function downloadSample(type) {
+  var csv = '';
+  if (type === 'sales') {
+    csv = '날짜,부서,지역,매출액,건수,담당자\n2024-01-15,마케팅,서울,4500000,23,김지수\n2024-01-15,영업,부산,3200000,18,이민호\n2024-01-15,마케팅,대구,1800000,12,박서연\n2024-01-16,영업,서울,5100000,27,최도윤\n2024-01-16,기획,서울,2900000,15,정하은\n2024-01-16,마케팅,부산,2100000,14,김지수\n2024-01-17,영업,대구,1500000,9,이민호\n2024-01-17,기획,서울,3800000,20,정하은\n2024-01-17,마케팅,서울,6200000,35,박서연\n2024-01-18,영업,부산,4100000,22,최도윤\n2024-01-18,기획,대구,1200000,8,정하은\n2024-01-18,마케팅,서울,5500000,30,김지수\n2024-01-19,영업,서울,4800000,25,이민호\n2024-01-19,마케팅,부산,2700000,16,박서연\n2024-01-19,기획,대구,1900000,11,최도윤';
+  } else if (type === 'hr') {
+    csv = '사번,이름,부서,날짜,출근시간,퇴근시간\nEMP001,김철수,개발팀,2024-01-15,08:55,18:30\nEMP002,이영희,마케팅,2024-01-15,09:15,18:05\nEMP003,박민수,영업팀,2024-01-15,08:45,21:30\nEMP004,정수진,인사팀,2024-01-15,09:25,17:45\nEMP005,최동현,개발팀,2024-01-15,09:05,22:10\nEMP001,김철수,개발팀,2024-01-16,09:20,18:40\nEMP002,이영희,마케팅,2024-01-16,08:50,18:10\nEMP003,박민수,영업팀,2024-01-16,09:30,19:00\nEMP004,정수진,인사팀,2024-01-16,08:40,18:00\nEMP005,최동현,개발팀,2024-01-16,09:00,21:45\nEMP001,김철수,개발팀,2024-01-17,09:12,18:20\nEMP002,이영희,마케팅,2024-01-17,09:18,17:50\nEMP003,박민수,영업팀,2024-01-17,08:30,18:15\nEMP004,정수진,인사팀,2024-01-17,09:35,18:00\nEMP005,최동현,개발팀,2024-01-17,08:55,20:30';
+  } else if (type === 'crm') {
+    csv = '고객ID,이름,이메일,최근구매일,총구매액,구매횟수,지역\nC001,김하나,hana@email.com,2024-01-10,2500000,8,서울\nC002,이두리,duri@email.com,2023-06-15,150000,1,부산\nC003,박세리,seri@email.com,2024-01-18,5800000,15,서울\nC004,최넷,net@email.com,2022-03-20,80000,1,대구\nC005,정다온,daon@email.com,2024-01-05,3200000,12,서울\nC006,강여섯,yeo@email.com,2023-11-30,420000,3,인천\nC007,조일곱,ilgop@email.com,2024-01-15,7100000,22,서울\nC008,윤여덟,yeod@email.com,2023-08-10,95000,1,광주\nC009,임아홉,ahop@email.com,2024-01-12,1800000,6,서울\nC010,한열,yeol@email.com,2022-12-01,60000,1,대전\nC011,서하나,s.hana@email.com,2024-01-20,4200000,10,서울\nC012,신둘,shin2@email.com,2023-09-05,280000,2,부산';
+  }
+  var blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'sample_' + type + '.csv';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// ===== TIME SAVINGS CALCULATOR =====
+function calcSavings() {
+  var min = parseInt(document.getElementById('calcMin').value) || 0;
+  var freq = parseInt(document.getElementById('calcFreq').value) || 0;
+  var after = parseInt(document.getElementById('calcAfter').value) || 0;
+  var savedPerYear = ((min - after) * freq) / 60;
+  var savedPerMonth = savedPerYear / 12;
+  var el = document.getElementById('calcYearHrs');
+  var detail = document.getElementById('calcDetail');
+  var detailEn = document.getElementById('calcDetailEn');
+  if (savedPerYear > 0) {
+    el.textContent = Math.round(savedPerYear) + ' h/year';
+    if (detail) detail.textContent = '월 ' + Math.round(savedPerMonth) + '시간 절약 · 1회당 ' + (min - after) + '분 단축';
+    if (detailEn) detailEn.textContent = Math.round(savedPerMonth) + 'h/month saved · ' + (min - after) + 'min saved per task';
+  } else {
+    el.textContent = '—';
+    if (detail) detail.textContent = '숫자를 입력하면 자동 계산됩니다';
+    if (detailEn) detailEn.textContent = 'Enter numbers to calculate automatically';
+  }
+}
+calcSavings();
+
+// ===== LOCAL STORAGE SAVE/LOAD =====
+function scheduleSave() {
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(saveData, 800);
+}
+
+function saveData() {
+  var data = {};
+  // Save inputs
+  var inputs = document.querySelectorAll('.field input, .field textarea, .data-table td input, .ba-table td input, .log-table td input, .log-table td select');
+  inputs.forEach(function(inp, i) {
+    if (inp.value) data['input_' + i] = inp.value;
+  });
+  // Save checklists
+  document.querySelectorAll('.check-item').forEach(function(el, i) {
+    if (el.classList.contains('checked')) data['check_' + i] = true;
+  });
+  // Save editable spans
+  document.querySelectorAll('.ed').forEach(function(el, i) {
+    var ph = el.dataset.ph;
+    if (el.textContent !== ph && el.textContent.trim()) data['ed_' + i] = el.textContent;
+  });
+  try { localStorage.setItem(SAVE_KEY, JSON.stringify(data)); } catch(e) {}
+  // Show toast
+  var toast = document.getElementById('saveToast');
+  if (toast) { toast.classList.add('show'); setTimeout(function() { toast.classList.remove('show'); }, 1500); }
+}
+
+function loadData() {
+  var raw;
+  try { raw = localStorage.getItem(SAVE_KEY); } catch(e) {}
+  if (!raw) return;
+  var data = JSON.parse(raw);
+  // Restore inputs
+  var inputs = document.querySelectorAll('.field input, .field textarea, .data-table td input, .ba-table td input, .log-table td input, .log-table td select');
+  inputs.forEach(function(inp, i) {
+    if (data['input_' + i]) inp.value = data['input_' + i];
+  });
+  // Restore checklists
+  document.querySelectorAll('.check-item').forEach(function(el, i) {
+    if (data['check_' + i]) el.classList.add('checked');
+  });
+  // Restore editable spans
+  document.querySelectorAll('.ed').forEach(function(el, i) {
+    if (data['ed_' + i]) el.textContent = data['ed_' + i];
+  });
+  updateProgress();
+}
+
+function resetAll() {
+  if (!confirm('모든 입력 내용을 초기화할까요? / Reset all entries?')) return;
+  try { localStorage.removeItem(SAVE_KEY); } catch(e) {}
+  document.querySelectorAll('.field input, .field textarea, .data-table td input, .ba-table td input, .log-table td input').forEach(function(inp) { inp.value = ''; });
+  document.querySelectorAll('.log-table td select').forEach(function(sel) { sel.selectedIndex = 0; });
+  document.querySelectorAll('.check-item').forEach(function(el) { el.classList.remove('checked'); });
+  document.querySelectorAll('.ed').forEach(function(el) { el.textContent = el.dataset.ph; });
+  updateProgress();
+}
+
+// Load on startup
+loadData();
 updateProgress();
 </script>
 <script src="theme.js"></script>
