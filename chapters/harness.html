@@ -1,0 +1,1486 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="light" data-title-ko="Claude Code 하네스 완전 가이드 — Claude Code 101" data-title-en="Claude Code Harness Complete Guide — Claude Code 101">
+<head>
+<meta charset="UTF-8">
+<script>
+/* 챕터 테마 초기화 — FOUC 방지 */
+(function(){var t=localStorage.getItem('cc101-chapter-theme')||'light';document.documentElement.setAttribute('data-theme',t)})();
+</script>
+<script>(function(){var l=localStorage.getItem('cc101-lang')||'ko';document.documentElement.setAttribute('lang',l)})();</script>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Code 하네스 완전 가이드 / Harness Complete Guide</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/pretendard/1.3.9/variable/pretendardvariable.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../theme.css">
+<style id="chapter-accent">
+/* ── 챕터 키 컬러 오버라이드 ── */
+:root {
+  --accent: #0891b2;
+  --accent-dim: #0e7490;
+  --accent-glow: rgba(8,145,178, 0.10);
+  --accent-glow-strong: rgba(8,145,178, 0.16);
+  --accent-border: rgba(8,145,178, 0.20);
+}
+[data-theme="dark"] {
+  --accent: #22d3ee;
+  --accent-dim: #06b6d4;
+  --accent-glow: rgba(34,211,238, 0.15);
+  --accent-glow-strong: rgba(34,211,238, 0.25);
+  --accent-border: rgba(34,211,238, 0.20);
+}
+</style>
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap');
+  :root {
+    --radius: 12px;
+    --radius-sm: 8px;
+    --radius-lg: 20px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Pretendard Variable', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ---- BACK LINK ---- */
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 14px 24px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-dim);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .back-link:hover {
+    color: var(--accent);
+  }
+
+  /* ---- HERO ---- */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 24px;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -200px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 800px;
+    height: 800px;
+    background: radial-gradient(circle, var(--accent-glow-strong) 0%, transparent 65%);
+    pointer-events: none;
+    animation: pulse 6s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 0.6; transform: translateX(-50%) scale(1); }
+    50% { opacity: 1; transform: translateX(-50%) scale(1.08); }
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 18px;
+    border-radius: 100px;
+    border: 1px solid var(--border-bright);
+    background: var(--surface);
+    font-size: 13px;
+    color: var(--accent);
+    letter-spacing: 0.04em;
+    margin-bottom: 32px;
+    position: relative;
+    z-index: 1;
+    animation: fadeDown 0.8s ease;
+  }
+
+  .hero-badge .dot {
+    width: 6px; height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    animation: blink 2s infinite;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero h1 {
+    font-size: clamp(40px, 7vw, 72px);
+    font-weight: 800;
+    text-align: center;
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+    position: relative;
+    z-index: 1;
+    animation: fadeDown 0.8s ease 0.1s both;
+  }
+
+  .hero h1 .highlight {
+    color: var(--accent);
+  }
+
+  .hero-sub {
+    font-size: clamp(16px, 2.2vw, 20px);
+    color: var(--text-dim);
+    text-align: center;
+    max-width: 620px;
+    margin-top: 24px;
+    position: relative;
+    z-index: 1;
+    animation: fadeDown 0.8s ease 0.2s both;
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 14px;
+    margin-top: 48px;
+    position: relative;
+    z-index: 1;
+    animation: fadeDown 0.8s ease 0.35s both;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 28px;
+    border-radius: 100px;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    transition: all 0.25s ease;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: var(--bg);
+  }
+  .btn-primary:hover {
+    background: var(--accent-dim);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border-bright);
+  }
+  .btn-outline:hover {
+    background: var(--surface-hover);
+    border-color: var(--accent-dim);
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-muted);
+    font-size: 12px;
+    animation: bounce 2s infinite 1.5s;
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(8px); }
+  }
+
+  .scroll-hint svg {
+    width: 20px; height: 20px;
+    stroke: var(--text-muted);
+  }
+
+  /* ---- LAYOUT ---- */
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  section {
+    padding: 100px 0;
+  }
+
+  /* ---- NAV ---- */
+  .sticky-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--nav-bg);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+  }
+
+  .nav-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .nav-inner::-webkit-scrollbar { display: none; }
+
+  .nav-link {
+    padding: 16px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-dim);
+    text-decoration: none;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+  }
+
+  .nav-link:hover, .nav-link.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+
+  .nav-home {
+    border-bottom: 2px solid transparent;
+  }
+
+  .nav-home:hover {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+
+  /* ---- SECTION HEADERS ---- */
+  .section-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    margin-bottom: 12px;
+  }
+
+  .section-title {
+    font-size: clamp(28px, 5vw, 40px);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    margin-bottom: 16px;
+  }
+
+  .section-desc {
+    font-size: 17px;
+    color: var(--text-dim);
+    max-width: 640px;
+    line-height: 1.7;
+    margin-bottom: 48px;
+  }
+
+  /* ---- CARDS ---- */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 32px;
+    margin-bottom: 24px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .card:hover {
+    border-color: var(--accent-border);
+    box-shadow: var(--shadow-card);
+  }
+
+  .card h3 {
+    font-size: 19px;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+
+  .card p {
+    color: var(--text-dim);
+    margin-bottom: 12px;
+    line-height: 1.7;
+  }
+
+  .card-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    margin-bottom: 16px;
+  }
+
+  .card-grid {
+    display: grid;
+    gap: 20px;
+  }
+  .card-grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  .card-grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  @media (max-width: 768px) {
+    .card-grid-2, .card-grid-3 {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* ---- CODE BLOCKS ---- */
+  .code-block {
+    background: #1e1e2e;
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin: 16px 0;
+  }
+
+  .code-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 16px;
+    background: rgba(255,255,255,0.05);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .code-header .lang {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: #888;
+  }
+
+  .code-header .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+  }
+
+  .dot.bash { background: #7dd3a0; }
+  .dot.json { background: #facc15; }
+  .dot.md { background: #c4a0ff; }
+  .dot.txt { background: #94a3b8; }
+
+  .copy-btn {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 6px;
+    color: #aaa;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    padding: 4px 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .copy-btn:hover {
+    background: rgba(255,255,255,0.15);
+    color: #fff;
+  }
+
+  .code-block pre {
+    padding: 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    line-height: 1.8;
+    color: #cdd6f4;
+    overflow-x: auto;
+    white-space: pre;
+    margin: 0;
+  }
+
+  .code-block .comment { color: #6c7086; }
+  .code-block .keyword { color: #cba6f7; }
+  .code-block .cmd { color: #89b4fa; }
+  .code-block .flag { color: #7dd3a0; }
+  .code-block .string { color: #f9e2af; }
+  .code-block .prompt { color: #585b70; }
+
+  /* ---- ANALOGY BOX ---- */
+  .analogy-box {
+    background: var(--accent-glow);
+    border: 1px solid var(--accent-border);
+    border-radius: var(--radius);
+    padding: 28px 32px;
+    margin: 24px 0;
+  }
+
+  .analogy-box h4 {
+    color: var(--accent);
+    font-size: 15px;
+    margin-bottom: 12px;
+  }
+
+  .analogy-box p {
+    color: var(--text-dim);
+    line-height: 1.8;
+  }
+
+  /* ---- TIP / WARN BOXES ---- */
+  .tip-box {
+    background: var(--green-dim);
+    border: 1px solid var(--green-border);
+    border-radius: var(--radius);
+    padding: 20px 24px;
+    margin: 16px 0;
+  }
+
+  .tip-label {
+    color: var(--green);
+    font-weight: 700;
+    font-size: 13px;
+    margin-bottom: 6px;
+  }
+
+  .tip-box p {
+    color: var(--text-dim);
+    font-size: 15px;
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  .warn-box {
+    background: var(--orange-dim);
+    border: 1px solid var(--orange-border);
+    border-radius: var(--radius);
+    padding: 20px 24px;
+    margin: 16px 0;
+  }
+
+  .warn-label {
+    color: var(--orange);
+    font-weight: 700;
+    font-size: 13px;
+    margin-bottom: 6px;
+  }
+
+  .warn-box p {
+    color: var(--text-dim);
+    font-size: 15px;
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  /* ---- KV ITEMS ---- */
+  .kv-item {
+    display: flex;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+    align-items: baseline;
+  }
+
+  .kv-key {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent);
+    white-space: nowrap;
+    min-width: 140px;
+  }
+
+  .kv-val {
+    color: var(--text-dim);
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* ---- DATA TABLE ---- */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 14px;
+  }
+
+  .data-table th {
+    background: var(--surface-raised);
+    padding: 12px 16px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--text-dim);
+    border-bottom: 2px solid var(--border);
+  }
+
+  .data-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-dim);
+  }
+
+  .data-table code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    background: var(--surface-raised);
+    padding: 2px 8px;
+    border-radius: 4px;
+    color: var(--accent);
+  }
+
+  /* ---- ACCORDION ---- */
+  .accordion {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  .accordion-item + .accordion-item {
+    border-top: 1px solid var(--border);
+  }
+
+  .accordion-btn {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    background: var(--surface);
+    border: none;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    text-align: left;
+    transition: background 0.2s;
+    font-family: inherit;
+  }
+
+  .accordion-btn:hover {
+    background: var(--surface-hover);
+  }
+
+  .accordion-btn .arrow {
+    font-size: 12px;
+    color: var(--text-muted);
+    transition: transform 0.3s;
+  }
+
+  .accordion-btn.open .arrow {
+    transform: rotate(180deg);
+  }
+
+  .accordion-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease;
+  }
+
+  .accordion-body-inner {
+    padding: 0 24px 24px;
+    color: var(--text-dim);
+    font-size: 15px;
+    line-height: 1.8;
+  }
+
+  /* ---- DIAGRAM ---- */
+  .diagram-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 40px;
+    margin: 32px 0;
+    text-align: center;
+  }
+
+  .diagram-layers {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .diagram-layer {
+    padding: 20px 24px;
+    border-radius: var(--radius);
+    font-weight: 600;
+    font-size: 15px;
+    position: relative;
+    transition: transform 0.2s;
+  }
+
+  .diagram-layer:hover {
+    transform: scale(1.02);
+  }
+
+  .diagram-layer-label {
+    font-size: 11px;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.05em;
+    opacity: 0.7;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .diagram-arrow {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 20px;
+    padding: 4px 0;
+  }
+
+  .layer-user {
+    background: var(--green-dim);
+    border: 1px solid var(--green-border);
+    color: var(--green);
+  }
+  .layer-harness {
+    background: var(--accent-glow);
+    border: 2px solid var(--accent-border);
+    color: var(--accent);
+  }
+  .layer-model {
+    background: var(--orange-dim);
+    border: 1px solid var(--orange-border);
+    color: var(--orange);
+  }
+  .layer-tools {
+    background: var(--blue-dim);
+    border: 1px solid var(--blue-border);
+    color: var(--blue);
+  }
+
+  /* ---- FLOW STEPS ---- */
+  .flow-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin: 24px 0;
+  }
+
+  .flow-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 16px 0;
+  }
+
+  .flow-step-num {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+
+  .flow-step-content h4 {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .flow-step-content p {
+    color: var(--text-dim);
+    font-size: 15px;
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  .flow-connector {
+    width: 2px;
+    height: 20px;
+    background: var(--border-bright);
+    margin-left: 17px;
+  }
+
+  /* ---- CHAPTER NAV ---- */
+  .chapter-nav {
+    display: flex;
+    justify-content: space-between;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 48px 24px;
+  }
+
+  .chapter-nav a {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 15px;
+    transition: color 0.2s;
+  }
+
+  .chapter-nav a:hover {
+    color: var(--accent);
+  }
+
+  /* ---- FOOTER ---- */
+  footer {
+    text-align: center;
+    padding: 32px 24px 48px;
+    color: var(--text-muted);
+    font-size: 13px;
+    border-top: 1px solid var(--border);
+  }
+
+  footer a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+</style>
+</head>
+<body>
+
+<a href="../index.html" class="back-link">&larr; <span class="lang-ko">Claude Code 101</span><span class="lang-en">Claude Code 101</span></a>
+
+<!-- =================== HERO =================== -->
+<div class="hero">
+  <div class="hero-badge">
+    <span class="dot"></span>
+    <span class="lang-ko">Claude Code 완전 가이드</span><span class="lang-en">Complete Claude Code Guide</span>
+  </div>
+  <h1>
+    <div class="lang-ko"><span class="highlight">하네스</span>가 뭔데<br>이게 중요해?</div>
+    <div class="lang-en">What Is the <span class="highlight">Harness</span><br>and Why Does It Matter?</div>
+  </h1>
+  <p class="hero-sub">
+    <span class="lang-ko">Claude Code가 실제로 동작하는 구조를 이해하면<br>더 효과적으로 활용할 수 있습니다</span>
+    <span class="lang-en">Understanding how Claude Code actually works under the hood<br>helps you use it far more effectively</span>
+  </p>
+  <div class="hero-cta">
+    <a href="#what" class="btn btn-primary"><span class="lang-ko">하네스란?</span><span class="lang-en">What is a Harness?</span></a>
+    <a href="#loop" class="btn btn-outline"><span class="lang-ko">에이전트 루프 보기</span><span class="lang-en">See the Agent Loop</span> &rarr;</a>
+  </div>
+  <div class="scroll-hint">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+    <span class="lang-ko">스크롤</span><span class="lang-en">Scroll</span>
+  </div>
+</div>
+
+<!-- =================== NAV =================== -->
+<nav class="sticky-nav">
+  <div class="nav-inner">
+    <a href="../index.html" class="nav-link nav-home">&#x1F3E0; <span class="lang-ko">홈</span><span class="lang-en">Home</span></a>
+    <a href="#why" class="nav-link"><span class="lang-ko">왜 하네스?</span><span class="lang-en">Why Harness?</span></a>
+    <a href="#what" class="nav-link"><span class="lang-ko">하네스란?</span><span class="lang-en">What?</span></a>
+    <a href="#architecture" class="nav-link"><span class="lang-ko">구조</span><span class="lang-en">Architecture</span></a>
+    <a href="#loop" class="nav-link"><span class="lang-ko">에이전트 루프</span><span class="lang-en">Agent Loop</span></a>
+    <a href="#tools" class="nav-link"><span class="lang-ko">도구 디스패치</span><span class="lang-en">Tool Dispatch</span></a>
+    <a href="#context" class="nav-link"><span class="lang-ko">컨텍스트 조립</span><span class="lang-en">Context Assembly</span></a>
+    <a href="#permissions" class="nav-link"><span class="lang-ko">권한 관리</span><span class="lang-en">Permissions</span></a>
+    <a href="#faq" class="nav-link">FAQ</a>
+  </div>
+</nav>
+
+<!-- =================== SECTION 1: WHY =================== -->
+<section id="why">
+  <div class="container">
+    <div class="section-number">01</div>
+    <h2 class="section-title"><span class="lang-ko">왜 하네스를 이해해야 하나?</span><span class="lang-en">Why Should You Understand the Harness?</span></h2>
+    <p class="section-desc">
+      <span class="lang-ko">AI 코딩은 <strong style="color:var(--accent)">"코드를 직접 고치는 단계"에서 "가이드를 설계하는 단계"</strong>로 진화하고 있습니다.</span>
+      <span class="lang-en">AI coding is evolving from <strong style="color:var(--accent)">"manually fixing code" to "designing guides."</strong></span>
+    </p>
+
+    <div class="analogy-box">
+      <h4><span class="lang-ko">In the Loop vs On the Loop</span><span class="lang-en">In the Loop vs On the Loop</span></h4>
+      <div class="lang-ko">
+      <p>
+        AI 코딩에는 두 가지 방식이 있습니다:<br><br>
+        &nbsp;&nbsp;&#x1F6E0; <strong style="color:var(--text)">Human In the Loop (2단계)</strong> &rarr; AI가 만든 코드를 한 줄씩 확인하고 직접 수정. Copilot, Cursor의 방식.<br>
+        &nbsp;&nbsp;&#x1F3AF; <strong style="color:var(--text)">Human On the Loop (3단계)</strong> &rarr; <strong style="color:var(--accent)">가이드(하네스)</strong>를 설계해서 AI에게 자율 작업을 위임. 결과가 맞지 않으면 코드가 아니라 <strong>하네스를 개선</strong>.<br><br>
+        Claude Code는 3단계 도구입니다. CLAUDE.md로 프로젝트 규칙을 정의하고, Skills로 워크플로우를 자동화하고, Hooks로 안전장치를 설정하는 것 &mdash; 이 모든 것이 <strong>"하네스 엔지니어링"</strong>입니다.<br><br>
+        하네스의 구조를 이해하면 <strong>무엇을 설계해야 하는지</strong>가 명확해집니다.
+      </p>
+      </div>
+      <div class="lang-en">
+      <p>
+        There are two approaches to AI coding:<br><br>
+        &nbsp;&nbsp;&#x1F6E0; <strong style="color:var(--text)">Human In the Loop (Stage 2)</strong> &rarr; Review AI-generated code line by line and fix it directly. The Copilot/Cursor approach.<br>
+        &nbsp;&nbsp;&#x1F3AF; <strong style="color:var(--text)">Human On the Loop (Stage 3)</strong> &rarr; Design <strong style="color:var(--accent)">guides (harness)</strong> and delegate autonomous work to AI. When results are wrong, improve the <strong>harness, not the code</strong>.<br><br>
+        Claude Code is a Stage 3 tool. Defining project rules with CLAUDE.md, automating workflows with Skills, setting up safety nets with Hooks &mdash; all of this is <strong>"harness engineering."</strong><br><br>
+        Understanding the harness structure makes it clear <strong>what you need to design</strong>.
+      </p>
+      </div>
+    </div>
+
+    <div class="warn-box">
+      <div class="warn-label"><span class="lang-ko">하네스 없는 AI의 위험 &mdash; Amazon 사례</span><span class="lang-en">AI Without a Harness &mdash; The Amazon Case</span></div>
+      <p>
+        <span class="lang-ko">제대로 된 하네스(가이드, 권한, 검증) 없이 AI에게 자율권을 주면 어떻게 될까요?<br><br>
+        <strong>2025.12</strong> &mdash; Amazon의 AI 에이전트 'Kiro'가 무단으로 운영 서버를 삭제/재생성. 비용 계산기 시스템 <strong>13시간 다운</strong>.<br>
+        <strong>2026.03.02</strong> &mdash; AI가 생성한 코드가 장바구니 오류 유발. <strong>12만 건 주문 손실</strong>.<br>
+        <strong>2026.03.05</strong> &mdash; 안전장치 없이 AI 코드가 배포되어 북미 주문의 99%가 증발. <strong>하루 630만 건 주문 손실</strong>.<br><br>
+        Amazon은 이후 <strong>모든 코드에 인간 교차 검증을 의무화</strong>했습니다. 이것이 하네스의 권한 관리와 Hooks가 존재하는 이유입니다.</span>
+        <span class="lang-en">What happens when you give AI autonomy without a proper harness (guides, permissions, verification)?<br><br>
+        <strong>2025.12</strong> &mdash; Amazon's AI agent 'Kiro' unauthorized deletion/recreation of production servers. Cost calculator system <strong>down for 13 hours</strong>.<br>
+        <strong>2026.03.02</strong> &mdash; AI-generated code caused shopping cart errors. <strong>120,000 orders lost</strong>.<br>
+        <strong>2026.03.05</strong> &mdash; AI code deployed without safety nets wiped out 99% of North American orders. <strong>6.3 million orders lost in one day</strong>.<br><br>
+        Amazon subsequently <strong>mandated human cross-verification for all code</strong>. This is exactly why the harness's permission management and Hooks exist.</span>
+      </p>
+    </div>
+
+    <p style="color: var(--text-muted); font-size: 13px; margin-top: 16px;">
+      <span class="lang-ko">참고: <a href="https://bcho.tistory.com/1508" target="_blank" style="color: var(--accent);">Terry Cho — AI 코딩의 발전단계</a> · <a href="https://martinfowler.com/articles/exploring-gen-ai/humans-and-agents.html" target="_blank" style="color: var(--accent);">Martin Fowler — Humans and Agents</a></span>
+      <span class="lang-en">Reference: <a href="https://bcho.tistory.com/1508" target="_blank" style="color: var(--accent);">Terry Cho — AI Coding Stages</a> · <a href="https://martinfowler.com/articles/exploring-gen-ai/humans-and-agents.html" target="_blank" style="color: var(--accent);">Martin Fowler — Humans and Agents</a></span>
+    </p>
+  </div>
+</section>
+
+<!-- =================== SECTION 2: WHAT =================== -->
+<section id="what">
+  <div class="container">
+    <div class="section-number">02</div>
+    <h2 class="section-title"><span class="lang-ko">하네스가 대체 뭐야?</span><span class="lang-en">What Exactly Is the Harness?</span></h2>
+    <p class="section-desc">
+      <span class="lang-ko">한 줄 요약: Claude 모델을 감싸서 <strong style="color:var(--accent)">실제로 동작하게 만드는 런타임 시스템</strong>이다.</span>
+      <span class="lang-en">One-line summary: The <strong style="color:var(--accent)">runtime system that wraps the Claude model</strong> and makes it actually work.</span>
+    </p>
+
+    <div class="analogy-box">
+      <h4><span class="lang-ko">오케스트라 지휘자 비유로 이해하기</span><span class="lang-en">The Orchestra Conductor Analogy</span></h4>
+      <div class="lang-ko">
+      <p>
+        Claude 모델은 아주 뛰어난 <strong>연주자</strong>입니다. 하지만 연주자 혼자서는 콘서트를 열 수 없습니다.<br><br>
+        &nbsp;&nbsp;&#127929; <strong style="color:var(--text)">연주자(Claude 모델)</strong> &rarr; 질문에 답하고, 코드를 생성하는 AI 두뇌<br>
+        &nbsp;&nbsp;&#127924; <strong style="color:var(--text)">지휘자(하네스)</strong> &rarr; 악보를 나눠주고, 순서를 정하고, 악기를 준비해주는 시스템<br><br>
+        <strong style="color:var(--accent)">하네스 = 지휘자</strong>입니다.<br>
+        "어떤 도구를 쓸지 결정하고, 권한을 확인하고, 파일을 읽어서 모델에게 전달하고, 결과를 받아서 실행하는" &mdash; 이 모든 과정을 관리합니다.
+      </p>
+      </div>
+      <div class="lang-en">
+      <p>
+        The Claude model is an incredibly talented <strong>musician</strong>. But a musician alone can't run a concert.<br><br>
+        &nbsp;&nbsp;&#127929; <strong style="color:var(--text)">Musician (Claude Model)</strong> &rarr; The AI brain that answers questions and generates code<br>
+        &nbsp;&nbsp;&#127924; <strong style="color:var(--text)">Conductor (Harness)</strong> &rarr; The system that distributes sheet music, sets the order, and prepares instruments<br><br>
+        <strong style="color:var(--accent)">Harness = the Conductor</strong>.<br>
+        It manages everything: "deciding which tools to use, checking permissions, reading files to pass to the model, and executing results."
+      </p>
+      </div>
+    </div>
+
+    <div class="card-grid card-grid-3">
+      <div class="card">
+        <div class="card-icon" style="background: var(--accent-glow);">&#x2699;</div>
+        <h3><span class="lang-ko">모델이 아니다</span><span class="lang-en">It's Not the Model</span></h3>
+        <div class="lang-ko"><p>하네스는 AI 모델 자체가 아닙니다. 모델은 "생각하는 두뇌"이고, 하네스는 그 두뇌가 <strong>실제 세계와 상호작용</strong>할 수 있게 해주는 시스템입니다.</p></div>
+        <div class="lang-en"><p>The harness isn't the AI model itself. The model is the "thinking brain" and the harness is the system that lets that brain <strong>interact with the real world</strong>.</p></div>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background: var(--green-dim);">&#x1F504;</div>
+        <h3><span class="lang-ko">루프를 돌린다</span><span class="lang-en">Runs the Loop</span></h3>
+        <div class="lang-ko"><p>하네스의 핵심은 <strong>에이전트 루프</strong>입니다. 모델에게 물어보고 &rarr; 도구를 실행하고 &rarr; 결과를 다시 모델에게 전달하는 과정을 반복합니다.</p></div>
+        <div class="lang-en"><p>The core of the harness is the <strong>agent loop</strong>. It asks the model &rarr; executes tools &rarr; feeds results back to the model, repeating this cycle.</p></div>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background: var(--orange-dim);">&#x1F6E1;</div>
+        <h3><span class="lang-ko">안전을 지킨다</span><span class="lang-en">Keeps You Safe</span></h3>
+        <div class="lang-ko"><p>권한 확인, 도구 승인, 위험한 명령 차단 등 <strong>안전 장치</strong>를 관리합니다. "이 파일을 수정해도 될까요?" 같은 질문이 하네스에서 나옵니다.</p></div>
+        <div class="lang-en"><p>It manages <strong>safety mechanisms</strong>: permission checks, tool approvals, blocking dangerous commands. "Can I modify this file?" prompts come from the harness.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =================== SECTION 3: ARCHITECTURE =================== -->
+<section id="architecture">
+  <div class="container">
+    <div class="section-number">03</div>
+    <h2 class="section-title"><span class="lang-ko">전체 구조 한눈에 보기</span><span class="lang-en">Architecture at a Glance</span></h2>
+    <p class="section-desc">
+      <span class="lang-ko">Claude Code를 실행하면 이 4개의 레이어가 함께 동작합니다</span>
+      <span class="lang-en">When you run Claude Code, these 4 layers work together</span>
+    </p>
+
+    <div class="diagram-box">
+      <div class="diagram-layers">
+        <div class="diagram-layer layer-user">
+          <span class="diagram-layer-label"><span class="lang-ko">최상위</span><span class="lang-en">TOP</span></span>
+          <span class="lang-ko">&#x1F464; 사용자 (터미널 / IDE)</span>
+          <span class="lang-en">&#x1F464; User (Terminal / IDE)</span>
+        </div>
+        <div class="diagram-arrow">&darr; &uarr;</div>
+        <div class="diagram-layer layer-harness" style="transform: scale(1.03);">
+          <span class="diagram-layer-label"><span class="lang-ko">핵심</span><span class="lang-en">CORE</span></span>
+          <span class="lang-ko">&#x1F3AF; <strong>하네스</strong> (에이전트 루프 + 권한 + 컨텍스트 조립 + Hooks)</span>
+          <span class="lang-en">&#x1F3AF; <strong>Harness</strong> (Agent Loop + Permissions + Context Assembly + Hooks)</span>
+        </div>
+        <div class="diagram-arrow">&darr; &uarr;</div>
+        <div class="diagram-layer layer-model">
+          <span class="diagram-layer-label"><span class="lang-ko">AI 두뇌</span><span class="lang-en">AI BRAIN</span></span>
+          <span class="lang-ko">&#x1F9E0; Claude 모델 (Opus / Sonnet / Haiku)</span>
+          <span class="lang-en">&#x1F9E0; Claude Model (Opus / Sonnet / Haiku)</span>
+        </div>
+        <div class="diagram-arrow">&darr; &uarr;</div>
+        <div class="diagram-layer layer-tools">
+          <span class="diagram-layer-label"><span class="lang-ko">실행</span><span class="lang-en">EXECUTION</span></span>
+          <span class="lang-ko">&#x1F527; 도구들 (Read, Write, Bash, Grep, MCP ...)</span>
+          <span class="lang-en">&#x1F527; Tools (Read, Write, Bash, Grep, MCP ...)</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom: 24px;">
+      <h3><span class="lang-ko">하네스의 5가지 구성 요소</span><span class="lang-en">The 5 Components of a Harness</span></h3>
+      <p><span class="lang-ko">하네스는 다음 5가지로 구성됩니다. 이 프레임워크를 알면 <strong>"내가 뭘 설정해야 하는지"</strong>가 명확해집니다.</span><span class="lang-en">A harness consists of these 5 components. Knowing this framework makes it clear <strong>"what you need to configure."</strong></span></p>
+      <table class="data-table">
+        <thead><tr><th style="width:130px;"><span class="lang-ko">요소</span><span class="lang-en">Component</span></th><th><span class="lang-ko">역할</span><span class="lang-en">Role</span></th><th><span class="lang-ko">Claude Code에서</span><span class="lang-en">In Claude Code</span></th></tr></thead>
+        <tbody>
+          <tr><td><strong>Tools</strong></td><td><span class="lang-ko">파일 I/O, 셸, 네트워크, DB</span><span class="lang-en">File I/O, shell, network, DB</span></td><td><span class="lang-ko">내장 도구 (Read, Write, Bash) + MCP 서버</span><span class="lang-en">Built-in tools (Read, Write, Bash) + MCP servers</span></td></tr>
+          <tr><td><strong>Knowledge</strong></td><td><span class="lang-ko">문서, 규칙, 스타일 가이드</span><span class="lang-en">Docs, rules, style guides</span></td><td><span class="lang-ko">CLAUDE.md + Skills (.claude/skills/)</span><span class="lang-en">CLAUDE.md + Skills (.claude/skills/)</span></td></tr>
+          <tr><td><strong>Observation</strong></td><td><span class="lang-ko">현재 상태 파악</span><span class="lang-en">Sensing current state</span></td><td><span class="lang-ko">git diff, 에러 로그, 테스트 결과, LSP</span><span class="lang-en">git diff, error logs, test results, LSP</span></td></tr>
+          <tr><td><strong>Action</strong></td><td><span class="lang-ko">실제 실행 인터페이스</span><span class="lang-en">Actual execution interfaces</span></td><td><span class="lang-ko">Bash 명령, Edit/Write, API 호출</span><span class="lang-en">Bash commands, Edit/Write, API calls</span></td></tr>
+          <tr><td><strong>Permissions</strong></td><td><span class="lang-ko">안전 경계, 승인 흐름</span><span class="lang-en">Safety boundaries, approval flows</span></td><td><span class="lang-ko">settings.json 규칙 + Hooks + 권한 모드</span><span class="lang-en">settings.json rules + Hooks + permission modes</span></td></tr>
+        </tbody>
+      </table>
+      <div class="tip-box">
+        <div class="tip-label"><span class="lang-ko">하네스 엔지니어링 = 5요소 설계</span><span class="lang-en">Harness Engineering = Designing All 5</span></div>
+        <p><span class="lang-ko">CLAUDE.md를 작성하는 것은 <strong>Knowledge</strong>를 설계하는 것이고, MCP를 연결하는 것은 <strong>Tools</strong>를 확장하는 것이고, Hooks를 설정하는 것은 <strong>Permissions</strong>를 강화하는 것입니다. 이 과정의 Module 04~08이 이 5가지를 하나씩 다룹니다.</span><span class="lang-en">Writing CLAUDE.md is designing <strong>Knowledge</strong>, connecting MCP is extending <strong>Tools</strong>, configuring Hooks is strengthening <strong>Permissions</strong>. Modules 04–08 in this course cover each of these five components.</span></p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3><span class="lang-ko">하네스가 하는 일 목록</span><span class="lang-en">What the Harness Does</span></h3>
+      <div class="kv-item"><span class="kv-key"><span class="lang-ko">시스템 프롬프트 조립</span><span class="lang-en">System Prompt Assembly</span></span><span class="kv-val"><span class="lang-ko">CLAUDE.md + MCP 도구 정의 + Skills 설명 + 권한 규칙을 하나로 합쳐서 모델에게 전달</span><span class="lang-en">Merges CLAUDE.md + MCP tool definitions + Skills descriptions + permission rules into one prompt for the model</span></span></div>
+      <div class="kv-item"><span class="kv-key"><span class="lang-ko">에이전트 루프</span><span class="lang-en">Agent Loop</span></span><span class="kv-val"><span class="lang-ko">모델 호출 &rarr; 도구 실행 &rarr; 결과 피드백 &rarr; 반복 (작업 완료까지)</span><span class="lang-en">Model call &rarr; Tool execution &rarr; Result feedback &rarr; Repeat (until task is done)</span></span></div>
+      <div class="kv-item"><span class="kv-key"><span class="lang-ko">도구 디스패치</span><span class="lang-en">Tool Dispatch</span></span><span class="kv-val"><span class="lang-ko">모델이 "Read 도구를 써서 파일을 읽겠다"고 하면, 실제로 파일 시스템에서 읽기를 실행</span><span class="lang-en">When the model says "I'll use the Read tool," the harness actually reads from the file system</span></span></div>
+      <div class="kv-item"><span class="kv-key"><span class="lang-ko">권한 관리</span><span class="lang-en">Permission Management</span></span><span class="kv-val"><span class="lang-ko">Normal/Auto-Accept/Plan 모드에 따라 도구 실행을 승인/거부/질문</span><span class="lang-en">Approves/denies/asks based on Normal/Auto-Accept/Plan mode</span></span></div>
+      <div class="kv-item"><span class="kv-key"><span class="lang-ko">Hooks 실행</span><span class="lang-en">Hooks Execution</span></span><span class="kv-val"><span class="lang-ko">도구 호출 전후, 알림 등 사용자가 정의한 셸 스크립트를 자동 실행</span><span class="lang-en">Runs user-defined shell scripts before/after tool calls, notifications, etc.</span></span></div>
+      <div class="kv-item"><span class="kv-key"><span class="lang-ko">컨텍스트 윈도우 관리</span><span class="lang-en">Context Window Management</span></span><span class="kv-val"><span class="lang-ko">대화가 길어지면 자동 압축, 이전 메시지 정리, 토큰 사용량 추적</span><span class="lang-en">Auto-compresses long conversations, cleans up old messages, tracks token usage</span></span></div>
+      <div class="kv-item"><span class="kv-key"><span class="lang-ko">세션 관리</span><span class="lang-en">Session Management</span></span><span class="kv-val"><span class="lang-ko">대화 기록 저장, /resume으로 복원, 세션 ID 관리</span><span class="lang-en">Saves conversation history, restores with /resume, manages session IDs</span></span></div>
+    </div>
+  </div>
+</section>
+
+<!-- =================== SECTION 3: AGENT LOOP =================== -->
+<section id="loop">
+  <div class="container">
+    <div class="section-number">04</div>
+    <h2 class="section-title"><span class="lang-ko">에이전트 루프 — 핵심 중의 핵심</span><span class="lang-en">The Agent Loop — The Heart of Everything</span></h2>
+    <p class="section-desc">
+      <span class="lang-ko">하네스의 가장 중요한 역할은 이 루프를 반복하는 것입니다</span>
+      <span class="lang-en">The harness's most critical role is running this loop</span>
+    </p>
+
+    <div class="analogy-box">
+      <h4><span class="lang-ko">요리사 비유로 이해하기</span><span class="lang-en">The Chef Analogy</span></h4>
+      <div class="lang-ko">
+      <p>
+        여러분이 "파스타 만들어줘"라고 말하면, 요리사(Claude)는 한 번에 완성하지 않습니다.<br><br>
+        &#x1F4DD; 레시피 확인(계획) &rarr; &#x1F52A; 재료 손질(도구 사용) &rarr; &#x1F441; 맛 확인(결과 검증) &rarr; &#x1F9C2; 간 조절(수정) &rarr; ... &rarr; &#x2705; 완성!<br><br>
+        이 <strong>"확인 &rarr; 실행 &rarr; 검증 &rarr; 반복"</strong> 과정이 바로 에이전트 루프이고, 하네스가 이 과정을 관리합니다.
+      </p>
+      </div>
+      <div class="lang-en">
+      <p>
+        When you say "make pasta," the chef (Claude) doesn't finish it all at once.<br><br>
+        &#x1F4DD; Check recipe (plan) &rarr; &#x1F52A; Prep ingredients (use tools) &rarr; &#x1F441; Taste test (verify result) &rarr; &#x1F9C2; Adjust seasoning (modify) &rarr; ... &rarr; &#x2705; Done!<br><br>
+        This <strong>"check &rarr; execute &rarr; verify &rarr; repeat"</strong> process is the agent loop, and the harness manages it all.
+      </p>
+      </div>
+    </div>
+
+    <h3 style="margin-bottom: 20px;"><span class="lang-ko">루프의 5단계</span><span class="lang-en">The 5 Steps of the Loop</span></h3>
+
+    <div class="flow-steps">
+      <div class="flow-step">
+        <div class="flow-step-num">1</div>
+        <div class="flow-step-content">
+          <h4><span class="lang-ko">컨텍스트 조립</span><span class="lang-en">Context Assembly</span></h4>
+          <p><span class="lang-ko">사용자 메시지 + CLAUDE.md + 시스템 프롬프트 + 이전 대화 + 도구 정의를 하나의 요청으로 묶어서 모델에게 전송합니다.</span><span class="lang-en">Bundles user message + CLAUDE.md + system prompt + conversation history + tool definitions into a single request to the model.</span></p>
+        </div>
+      </div>
+      <div class="flow-connector"></div>
+      <div class="flow-step">
+        <div class="flow-step-num">2</div>
+        <div class="flow-step-content">
+          <h4><span class="lang-ko">모델 응답</span><span class="lang-en">Model Response</span></h4>
+          <p><span class="lang-ko">Claude 모델이 텍스트 응답 또는 <strong>도구 호출 요청</strong>을 반환합니다. 예: "Read 도구로 src/app.ts를 읽겠습니다."</span><span class="lang-en">The Claude model returns a text response or a <strong>tool call request</strong>. Example: "I'll use the Read tool to read src/app.ts."</span></p>
+        </div>
+      </div>
+      <div class="flow-connector"></div>
+      <div class="flow-step">
+        <div class="flow-step-num">3</div>
+        <div class="flow-step-content">
+          <h4><span class="lang-ko">권한 확인</span><span class="lang-en">Permission Check</span></h4>
+          <p><span class="lang-ko">하네스가 권한 모드를 확인합니다. Normal Mode면 사용자에게 승인을 요청하고, Auto-Accept면 자동 실행합니다. Plan Mode면 도구 실행을 차단합니다.</span><span class="lang-en">The harness checks the permission mode. In Normal Mode, it asks the user for approval. In Auto-Accept, it runs automatically. In Plan Mode, tool execution is blocked.</span></p>
+        </div>
+      </div>
+      <div class="flow-connector"></div>
+      <div class="flow-step">
+        <div class="flow-step-num">4</div>
+        <div class="flow-step-content">
+          <h4><span class="lang-ko">도구 실행 + Hooks</span><span class="lang-en">Tool Execution + Hooks</span></h4>
+          <p><span class="lang-ko">승인되면 하네스가 도구를 실행합니다. 이때 설정된 Hooks가 있으면 도구 실행 전(PreToolUse)과 후(PostToolUse)에 사용자 스크립트를 실행합니다.</span><span class="lang-en">Once approved, the harness executes the tool. If hooks are configured, it runs user scripts before (PreToolUse) and after (PostToolUse) tool execution.</span></p>
+        </div>
+      </div>
+      <div class="flow-connector"></div>
+      <div class="flow-step">
+        <div class="flow-step-num">5</div>
+        <div class="flow-step-content">
+          <h4><span class="lang-ko">결과 피드백 &rarr; 반복 또는 종료</span><span class="lang-en">Result Feedback &rarr; Repeat or End</span></h4>
+          <p><span class="lang-ko">도구 실행 결과를 모델에게 다시 전달합니다. 모델이 "작업 완료"라고 판단하면 루프 종료. 추가 작업이 필요하면 2단계로 돌아갑니다.</span><span class="lang-en">Feeds tool execution results back to the model. If the model decides "task complete," the loop ends. If more work is needed, it returns to step 2.</span></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="tip-box">
+      <div class="tip-label"><span class="lang-ko">핵심 포인트</span><span class="lang-en">Key Point</span></div>
+      <p><span class="lang-ko">하나의 프롬프트에 대해 이 루프가 <strong>수십 번</strong> 반복될 수 있습니다. "이 프로젝트에 테스트를 추가해줘"라고 하면 Claude는 파일 읽기 &rarr; 분석 &rarr; 테스트 작성 &rarr; 실행 &rarr; 오류 수정 &rarr; 재실행을 반복합니다. 이 전체를 하네스가 관리합니다.</span><span class="lang-en">This loop can repeat <strong>dozens of times</strong> for a single prompt. When you say "add tests to this project," Claude reads files &rarr; analyzes &rarr; writes tests &rarr; runs them &rarr; fixes errors &rarr; re-runs. The harness manages this entire process.</span></p>
+    </div>
+  </div>
+</section>
+
+<!-- =================== SECTION 4: TOOL DISPATCH =================== -->
+<section id="tools">
+  <div class="container">
+    <div class="section-number">05</div>
+    <h2 class="section-title"><span class="lang-ko">도구 디스패치 — 실제로 일하는 손</span><span class="lang-en">Tool Dispatch — The Working Hands</span></h2>
+    <p class="section-desc">
+      <span class="lang-ko">모델이 "이 도구를 쓰겠다"고 말하면, 하네스가 실제 실행을 담당합니다</span>
+      <span class="lang-en">When the model says "I'll use this tool," the harness handles the actual execution</span>
+    </p>
+
+    <div class="card">
+      <h3><span class="lang-ko">내장 도구 (Built-in Tools)</span><span class="lang-en">Built-in Tools</span></h3>
+      <p><span class="lang-ko">하네스에 기본으로 포함된 도구들입니다. 모델이 필요할 때 자유롭게 호출합니다.</span><span class="lang-en">These tools come built into the harness. The model calls them freely as needed.</span></p>
+      <table class="data-table">
+        <thead><tr><th><span class="lang-ko">도구</span><span class="lang-en">Tool</span></th><th><span class="lang-ko">역할</span><span class="lang-en">Role</span></th><th><span class="lang-ko">예시</span><span class="lang-en">Example</span></th></tr></thead>
+        <tbody>
+          <tr><td><code>Read</code></td><td><span class="lang-ko">파일 읽기</span><span class="lang-en">Read files</span></td><td><span class="lang-ko">소스 코드, 설정 파일 확인</span><span class="lang-en">Check source code, config files</span></td></tr>
+          <tr><td><code>Write</code></td><td><span class="lang-ko">파일 생성/덮어쓰기</span><span class="lang-en">Create/overwrite files</span></td><td><span class="lang-ko">새 파일 작성</span><span class="lang-en">Write new files</span></td></tr>
+          <tr><td><code>Edit</code></td><td><span class="lang-ko">파일 부분 수정</span><span class="lang-en">Partial file edit</span></td><td><span class="lang-ko">특정 함수만 수정</span><span class="lang-en">Modify a specific function</span></td></tr>
+          <tr><td><code>Bash</code></td><td><span class="lang-ko">셸 명령 실행</span><span class="lang-en">Run shell commands</span></td><td><code>npm test</code>, <code>git status</code></td></tr>
+          <tr><td><code>Glob</code></td><td><span class="lang-ko">파일 패턴 검색</span><span class="lang-en">File pattern search</span></td><td><code>**/*.ts</code></td></tr>
+          <tr><td><code>Grep</code></td><td><span class="lang-ko">파일 내용 검색</span><span class="lang-en">Search file contents</span></td><td><span class="lang-ko">코드 내 키워드 찾기</span><span class="lang-en">Find keywords in code</span></td></tr>
+          <tr><td><code>Agent</code></td><td><span class="lang-ko">서브에이전트 실행</span><span class="lang-en">Run sub-agents</span></td><td><span class="lang-ko">병렬 탐색, 전문 작업</span><span class="lang-en">Parallel search, specialized tasks</span></td></tr>
+          <tr><td><code>Skill</code></td><td><span class="lang-ko">스킬 호출</span><span class="lang-en">Invoke a Skill</span></td><td><code>/commit</code>, <code>/review-pr</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card" style="margin-top: 24px;">
+      <h3><span class="lang-ko">MCP 도구 (외부 확장)</span><span class="lang-en">MCP Tools (External Extensions)</span></h3>
+      <p><span class="lang-ko">MCP 서버를 통해 추가된 외부 도구들입니다. 하네스는 이 도구들도 내장 도구와 동일하게 취급합니다.</span><span class="lang-en">External tools added through MCP servers. The harness treats these the same as built-in tools.</span></p>
+      <div class="code-block"><div class="code-header"><span class="lang"><span class="dot bash"></span>bash</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div><pre><span class="comment"># MCP 도구도 하네스가 관리</span>
+<span class="comment"># 1. 하네스가 MCP 서버에서 도구 정의를 가져옴</span>
+<span class="comment"># 2. 모델에게 "이런 도구들이 있다"고 알려줌</span>
+<span class="comment"># 3. 모델이 호출하면 하네스가 MCP 서버로 중계</span>
+
+<span class="cmd">claude mcp add</span> <span class="flag">--transport stdio</span> github -- \
+  npx -y @anthropic-ai/mcp-server-github
+
+<span class="comment"># 하네스가 github MCP의 도구들을 모델에게 등록</span>
+<span class="comment"># → 모델: "search_repositories 도구로 검색하겠습니다"</span>
+<span class="comment"># → 하네스: MCP 서버에 요청 전달 → 결과 반환</span></pre></div>
+    </div>
+
+    <div class="warn-box">
+      <div class="warn-label"><span class="lang-ko">도구가 많을수록 컨텍스트가 줄어든다</span><span class="lang-en">More Tools = Less Context</span></div>
+      <p><span class="lang-ko">하네스는 모든 도구의 <strong>정의(설명, 파라미터)</strong>를 모델에게 전달해야 합니다. MCP 서버를 많이 연결하면 도구 정의만으로 컨텍스트 윈도우의 상당 부분을 차지합니다. 이것이 "MCP 10개 이상이면 컨텍스트가 급감한다"는 이유입니다.</span><span class="lang-en">The harness must pass all tool <strong>definitions (descriptions, parameters)</strong> to the model. Connecting many MCP servers means tool definitions alone consume a significant portion of the context window. This is why "more than 10 MCPs causes context to plummet."</span></p>
+    </div>
+  </div>
+</section>
+
+<!-- =================== SECTION 5: CONTEXT ASSEMBLY =================== -->
+<section id="context">
+  <div class="container">
+    <div class="section-number">06</div>
+    <h2 class="section-title"><span class="lang-ko">컨텍스트 조립 — 모델이 보는 세상</span><span class="lang-en">Context Assembly — What the Model Sees</span></h2>
+    <p class="section-desc">
+      <span class="lang-ko">매 요청마다 하네스가 이 모든 것을 하나로 합쳐서 모델에게 보냅니다</span>
+      <span class="lang-en">For every request, the harness merges all of this and sends it to the model</span>
+    </p>
+
+    <div class="card">
+      <h3><span class="lang-ko">컨텍스트에 포함되는 것들 (순서대로)</span><span class="lang-en">What Goes Into Context (in order)</span></h3>
+      <div class="flow-steps">
+        <div class="flow-step">
+          <div class="flow-step-num">1</div>
+          <div class="flow-step-content">
+            <h4><span class="lang-ko">시스템 프롬프트</span><span class="lang-en">System Prompt</span></h4>
+            <p><span class="lang-ko">Claude Code의 기본 행동 규칙. "파일을 읽을 때는 Read 도구를 사용하라", "보안 취약점을 만들지 마라" 등의 지침이 포함됩니다. 사용자가 수정할 수 없습니다.</span><span class="lang-en">Claude Code's base behavior rules. Instructions like "use the Read tool to read files" and "don't create security vulnerabilities." Users can't modify this.</span></p>
+          </div>
+        </div>
+        <div class="flow-connector"></div>
+        <div class="flow-step">
+          <div class="flow-step-num">2</div>
+          <div class="flow-step-content">
+            <h4>CLAUDE.md</h4>
+            <p><span class="lang-ko">전역(~/) &rarr; 프로젝트 루트 &rarr; 하위 디렉토리 순서로 병합됩니다. 사용자의 프로젝트별 지침이 여기에 해당합니다.</span><span class="lang-en">Merged in order: global (~/) &rarr; project root &rarr; subdirectory. Your project-specific instructions go here.</span></p>
+          </div>
+        </div>
+        <div class="flow-connector"></div>
+        <div class="flow-step">
+          <div class="flow-step-num">3</div>
+          <div class="flow-step-content">
+            <h4><span class="lang-ko">도구 정의</span><span class="lang-en">Tool Definitions</span></h4>
+            <p><span class="lang-ko">내장 도구 + MCP 도구 + Skills 설명. 모델이 어떤 도구를 사용할 수 있는지 알려줍니다.</span><span class="lang-en">Built-in tools + MCP tools + Skills descriptions. Tells the model what tools are available.</span></p>
+          </div>
+        </div>
+        <div class="flow-connector"></div>
+        <div class="flow-step">
+          <div class="flow-step-num">4</div>
+          <div class="flow-step-content">
+            <h4><span class="lang-ko">대화 히스토리</span><span class="lang-en">Conversation History</span></h4>
+            <p><span class="lang-ko">이전 메시지 + 도구 호출 결과. 대화가 길어지면 하네스가 자동으로 오래된 메시지를 압축합니다.</span><span class="lang-en">Previous messages + tool call results. As conversation grows, the harness auto-compresses older messages.</span></p>
+          </div>
+        </div>
+        <div class="flow-connector"></div>
+        <div class="flow-step">
+          <div class="flow-step-num">5</div>
+          <div class="flow-step-content">
+            <h4><span class="lang-ko">현재 사용자 메시지</span><span class="lang-en">Current User Message</span></h4>
+            <p><span class="lang-ko">방금 여러분이 입력한 프롬프트입니다.</span><span class="lang-en">The prompt you just typed.</span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-grid card-grid-2">
+      <div class="card">
+        <div class="card-icon" style="background: var(--green-dim);">&#x1F4E6;</div>
+        <h3><span class="lang-ko">자동 압축</span><span class="lang-en">Auto Compression</span></h3>
+        <div class="lang-ko"><p>대화가 컨텍스트 한계에 가까워지면 하네스가 <strong>자동으로 오래된 메시지를 요약</strong>합니다. <code>/compact</code>로 수동으로도 할 수 있고, 키워드를 지정해서 특정 내용만 남길 수도 있습니다.</p></div>
+        <div class="lang-en"><p>When conversation approaches context limits, the harness <strong>automatically summarizes older messages</strong>. You can do this manually with <code>/compact</code>, or specify keywords to keep specific content.</p></div>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background: var(--orange-dim);">&#x1F4CA;</div>
+        <h3><span class="lang-ko">토큰 추적</span><span class="lang-en">Token Tracking</span></h3>
+        <div class="lang-ko"><p>하네스는 매 요청마다 <strong>사용된 토큰 수</strong>를 추적합니다. <code>/cost</code>로 현재 세션의 토큰 사용량을 확인할 수 있습니다. API 사용자라면 비용을 모니터링하는 데 필수적입니다.</p></div>
+        <div class="lang-en"><p>The harness tracks <strong>tokens used</strong> per request. Use <code>/cost</code> to check current session token usage. Essential for API users to monitor costs.</p></div>
+      </div>
+    </div>
+
+    <div class="tip-box">
+      <div class="tip-label"><span class="lang-ko">왜 이걸 알아야 하나?</span><span class="lang-en">Why Should You Know This?</span></div>
+      <p><span class="lang-ko">컨텍스트 조립 과정을 이해하면 <strong>왜 CLAUDE.md를 짧게 써야 하는지</strong>, <strong>왜 MCP를 너무 많이 달면 안 되는지</strong>, <strong>왜 대화가 길어지면 성능이 떨어지는지</strong>를 정확히 알 수 있습니다. 모두 같은 컨텍스트 윈도우 안에서 경쟁하기 때문입니다.</span><span class="lang-en">Understanding context assembly explains <strong>why CLAUDE.md should be concise</strong>, <strong>why too many MCPs hurt performance</strong>, and <strong>why long conversations degrade quality</strong>. Everything competes for the same context window.</span></p>
+    </div>
+  </div>
+</section>
+
+<!-- =================== SECTION 6: PERMISSIONS =================== -->
+<section id="permissions">
+  <div class="container">
+    <div class="section-number">07</div>
+    <h2 class="section-title"><span class="lang-ko">권한 관리 — 안전 장치</span><span class="lang-en">Permission Management — Safety Net</span></h2>
+    <p class="section-desc">
+      <span class="lang-ko">하네스는 모델이 위험한 행동을 하지 못하도록 보호합니다</span>
+      <span class="lang-en">The harness protects against the model performing dangerous actions</span>
+    </p>
+
+    <div class="card">
+      <h3><span class="lang-ko">3가지 권한 모드</span><span class="lang-en">3 Permission Modes</span></h3>
+      <p><span class="lang-ko">하네스가 도구 실행 요청을 받았을 때의 동작 방식입니다.</span><span class="lang-en">How the harness behaves when it receives a tool execution request.</span></p>
+      <table class="data-table">
+        <thead><tr><th><span class="lang-ko">모드</span><span class="lang-en">Mode</span></th><th><span class="lang-ko">하네스 동작</span><span class="lang-en">Harness Behavior</span></th><th><span class="lang-ko">적합한 상황</span><span class="lang-en">Best For</span></th></tr></thead>
+        <tbody>
+          <tr><td><strong>Normal</strong></td><td><span class="lang-ko">파일 수정, 셸 실행 시 <strong>사용자에게 매번 승인 요청</strong></span><span class="lang-en"><strong>Asks for user approval</strong> on file changes and shell execution</span></td><td><span class="lang-ko">일반적인 작업 (기본값)</span><span class="lang-en">Normal work (default)</span></td></tr>
+          <tr><td><strong>Auto-Accept</strong></td><td><span class="lang-ko">모든 도구를 <strong>자동 승인</strong>하여 실행</span><span class="lang-en"><strong>Auto-approves</strong> all tools</span></td><td><span class="lang-ko">숙련자, 신뢰할 수 있는 작업</span><span class="lang-en">Experienced users, trusted tasks</span></td></tr>
+          <tr><td><strong>Plan Mode</strong></td><td><span class="lang-ko">읽기 도구만 허용, <strong>쓰기/실행 차단</strong></span><span class="lang-en">Only read tools allowed, <strong>blocks write/execute</strong></span></td><td><span class="lang-ko">분석, 계획 수립</span><span class="lang-en">Analysis, planning</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card" style="margin-top: 24px;">
+      <h3><span class="lang-ko">세밀한 권한 규칙</span><span class="lang-en">Fine-grained Permission Rules</span></h3>
+      <p><span class="lang-ko"><code>settings.json</code>이나 <code>/permissions</code>에서 도구별, 경로별로 세밀하게 제어할 수 있습니다.</span><span class="lang-en">You can set granular controls per tool and per path in <code>settings.json</code> or <code>/permissions</code>.</span></p>
+      <div class="code-block"><div class="code-header"><span class="lang"><span class="dot json"></span>settings.json</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div><pre><span class="comment">// 예: 특정 도구 자동 허용/거부</span>
+{
+  <span class="string">"permissions"</span>: {
+    <span class="string">"allow"</span>: [
+      <span class="string">"Read"</span>,
+      <span class="string">"Grep"</span>,
+      <span class="string">"Glob"</span>,
+      <span class="string">"Bash(git status)"</span>,
+      <span class="string">"Bash(npm test)"</span>
+    ],
+    <span class="string">"deny"</span>: [
+      <span class="string">"Bash(rm -rf *)"</span>,
+      <span class="string">"Bash(git push --force)"</span>
+    ]
+  }
+}</pre></div>
+      <div class="tip-box">
+        <div class="tip-label"><span class="lang-ko">이것이 하네스의 역할</span><span class="lang-en">This Is the Harness's Role</span></div>
+        <p><span class="lang-ko">모델은 "rm -rf 실행하겠습니다"라고 할 수 있지만, <strong>하네스가 실제 실행을 차단</strong>합니다. 모델과 실제 실행 사이의 <strong>게이트키퍼</strong>가 바로 하네스입니다.</span><span class="lang-en">The model might say "I'll run rm -rf" but the <strong>harness blocks the actual execution</strong>. The <strong>gatekeeper</strong> between the model and real execution is the harness.</span></p>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top: 24px;">
+      <h3><span class="lang-ko">Hooks — 하네스의 확장 포인트</span><span class="lang-en">Hooks — The Harness Extension Point</span></h3>
+      <p><span class="lang-ko">Hooks는 하네스의 특정 시점에 사용자가 셸 스크립트를 끼워넣는 기능입니다.</span><span class="lang-en">Hooks let users inject shell scripts at specific points in the harness lifecycle.</span></p>
+      <table class="data-table">
+        <thead><tr><th>Hook</th><th><span class="lang-ko">시점</span><span class="lang-en">When</span></th><th><span class="lang-ko">사용 예</span><span class="lang-en">Use Case</span></th></tr></thead>
+        <tbody>
+          <tr><td><code>PreToolUse</code></td><td><span class="lang-ko">도구 실행 <strong>전</strong></span><span class="lang-en"><strong>Before</strong> tool execution</span></td><td><span class="lang-ko">특정 파일 수정 차단, 자동 승인</span><span class="lang-en">Block certain file edits, auto-approve</span></td></tr>
+          <tr><td><code>PostToolUse</code></td><td><span class="lang-ko">도구 실행 <strong>후</strong></span><span class="lang-en"><strong>After</strong> tool execution</span></td><td><span class="lang-ko">린터 실행, 알림 전송</span><span class="lang-en">Run linter, send notifications</span></td></tr>
+          <tr><td><code>Notification</code></td><td><span class="lang-ko">Claude가 입력 대기 시</span><span class="lang-en">When Claude awaits input</span></td><td><span class="lang-ko">작업 완료 알림</span><span class="lang-en">Task completion alert</span></td></tr>
+          <tr><td><code>Stop</code></td><td><span class="lang-ko">에이전트 루프 종료 시</span><span class="lang-en">When agent loop ends</span></td><td><span class="lang-ko">자동 커밋, 로그 기록</span><span class="lang-en">Auto-commit, logging</span></td></tr>
+        </tbody>
+      </table>
+      <div class="code-block"><div class="code-header"><span class="lang"><span class="dot json"></span>settings.json</span><button class="copy-btn" onclick="copyCode(this)">copy</button></div><pre><span class="comment">// Hook 설정 예시: 파일 수정 후 자동으로 린터 실행</span>
+{
+  <span class="string">"hooks"</span>: {
+    <span class="string">"PostToolUse"</span>: [
+      {
+        <span class="string">"matcher"</span>: <span class="string">"Edit"</span>,
+        <span class="string">"hooks"</span>: [
+          {
+            <span class="string">"type"</span>: <span class="string">"command"</span>,
+            <span class="string">"command"</span>: <span class="string">"npx eslint --fix $CLAUDE_FILE_PATH"</span>
+          }
+        ]
+      }
+    ]
+  }
+}</pre></div>
+    </div>
+  </div>
+</section>
+
+<!-- =================== SECTION 7: FAQ =================== -->
+<section id="faq">
+  <div class="container">
+    <div class="section-number">08</div>
+    <h2 class="section-title"><span class="lang-ko">자주 묻는 질문</span><span class="lang-en">Frequently Asked Questions</span></h2>
+    <p class="section-desc">
+      <span class="lang-ko">하네스에 대해 처음 접하는 분들이 가장 많이 궁금해하는 것들</span>
+      <span class="lang-en">The most common questions from those new to the harness concept</span>
+    </p>
+
+    <div class="accordion">
+      <div class="accordion-item">
+        <button class="accordion-btn" onclick="toggleAccordion(this)">
+          <span class="lang-ko">하네스와 모델의 차이가 정확히 뭔가요?</span><span class="lang-en">What exactly is the difference between the harness and the model?</span>
+          <span class="arrow">&#x25BC;</span>
+        </button>
+        <div class="accordion-body">
+          <div class="accordion-body-inner">
+            <div class="lang-ko"><strong>모델</strong>은 텍스트를 입력받아 텍스트를 출력하는 AI입니다. "이 코드를 수정해야 합니다"라고 <em>판단</em>하는 것이 모델의 역할입니다.<br><br><strong>하네스</strong>는 모델의 판단을 <em>실행</em>하는 시스템입니다. 실제로 파일을 읽고, 쓰고, 명령을 실행하는 것은 하네스입니다. 모델은 "무엇을 해야 하는지" 결정하고, 하네스는 "어떻게 실행할지"를 담당합니다.</div>
+            <div class="lang-en"><strong>The model</strong> is AI that takes text input and produces text output. Its role is to <em>decide</em> "this code needs to be modified."<br><br><strong>The harness</strong> is the system that <em>executes</em> the model's decisions. It actually reads files, writes code, and runs commands. The model decides "what to do," the harness handles "how to do it."</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <button class="accordion-btn" onclick="toggleAccordion(this)">
+          <span class="lang-ko">하네스를 직접 설정하거나 수정할 수 있나요?</span><span class="lang-en">Can I configure or modify the harness directly?</span>
+          <span class="arrow">&#x25BC;</span>
+        </button>
+        <div class="accordion-body">
+          <div class="accordion-body-inner">
+            <div class="lang-ko">하네스의 핵심 로직을 직접 수정하는 것은 불가능합니다. 하지만 하네스의 <strong>동작을 제어</strong>하는 많은 방법이 있습니다:<br><br>
+            1. <strong>CLAUDE.md</strong> — 모델에게 주는 지침 커스터마이징<br>
+            2. <strong>settings.json</strong> — 권한 규칙, 허용/거부 도구 설정<br>
+            3. <strong>Hooks</strong> — 도구 실행 전후에 사용자 스크립트 실행<br>
+            4. <strong>권한 모드</strong> — Normal/Auto-Accept/Plan 전환<br>
+            5. <strong>MCP 서버</strong> — 새로운 도구 추가<br><br>
+            즉, 하네스 자체를 바꾸는 게 아니라, 하네스에게 <strong>"이렇게 동작해라"</strong>라고 설정하는 것입니다.</div>
+            <div class="lang-en">You can't directly modify the harness's core logic. But there are many ways to <strong>control its behavior</strong>:<br><br>
+            1. <strong>CLAUDE.md</strong> — Customize instructions given to the model<br>
+            2. <strong>settings.json</strong> — Set permission rules, allow/deny tools<br>
+            3. <strong>Hooks</strong> — Run user scripts before/after tool execution<br>
+            4. <strong>Permission modes</strong> — Switch between Normal/Auto-Accept/Plan<br>
+            5. <strong>MCP servers</strong> — Add new tools<br><br>
+            In other words, you don't change the harness itself — you <strong>configure how it behaves</strong>.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <button class="accordion-btn" onclick="toggleAccordion(this)">
+          <span class="lang-ko">"에이전트"와 "하네스"는 같은 말인가요?</span><span class="lang-en">Are "agent" and "harness" the same thing?</span>
+          <span class="arrow">&#x25BC;</span>
+        </button>
+        <div class="accordion-body">
+          <div class="accordion-body-inner">
+            <div class="lang-ko">밀접하지만 다른 개념입니다.<br><br>
+            <strong>"에이전트"</strong>는 <strong>모델 + 하네스가 합쳐진 전체 시스템</strong>을 의미합니다. "Claude Code 에이전트"라고 하면, AI 두뇌(모델)와 실행 시스템(하네스)을 모두 포함하는 개념입니다.<br><br>
+            <strong>"하네스"</strong>는 그 에이전트 시스템에서 <strong>모델을 제외한 나머지 부분</strong> — 즉 루프 관리, 도구 실행, 권한 제어 등의 인프라입니다.<br><br>
+            비유하면: 에이전트 = 자동차 전체, 하네스 = 엔진을 제외한 차체·변속기·브레이크 시스템.</div>
+            <div class="lang-en">Related but different concepts.<br><br>
+            <strong>"Agent"</strong> means the <strong>entire system of model + harness combined</strong>. When we say "Claude Code agent," it includes both the AI brain (model) and execution system (harness).<br><br>
+            <strong>"Harness"</strong> is <strong>everything except the model</strong> in that agent system — the infrastructure for loop management, tool execution, permission control, etc.<br><br>
+            Analogy: Agent = the whole car, Harness = the chassis, transmission, and brake system (everything except the engine).</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <button class="accordion-btn" onclick="toggleAccordion(this)">
+          <span class="lang-ko">하네스를 이해하면 실제로 뭐가 달라지나요?</span><span class="lang-en">How does understanding the harness actually help me?</span>
+          <span class="arrow">&#x25BC;</span>
+        </button>
+        <div class="accordion-body">
+          <div class="accordion-body-inner">
+            <div class="lang-ko">
+            <strong>1. 성능 최적화</strong> — 컨텍스트 윈도우에서 무엇이 공간을 차지하는지 알면, CLAUDE.md를 간결하게 쓰고 MCP를 적절히 관리하는 이유를 이해합니다.<br><br>
+            <strong>2. 문제 진단</strong> — "Claude가 왜 이 파일을 못 찾지?"라는 질문에 "컨텍스트에 해당 정보가 없기 때문"이라는 정확한 원인을 파악할 수 있습니다.<br><br>
+            <strong>3. 안전한 사용</strong> — 권한 시스템이 어떻게 작동하는지 알면, 언제 Auto-Accept를 써도 되는지, 어떤 Hook을 설정해야 하는지 판단할 수 있습니다.<br><br>
+            <strong>4. 효과적인 프롬프팅</strong> — 모델이 받는 컨텍스트의 구조를 알면, 어떤 정보를 프롬프트에 포함해야 효과적인지 이해합니다.</div>
+            <div class="lang-en">
+            <strong>1. Performance optimization</strong> — Knowing what occupies context window space helps you understand why to keep CLAUDE.md concise and manage MCPs carefully.<br><br>
+            <strong>2. Problem diagnosis</strong> — When "Claude can't find this file," you can identify the exact cause: "that information isn't in the context."<br><br>
+            <strong>3. Safe usage</strong> — Understanding how the permission system works helps you judge when Auto-Accept is safe and which Hooks to configure.<br><br>
+            <strong>4. Effective prompting</strong> — Knowing the structure of context the model receives helps you understand what information to include in prompts.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <button class="accordion-btn" onclick="toggleAccordion(this)">
+          <span class="lang-ko">서브에이전트도 각자 하네스가 있나요?</span><span class="lang-en">Do sub-agents have their own harness?</span>
+          <span class="arrow">&#x25BC;</span>
+        </button>
+        <div class="accordion-body">
+          <div class="accordion-body-inner">
+            <div class="lang-ko">네! 서브에이전트(Agent 도구로 생성)는 <strong>독립된 하네스 인스턴스</strong>에서 실행됩니다. 각각 자체 컨텍스트 윈도우, 자체 에이전트 루프를 가집니다. 메인 에이전트와 컨텍스트를 공유하지 않기 때문에, 서브에이전트에게 대량의 파일을 탐색시켜도 메인 에이전트의 컨텍스트가 오염되지 않습니다. 이것이 서브에이전트의 핵심 장점입니다.</div>
+            <div class="lang-en">Yes! Sub-agents (created via the Agent tool) run in <strong>independent harness instances</strong>. Each has its own context window and its own agent loop. Since they don't share context with the main agent, having a sub-agent search through many files won't pollute the main agent's context. This is the key advantage of sub-agents.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =================== SUMMARY =================== -->
+<section style="padding: 80px 0;">
+  <div class="container">
+    <div class="card" style="background: linear-gradient(135deg, rgba(8,145,178,0.08) 0%, rgba(34,211,238,0.08) 100%); border-color: rgba(8,145,178,0.15); text-align: center; padding: 60px 40px;">
+      <h2 style="font-size: clamp(24px, 4vw, 32px); font-weight: 800; margin-bottom: 16px;">
+        <span class="lang-ko">요약하면 이겁니다</span><span class="lang-en">Here's the Summary</span>
+      </h2>
+      <div class="lang-ko">
+      <p style="color: var(--text-dim); font-size: 17px; max-width: 560px; margin: 0 auto 32px; line-height: 1.8;">
+        하네스 = <strong style="color: var(--accent)">모델을 감싸서 실제로 동작하게 만드는 런타임</strong><br>
+        핵심 역할 = <strong style="color: var(--green)">에이전트 루프 + 도구 실행 + 권한 관리 + 컨텍스트 조립</strong><br>
+        비유 = <strong style="color: var(--orange)">모델이 두뇌라면, 하네스는 두뇌가 세상과 상호작용하는 몸체</strong>
+      </p>
+      <p style="color: var(--text-muted); font-size: 14px;">
+        하네스를 이해하면 Claude Code의 모든 기능이<br>
+        <span style="color: var(--accent); font-family: 'JetBrains Mono', monospace; font-size: 13px;">"아, 이게 하네스의 이 부분이구나"</span> 하고 연결됩니다.
+      </p>
+      </div>
+      <div class="lang-en">
+      <p style="color: var(--text-dim); font-size: 17px; max-width: 560px; margin: 0 auto 32px; line-height: 1.8;">
+        Harness = <strong style="color: var(--accent)">Runtime that wraps the model and makes it work</strong><br>
+        Core roles = <strong style="color: var(--green)">Agent loop + Tool execution + Permission management + Context assembly</strong><br>
+        Analogy = <strong style="color: var(--orange)">If the model is the brain, the harness is the body that lets it interact with the world</strong>
+      </p>
+      <p style="color: var(--text-muted); font-size: 14px;">
+        Once you understand the harness, every Claude Code feature<br>
+        <span style="color: var(--accent); font-family: 'JetBrains Mono', monospace; font-size: 13px;">"Oh, that's this part of the harness"</span> clicks into place.
+      </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =================== CHAPTER NAV =================== -->
+<div class="chapter-nav">
+  <a href="basics.html">&larr; <span class="lang-ko">이전: 기본 사용법</span><span class="lang-en">Prev: Master the Basics</span></a>
+  <a href="claude-md.html"><span class="lang-ko">다음: CLAUDE.md</span><span class="lang-en">Next: CLAUDE.md</span> &rarr;</a>
+</div>
+
+<footer>
+  <p>Made with Claude &middot; <a href="../index.html">Claude Code 101</a> &middot; <a href="https://code.claude.com/docs/en/how-claude-code-works" target="_blank"><span class="lang-ko">공식 하네스 문서</span><span class="lang-en">Official Harness Docs</span></a></p>
+</footer>
+
+<!-- =================== COMMUNITY =================== -->
+<div id="community-widget"></div>
+<script src="community.js"></script>
+
+<script>
+function copyCode(btn) {
+  const pre = btn.closest('.code-block').querySelector('pre');
+  navigator.clipboard.writeText(pre.textContent).then(() => {
+    btn.textContent = 'copied!';
+    setTimeout(() => btn.textContent = 'copy', 1500);
+  });
+}
+
+function toggleAccordion(btn) {
+  const body = btn.nextElementSibling;
+  const isOpen = btn.classList.contains('open');
+
+  // Close all
+  document.querySelectorAll('.accordion-btn').forEach(b => {
+    b.classList.remove('open');
+    b.nextElementSibling.style.maxHeight = null;
+  });
+
+  // Open clicked (if it was closed)
+  if (!isOpen) {
+    btn.classList.add('open');
+    body.style.maxHeight = body.scrollHeight + 'px';
+  }
+}
+
+// Active nav link on scroll
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-link:not(.nav-home)');
+
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(section => {
+    const sectionTop = section.offsetTop - 120;
+    if (scrollY >= sectionTop) {
+      current = section.getAttribute('id');
+    }
+  });
+  navLinks.forEach(link => {
+    link.classList.remove('active');
+    if (link.getAttribute('href') === '#' + current) {
+      link.classList.add('active');
+    }
+  });
+});
+</script>
+
+<button class="theme-btn" id="themeBtn" onclick="toggleThemeBtn()" data-title-ko="테마 전환" data-title-en="Toggle theme">&#127769;</button>
+<script src="theme.js"></script>
+<script src="lang.js"></script>
+</body>
+</html>

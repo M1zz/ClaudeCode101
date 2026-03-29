@@ -1045,6 +1045,78 @@
         <span class="lang-ko"><strong>이럴 때 Worktree를 쓰세요:</strong> 위험한 리팩토링, 실험적 기능 개발, 대규모 아키텍처 변경 등 "혹시 실패하면 어쩌지?"가 걱정될 때. 원본 코드를 전혀 건드리지 않으므로 마음 편하게 도전할 수 있습니다.</span><span class="lang-en"><strong>Use Worktree when:</strong> You're worried about risky refactoring, experimental feature development, or large-scale architecture changes. Since the original code is never touched, you can take on challenges with peace of mind.</span>
       </div>
     </div>
+
+    <!-- Worktree Deep Dive: Parallel Agents -->
+    <h3 style="font-size: 20px; font-weight: 700; margin: 48px 0 12px;"><span class="lang-ko">심화: 병렬 에이전트 + Worktree 격리</span><span class="lang-en">Deep Dive: Parallel Agents + Worktree Isolation</span></h3>
+    <p style="color: var(--text-dim); margin-bottom: 24px;"><span class="lang-ko">서브에이전트를 <code style="color:var(--accent)">isolation: "worktree"</code>로 실행하면, 각 에이전트가 <strong>독립된 작업 디렉토리</strong>에서 동시에 작업합니다. 서로의 파일 변경이 간섭하지 않습니다.</span><span class="lang-en">Running sub-agents with <code style="color:var(--accent)">isolation: "worktree"</code> gives each agent an <strong>independent working directory</strong>. File changes don't interfere with each other.</span></p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <div class="code-dots"><span></span><span></span><span></span></div>
+        <span><span class="lang-ko">병렬 Worktree 에이전트 예시</span><span class="lang-en">Parallel Worktree Agent Example</span></span>
+      </div>
+      <div class="code-body">
+<span class="comment"># <span class="lang-ko">프롬프트: 여러 작업을 동시에 워크트리에서 실행</span><span class="lang-en">Prompt: run multiple tasks simultaneously in worktrees</span></span>
+<span class="string">"다음 3가지를 각각 워크트리에서 병렬로 실행해줘:
+1. 로그인 모듈에 2FA 추가
+2. API 응답 캐싱 레이어 구현
+3. 테스트 커버리지 80% 달성"</span>
+
+<span class="comment"># <span class="lang-ko">Claude가 내부적으로 수행하는 동작:</span><span class="lang-en">What Claude does internally:</span></span>
+<span class="desc">[Agent 1]</span> worktree: <span class="file">feature/2fa</span>      → <span class="lang-ko">로그인 모듈 작업</span><span class="lang-en">Login module work</span>
+<span class="desc">[Agent 2]</span> worktree: <span class="file">feature/caching</span>  → <span class="lang-ko">캐싱 레이어 작업</span><span class="lang-en">Caching layer work</span>
+<span class="desc">[Agent 3]</span> worktree: <span class="file">feature/tests</span>    → <span class="lang-ko">테스트 작성</span><span class="lang-en">Test writing</span>
+<span class="comment"># <span class="lang-ko">각각 독립된 브랜치에서 작업 → 간섭 없음!</span><span class="lang-en">Each on independent branch → no interference!</span></span></div>
+    </div>
+
+    <div class="card-grid card-grid-2" style="margin-top: 20px;">
+      <div class="card">
+        <div class="card-icon" style="background: var(--green-dim);">&#x2705;</div>
+        <h3><span class="lang-ko">격리의 장점</span><span class="lang-en">Benefits of Isolation</span></h3>
+        <div class="lang-ko"><p>에이전트 A가 수정한 파일을 에이전트 B가 덮어쓰는 일이 없습니다. 각자 독립된 git 브랜치에서 작업하므로, 완료 후 개별적으로 리뷰하고 머지할 수 있습니다.</p></div>
+        <div class="lang-en"><p>Agent A's file edits won't be overwritten by Agent B. Each works on an independent git branch, so you can review and merge individually after completion.</p></div>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background: var(--orange-dim);">&#x26A0;</div>
+        <h3><span class="lang-ko">주의사항</span><span class="lang-en">Cautions</span></h3>
+        <div class="lang-ko"><p>각 워크트리는 독립된 컨텍스트를 사용하므로, 동시에 3개 에이전트를 돌리면 <strong>토큰 사용량도 3배</strong>입니다. API 사용자는 비용에 주의하세요.</p></div>
+        <div class="lang-en"><p>Each worktree uses independent context, so running 3 agents simultaneously means <strong>3x token usage</strong>. API users should watch costs.</p></div>
+      </div>
+    </div>
+
+    <!-- Background Agents -->
+    <h3 style="font-size: 20px; font-weight: 700; margin: 48px 0 12px;"><span class="lang-ko">심화: 백그라운드 에이전트 활용</span><span class="lang-en">Deep Dive: Background Agent Usage</span></h3>
+    <p style="color: var(--text-dim); margin-bottom: 24px;"><span class="lang-ko">느린 작업(빌드, 테스트, 대규모 탐색)은 백그라운드로 돌려놓고, 메인 에이전트는 다른 작업을 계속할 수 있습니다.</span><span class="lang-en">Slow operations (builds, tests, large searches) can run in the background while the main agent continues other work.</span></p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <div class="code-dots"><span></span><span></span><span></span></div>
+        <span><span class="lang-ko">백그라운드 실행 패턴</span><span class="lang-en">Background Execution Pattern</span></span>
+      </div>
+      <div class="code-body">
+<span class="comment"># <span class="lang-ko">패턴 1: Ctrl+B로 현재 작업을 백그라운드로</span><span class="lang-en">Pattern 1: Send current work to background with Ctrl+B</span></span>
+<span class="string">"전체 프로젝트에서 사용하지 않는 import를 정리해줘"</span>
+<span class="comment">→ <span class="lang-ko">실행 시작 후</span><span class="lang-en">After execution starts</span> Ctrl+B → <span class="lang-ko">백그라운드 전환</span><span class="lang-en">Switch to background</span></span>
+<span class="comment">→ <span class="lang-ko">새 프롬프트 입력 가능</span><span class="lang-en">You can now enter new prompts</span></span>
+
+<span class="comment"># <span class="lang-ko">패턴 2: 프롬프트에서 직접 백그라운드 요청</span><span class="lang-en">Pattern 2: Request background directly in prompt</span></span>
+<span class="string">"테스트를 백그라운드로 돌려놓고,
+그동안 README.md를 업데이트해줘"</span>
+<span class="comment">→ Claude<span class="lang-ko">가 서브에이전트를 백그라운드로 실행</span><span class="lang-en"> runs a sub-agent in background</span></span>
+
+<span class="comment"># <span class="lang-ko">패턴 3: 빌드+작업 병행</span><span class="lang-en">Pattern 3: Build + work in parallel</span></span>
+<span class="string">"npm run build를 백그라운드로 돌리면서
+다음 기능 구현을 시작해줘.
+빌드 실패하면 알려줘."</span></div>
+    </div>
+
+    <div class="tip">
+      <span class="tip-icon">&#x26A1;</span>
+      <div>
+        <span class="lang-ko"><strong>실전 조합:</strong> 백그라운드 에이전트 + Worktree를 함께 쓰면, 메인 브랜치에서 작업하면서 동시에 워크트리에서 실험적 작업을 백그라운드로 돌릴 수 있습니다. "메인 작업은 계속하면서, 워크트리에서 이 리팩토링을 백그라운드로 시도해줘"처럼 요청하세요.</span>
+        <span class="lang-en"><strong>Power combo:</strong> Using background agents + Worktree together lets you work on the main branch while simultaneously running experimental work in a worktree background. Try: "Continue main work while trying this refactoring in a worktree background."</span>
+      </div>
+    </div>
   </div>
 </section>
 

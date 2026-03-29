@@ -919,6 +919,7 @@
     <a href="../index.html" class="nav-link nav-home">&#x1F3E0; <span class="lang-ko">홈</span><span class="lang-en">Home</span></a>
     <a href="#what" class="nav-link"><span class="lang-ko">Claude Code란?</span><span class="lang-en">What is Claude Code?</span></a>
     <a href="#compare" class="nav-link"><span class="lang-ko">비교표</span><span class="lang-en">Comparison</span></a>
+    <a href="#stages" class="nav-link"><span class="lang-ko">발전 단계</span><span class="lang-en">Stages</span></a>
     <a href="#usecases" class="nav-link"><span class="lang-ko">사용 사례</span><span class="lang-en">Use Cases</span></a>
     <a href="#how-it-works" class="nav-link"><span class="lang-ko">작동 원리</span><span class="lang-en">How It Works</span></a>
     <a href="#platforms" class="nav-link"><span class="lang-ko">플랫폼</span><span class="lang-en">Platforms</span></a>
@@ -1053,10 +1054,74 @@
 
 <div class="divider"></div>
 
-<!-- =================== SECTION 3: USE CASES =================== -->
-<section id="usecases">
+<!-- =================== SECTION 3: AI CODING STAGES =================== -->
+<section id="stages">
   <div class="container">
     <div class="section-number">03</div>
+    <h2 class="section-title"><span class="lang-ko">AI 코딩의 4가지 발전 단계</span><span class="lang-en">The 4 Stages of AI-Assisted Coding</span></h2>
+    <p class="section-desc">
+      <span class="lang-ko">AI와 개발자가 협업하는 방식은 계속 진화하고 있습니다. 여러분은 지금 어디에 있고, <strong style="color:var(--accent)">어디로 가야 할까요?</strong></span>
+      <span class="lang-en">The way AI and developers collaborate is constantly evolving. Where are you now, and <strong style="color:var(--accent)">where should you be heading?</strong></span>
+    </p>
+
+    <table class="skill-table">
+      <thead>
+        <tr>
+          <th style="width: 90px;"><span class="lang-ko">단계</span><span class="lang-en">Stage</span></th>
+          <th style="width: 180px;"><span class="lang-ko">이름</span><span class="lang-en">Name</span></th>
+          <th><span class="lang-ko">사람의 역할</span><span class="lang-en">Human's Role</span></th>
+          <th style="width: 160px;"><span class="lang-ko">대표 도구</span><span class="lang-en">Representative Tool</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>1</strong></td>
+          <td><span class="lang-ko">Human <strong>Outside</strong> the Loop</span><span class="lang-en">Human <strong>Outside</strong> the Loop</span></td>
+          <td style="color: var(--text-dim);"><span class="lang-ko">"뭘 만들지"만 말하고 결과만 확인 (Vibe Coding)</span><span class="lang-en">Only says "what to build" and checks the result (Vibe Coding)</span></td>
+          <td style="color: var(--text-dim);"><span class="lang-ko">ChatGPT, claude.ai 웹</span><span class="lang-en">ChatGPT, claude.ai web</span></td>
+        </tr>
+        <tr>
+          <td><strong>2</strong></td>
+          <td><span class="lang-ko">Human <strong>In</strong> the Loop</span><span class="lang-en">Human <strong>In</strong> the Loop</span></td>
+          <td style="color: var(--text-dim);"><span class="lang-ko">AI가 만든 코드를 한 줄씩 확인하고 직접 수정</span><span class="lang-en">Reviews AI-generated code line by line and edits directly</span></td>
+          <td style="color: var(--text-dim);">Copilot, Cursor</td>
+        </tr>
+        <tr style="background: var(--accent-glow);">
+          <td><strong style="color:var(--accent)">3</strong></td>
+          <td><strong style="color:var(--accent)"><span class="lang-ko">Human <strong>On</strong> the Loop</span><span class="lang-en">Human <strong>On</strong> the Loop</span></strong></td>
+          <td style="color: var(--text-dim);"><span class="lang-ko"><strong>가이드(하네스)</strong>를 설계하고 AI에게 자율 작업 위임. 결과가 안 맞으면 코드가 아닌 <strong>하네스를 개선</strong></span><span class="lang-en">Designs <strong>guides (harness)</strong> and delegates autonomous work to AI. If results are wrong, improves the <strong>harness, not the code</strong></span></td>
+          <td style="color: var(--accent);"><strong>Claude Code</strong></td>
+        </tr>
+        <tr>
+          <td><strong>4</strong></td>
+          <td><span class="lang-ko">Agent <strong>Flywheel</strong></span><span class="lang-en">Agent <strong>Flywheel</strong></span></td>
+          <td style="color: var(--text-dim);"><span class="lang-ko">AI가 테스트와 실패를 통해 스스로 하네스를 보강하며 진화</span><span class="lang-en">AI reinforces its own harness through testing and failure, evolving autonomously</span></td>
+          <td style="color: var(--text-dim);"><span class="lang-ko">(연구 단계)</span><span class="lang-en">(Research stage)</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="tip">
+      <span class="tip-icon">&#x1F3AF;</span>
+      <div>
+        <div class="lang-ko"><strong>이 과정의 목표:</strong> 1단계(Vibe Coding)에서 시작해서 <strong style="color:var(--accent)">3단계(하네스 엔지니어링)</strong>까지 성장하는 것입니다. 2단계에서 코드를 직접 고치던 방식에서, 3단계에서는 <strong>CLAUDE.md, Skills, Hooks 같은 하네스를 설계</strong>하여 AI가 스스로 올바르게 작동하게 만듭니다. 이것이 Claude Code를 제대로 활용하는 핵심입니다.</div>
+        <div class="lang-en"><strong>The goal of this course:</strong> Start from Stage 1 (Vibe Coding) and grow to <strong style="color:var(--accent)">Stage 3 (Harness Engineering)</strong>. Instead of manually fixing code in Stage 2, in Stage 3 you <strong>design harnesses like CLAUDE.md, Skills, and Hooks</strong> so the AI works correctly on its own. This is the key to truly leveraging Claude Code.</div>
+      </div>
+    </div>
+
+    <p style="color: var(--text-muted); font-size: 13px; margin-top: 16px;">
+      <span class="lang-ko">참고: <a href="https://bcho.tistory.com/1508" target="_blank" style="color: var(--accent);">Terry Cho — AI 코딩의 발전단계</a> · <a href="https://martinfowler.com/articles/exploring-gen-ai/humans-and-agents.html" target="_blank" style="color: var(--accent);">Martin Fowler — Humans and Agents</a></span>
+      <span class="lang-en">Reference: <a href="https://bcho.tistory.com/1508" target="_blank" style="color: var(--accent);">Terry Cho — AI Coding Stages</a> · <a href="https://martinfowler.com/articles/exploring-gen-ai/humans-and-agents.html" target="_blank" style="color: var(--accent);">Martin Fowler — Humans and Agents</a></span>
+    </p>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- =================== SECTION 4: USE CASES =================== -->
+<section id="usecases">
+  <div class="container">
+    <div class="section-number">04</div>
     <h2 class="section-title"><span class="lang-ko">어떤 일을 할 수 있나?</span><span class="lang-en">What can it do?</span></h2>
     <p class="section-desc">
       <span class="lang-ko">Claude Code는 개발 워크플로우의 거의 모든 단계를 도울 수 있습니다. 대표적인 사용 사례 6가지를 소개합니다.</span><span class="lang-en">Claude Code can assist with almost every stage of the development workflow. Here are 6 representative use cases.</span>
@@ -1105,10 +1170,10 @@
 
 <div class="divider"></div>
 
-<!-- =================== SECTION 4: HOW IT WORKS =================== -->
+<!-- =================== SECTION 5: HOW IT WORKS =================== -->
 <section id="how-it-works">
   <div class="container">
-    <div class="section-number">04</div>
+    <div class="section-number">05</div>
     <h2 class="section-title"><span class="lang-ko">작동 원리 &mdash; 에이전트 루프</span><span class="lang-en">How It Works &mdash; The Agent Loop</span></h2>
     <p class="section-desc">
       <span class="lang-ko">Claude Code는 세 가지 단계가 서로 뒤섞인 <strong style="color:var(--accent)">에이전트 루프</strong>로 동작합니다. 작업이 완료될 때까지 이 루프를 반복하며, 사용자는 언제든지 중단할 수 있습니다.</span><span class="lang-en">Claude Code operates on an <strong style="color:var(--accent)">agent loop</strong> with three interleaved stages. It repeats this loop until the task is complete, and you can stop it at any time.</span>
@@ -1277,10 +1342,10 @@
 
 <div class="divider"></div>
 
-<!-- =================== SECTION 5: PLATFORMS =================== -->
+<!-- =================== SECTION 6: PLATFORMS =================== -->
 <section id="platforms">
   <div class="container">
-    <div class="section-number">05</div>
+    <div class="section-number">06</div>
     <h2 class="section-title"><span class="lang-ko">어디서 실행할 수 있나?</span><span class="lang-en">Where can it run?</span></h2>
     <p class="section-desc">
       <span class="lang-ko">Claude Code는 터미널에서만 쓰는 도구가 아닙니다. 다양한 환경에서 같은 AI 에이전트를 활용할 수 있습니다.</span><span class="lang-en">Claude Code isn't just a terminal tool. You can use the same AI agent across a variety of environments.</span>
@@ -1354,10 +1419,10 @@
 
 <div class="divider"></div>
 
-<!-- =================== SECTION 6: TIMELINE =================== -->
+<!-- =================== SECTION 7: TIMELINE =================== -->
 <section id="timeline">
   <div class="container">
-    <div class="section-number">06</div>
+    <div class="section-number">07</div>
     <h2 class="section-title"><span class="lang-ko">타임라인 2025&ndash;2026</span><span class="lang-en">Timeline 2025&ndash;2026</span></h2>
     <p class="section-desc">
       <span class="lang-ko">Claude Code는 빠르게 진화하고 있습니다. 주요 마일스톤을 살펴봅니다.</span><span class="lang-en">Claude Code is evolving rapidly. Let's look at the key milestones.</span>
@@ -1472,7 +1537,7 @@
 <!-- =================== SECTION 7: FAQ =================== -->
 <section id="faq">
   <div class="container">
-    <div class="section-number">07</div>
+    <div class="section-number">08</div>
     <h2 class="section-title"><span class="lang-ko">자주 묻는 질문</span><span class="lang-en">Frequently Asked Questions</span></h2>
     <p class="section-desc">
       <span class="lang-ko">Claude Code를 처음 접하는 분들이 가장 많이 궁금해하는 것들</span><span class="lang-en">The most common questions from those new to Claude Code</span>

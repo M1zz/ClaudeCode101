@@ -1786,6 +1786,70 @@ PR을 열어주세요.</span></div>
         <div class="lang-en"><strong>Pro tip:</strong> You can add custom instructions to /compact. Writing something like <code style="color: var(--accent); font-family: 'JetBrains Mono', monospace; font-size: 13px;">/compact make sure to keep context related to the payment module I'm working on</code> better preserves important context.</div>
       </div>
     </div>
+
+    <!-- Context Compact 3-tier Strategy -->
+    <div class="lang-ko"><h3 style="font-size: 20px; font-weight: 700; margin: 48px 0 12px;">3계층 컨텍스트 관리 전략</h3></div>
+    <div class="lang-en"><h3 style="font-size: 20px; font-weight: 700; margin: 48px 0 12px;">3-Tier Context Management Strategy</h3></div>
+    <div class="lang-ko"><p style="color: var(--text-dim); margin-bottom: 24px;">긴 세션이 필요할 때 단순히 /compact만 쓰지 말고, <strong style="color:var(--accent)">3계층 전략</strong>으로 체계적으로 관리하세요.</p></div>
+    <div class="lang-en"><p style="color: var(--text-dim); margin-bottom: 24px;">When long sessions are needed, don't just use /compact. Manage systematically with a <strong style="color:var(--accent)">3-tier strategy</strong>.</p></div>
+
+    <div class="card-grid card-grid-3">
+      <div class="card">
+        <div class="card-icon" style="background: var(--green-dim);">&#x1F4CB;</div>
+        <h3><span class="lang-ko">1계층: 선제적 분리</span><span class="lang-en">Tier 1: Proactive Split</span></h3>
+        <div class="lang-ko"><p>큰 작업을 시작하기 전에 <strong>세션 자체를 나누세요</strong>. "인증 모듈 분석" → /clear → "인증 모듈 구현". 하나의 세션 = 하나의 작업이 원칙입니다.</p></div>
+        <div class="lang-en"><p><strong>Split the session itself</strong> before starting big tasks. "Analyze auth module" → /clear → "Implement auth module." One session = one task is the principle.</p></div>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background: var(--accent-glow);">&#x1F5DC;</div>
+        <h3><span class="lang-ko">2계층: 선택적 압축</span><span class="lang-en">Tier 2: Selective Compact</span></h3>
+        <div class="lang-ko"><p>세션 중간에 <code style="color:var(--accent)">/compact "결제 API 관련만 유지"</code>처럼 <strong>키워드를 지정</strong>하여 중요한 맥락만 보존합니다. 무지정 /compact보다 훨씬 정확합니다.</p></div>
+        <div class="lang-en"><p>Mid-session, use <code style="color:var(--accent)">/compact "keep only payment API context"</code> to <strong>specify keywords</strong> and preserve only important context. Far more accurate than bare /compact.</p></div>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background: var(--orange-dim);">&#x1F504;</div>
+        <h3><span class="lang-ko">3계층: 자동 압축 대비</span><span class="lang-en">Tier 3: Auto-compact Prep</span></h3>
+        <div class="lang-ko"><p>한계에 도달하면 하네스가 자동 압축합니다. 이때를 대비해 <strong>CLAUDE.md에 핵심 규칙을 적어두세요</strong> — CLAUDE.md는 압축되지 않으므로 항상 살아남습니다.</p></div>
+        <div class="lang-en"><p>When limits are reached, the harness auto-compresses. Prepare for this by <strong>writing key rules in CLAUDE.md</strong> — CLAUDE.md is never compressed, so it always survives.</p></div>
+      </div>
+    </div>
+
+    <!-- TodoWrite / Task Decomposition -->
+    <div class="lang-ko"><h3 style="font-size: 20px; font-weight: 700; margin: 48px 0 12px;">작업 분해 유도 — 복잡한 작업의 완료율을 높이는 법</h3></div>
+    <div class="lang-en"><h3 style="font-size: 20px; font-weight: 700; margin: 48px 0 12px;">Task Decomposition — How to Boost Completion Rate for Complex Tasks</h3></div>
+    <div class="lang-ko"><p style="color: var(--text-dim); margin-bottom: 24px;">복잡한 작업을 줄 때, Claude에게 <strong style="color:var(--accent)">먼저 계획을 세우게</strong> 하면 완료율이 크게 올라갑니다. 계획 없는 에이전트는 방향을 잃습니다.</p></div>
+    <div class="lang-en"><p style="color: var(--text-dim); margin-bottom: 24px;">When giving complex tasks, having Claude <strong style="color:var(--accent)">plan first</strong> dramatically increases the completion rate. An agent without a plan drifts.</p></div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <div class="code-dots"><span></span><span></span><span></span></div>
+        <span><span class="lang-ko">작업 분해 프롬프트 패턴</span><span class="lang-en">Task Decomposition Prompt Pattern</span></span>
+      </div>
+      <div class="code-body">
+<span class="comment">&#x274C; <span class="lang-ko">나쁜 예: 한 번에 전부 요청</span><span class="lang-en">Bad: requesting everything at once</span></span>
+<span class="string">"이 프로젝트에 인증 시스템, 결제 모듈, 알림 기능을 추가해줘"</span>
+
+<span class="comment">&#x2705; <span class="lang-ko">좋은 예: 계획 수립 → 단계별 실행</span><span class="lang-en">Good: plan first → execute step by step</span></span>
+<span class="string">"이 프로젝트에 인증 시스템을 추가하려고 해.
+먼저 현재 코드를 분석하고 구현 계획을 세워줘.
+계획이 확정되면 단계별로 하나씩 실행하고,
+각 단계마다 테스트를 돌려서 검증해줘."</span>
+
+<span class="comment">&#x1F3AF; <span class="lang-ko">최고의 예: Plan Mode → 확인 → 실행</span><span class="lang-en">Best: Plan Mode → confirm → execute</span></span>
+<span class="comment">1. Shift+Tab → Plan Mode</span>
+<span class="string">"인증 시스템 추가 계획을 세워줘"</span>
+<span class="comment">2. <span class="lang-ko">계획 확인 후</span><span class="lang-en">After confirming plan</span> → Shift+Tab → Normal Mode</span>
+<span class="string">"위 계획대로 실행해줘. 각 단계 완료 시 진행 상황을 알려줘"</span>
+      </div>
+    </div>
+
+    <div class="tip">
+      <span class="tip-icon">&#x1F4A1;</span>
+      <div>
+        <div class="lang-ko"><strong>왜 작업 분해가 중요한가:</strong> Claude는 내부적으로 <strong>TodoWrite</strong>라는 도구를 사용해 태스크 리스트를 관리합니다. "먼저 계획을 세워줘"라고 하면 Claude가 자체적으로 체크리스트를 만들고, 하나씩 완료하며 진행합니다. 연구에 따르면 계획을 세운 에이전트의 <strong>작업 완료율이 2배 이상</strong> 높습니다.</div>
+        <div class="lang-en"><strong>Why task decomposition matters:</strong> Claude internally uses a tool called <strong>TodoWrite</strong> to manage task lists. When you say "plan first," Claude creates its own checklist and completes tasks one by one. Research shows that agents with plans have <strong>2x+ higher task completion rates</strong>.</div>
+      </div>
+    </div>
   </div>
 </section>
 
